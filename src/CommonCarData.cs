@@ -64,6 +64,12 @@ namespace ApexVisual
         public float StoredErsEnergy {get; set;}
         public ErsDeployMode ActiveErsDeployMode {get; set;}
 
+        //Taken from participants packet
+        public bool IsAiControlled {get; set;}
+        public Driver Pilot {get; set;}
+        public Team Constructor {get; set;}
+        public byte RaceNumber {get; set;}
+        public string Name {get; set;}
 
     }
 }
