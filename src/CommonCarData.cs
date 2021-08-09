@@ -4,12 +4,7 @@ namespace ApexVisual
 {
     public class CommonCarData
     {
-        //Taken from packet header
-        public ulong SessionId {get; set;}
-        public float SessionTime {get; set;}
-        public uint FrameIdentifier {get; set;}
-        public byte PlayerCarIndex {get; set;}
-
+        
         //From motion packet
         public float PositionX {get; set;}
         public float PositionY {get; set;}
