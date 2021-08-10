@@ -6,7 +6,7 @@ namespace ApexVisual
 {
     public class ApexVisualToolkit
     {
-        public static string GenerateSessionAsCsv(CommonSessionData[] session_data, byte for_index)
+        public static string GenerateSessionAsCsv(CommonSessionData[] session_data, byte for_index, int every = 10)
         {
             CsvFile csv = new CsvFile();
 
@@ -25,7 +25,7 @@ namespace ApexVisual
             dr4.Values.Add(session_data[session_data.Length-1].FieldData[session_data[session_data.Length-1].PlayerCarIndex].Name);
 
             //Add a blank row
-            csv.AddNewRow();
+            csv.AddNewRow().Values.Add("");
 
             //Headers
             DataRow dr = csv.AddNewRow();
@@ -96,10 +96,10 @@ namespace ApexVisual
             dr.Values.Add("Front Right Wing Damage");
             dr.Values.Add("Rear Wing Damage");
 
-
-            foreach (CommonSessionData csd in session_data)
+            for (int i = 0; i < session_data.Length; i = i + every)
             {
                 DataRow ndr = csv.AddNewRow();
+                CommonSessionData csd = session_data[i];
 
                 ndr.Values.Add(csd.SessionTime.ToString());
                 ndr.Values.Add(csd.FrameIdentifier.ToString());
@@ -168,7 +168,6 @@ namespace ApexVisual
                 ndr.Values.Add(csd.FieldData[for_index].FrontRightWingDamage.ToString());
                 ndr.Values.Add(csd.FieldData[for_index].RearWingDamage.ToString());
             }
-
 
             return csv.GenerateAsCsvFileContent();
         }
