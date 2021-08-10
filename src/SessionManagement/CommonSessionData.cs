@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ApexVisual
+namespace ApexVisual.SessionManagement
 {
     public class CommonSessionData
     {

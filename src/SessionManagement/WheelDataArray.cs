@@ -1,6 +1,6 @@
 using System;
 
-namespace ApexVisual
+namespace ApexVisual.SessionManagement
 {
     public class WheelDataArray
     {
