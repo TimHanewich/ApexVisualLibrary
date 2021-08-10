@@ -2,7 +2,7 @@ using System;
 
 namespace ApexVisual
 {
-    public struct WheelDataArray
+    public class WheelDataArray
     {
         public float RearLeft { get; set; }
         public float RearRight { get; set; }
