@@ -9,9 +9,6 @@ namespace ApexVisual.SessionManagement
         //Events
         public event FieldCommonCarDataHandler DataUpdateAvailable;
 
-        //Repository of data
-        private List<FieldCommonCarData> FieldCommonCarDataBackup;
-
         //Ongoing canvas
         private FieldCommonCarData OngoingCanvas;
 
