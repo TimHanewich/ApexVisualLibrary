@@ -540,7 +540,90 @@ namespace ApexVisual.SessionManagement
 
                     OngoingCanvas.FieldData[i].EngineTemperature = tp.FieldTelemetryData[i].EngineTemperature;
                 }
+            }
+            else if (pt == PacketType.CarStatus)
+            {
+                CarStatusPacket csp = new CarStatusPacket();
+                csp.LoadBytes(bytes);
 
+                //Check the number of common data
+                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length != csp.FieldCarStatusData.Length)
+                {
+                    OngoingCanvas.FieldData = new CommonCarData[csp.FieldCarStatusData.Length];
+                }
+
+                for (int i = 0; i < csp.FieldCarStatusData.Length; i++)
+                {
+                    //Fuel mix
+                    switch (csp.FieldCarStatusData[i].SelectedFuelMix)
+                    {
+                        case Codemasters.F1_2021.FuelMix.Lean:
+                            OngoingCanvas.FieldData[i].ActiveFuelMix = FuelMix.Lean;
+                            break;
+                        case Codemasters.F1_2021.FuelMix.Max:
+                            OngoingCanvas.FieldData[i].ActiveFuelMix = FuelMix.Max;
+                            break;
+                        case Codemasters.F1_2021.FuelMix.Rich:
+                            OngoingCanvas.FieldData[i].ActiveFuelMix = FuelMix.Rich;
+                            break;
+                        case Codemasters.F1_2021.FuelMix.Standard:
+                            OngoingCanvas.FieldData[i].ActiveFuelMix = FuelMix.Standard;
+                            break;
+                    }
+
+                    OngoingCanvas.FieldData[i].FuelInTank = csp.FieldCarStatusData[i].FuelLevel;
+                    OngoingCanvas.FieldData[i].FuelCapacity = csp.FieldCarStatusData[i].FuelCapacity;
+                    OngoingCanvas.FieldData[i].FuelRemainingLaps = csp.FieldCarStatusData[i].FuelRemainingLaps;
+                    OngoingCanvas.FieldData[i].DrsAllowed = csp.FieldCarStatusData[i].DrsAllowed;
+                    
+                    //Equipped tyre compound
+                    switch (csp.FieldCarStatusData[i].EquippedTyreCompound)
+                    {
+                        case Codemasters.F1_2021.TyreCompound.C5:
+                            OngoingCanvas.FieldData[i].EquippedTyreCompound = TyreCompound.C5;
+                            break;
+                        case Codemasters.F1_2021.TyreCompound.C4:
+                            OngoingCanvas.FieldData[i].EquippedTyreCompound = TyreCompound.C4;
+                            break;
+                        case Codemasters.F1_2021.TyreCompound.C3:
+                            OngoingCanvas.FieldData[i].EquippedTyreCompound = TyreCompound.C3;
+                            break;
+                        case Codemasters.F1_2021.TyreCompound.C2:
+                            OngoingCanvas.FieldData[i].EquippedTyreCompound = TyreCompound.C2;
+                            break;
+                        case Codemasters.F1_2021.TyreCompound.C1:
+                            OngoingCanvas.FieldData[i].EquippedTyreCompound = TyreCompound.C1;
+                            break;
+                        case Codemasters.F1_2021.TyreCompound.Inter:
+                            OngoingCanvas.FieldData[i].EquippedTyreCompound = TyreCompound.Inter;
+                            break;
+                        case Codemasters.F1_2021.TyreCompound.Wet:
+                            OngoingCanvas.FieldData[i].EquippedTyreCompound = TyreCompound.Wet;
+                            break;
+                    }
+
+                    OngoingCanvas.FieldData[i].TyreAgeLaps = csp.FieldCarStatusData[i].TyreAgeLaps;
+                    OngoingCanvas.FieldData[i].StoredErsEnergy = csp.FieldCarStatusData[i].ErsStoredEnergyJoules;
+                    
+                    //ERS deploy mode
+                    switch (csp.FieldCarStatusData[i].SelectedErsDeployMode)
+                    {
+                        case Codemasters.F1_2021.ErsDeployMode.HotLap:
+                            OngoingCanvas.FieldData[i].ActiveErsDeployMode = ErsDeployMode.Hotlap;
+                            break;
+                        case Codemasters.F1_2021.ErsDeployMode.Medium:
+                            OngoingCanvas.FieldData[i].ActiveErsDeployMode = ErsDeployMode.Medium;
+                            break;
+                        case Codemasters.F1_2021.ErsDeployMode.None:
+                            OngoingCanvas.FieldData[i].ActiveErsDeployMode = ErsDeployMode.None;
+                            break;
+                        case Codemasters.F1_2021.ErsDeployMode.Overtake:
+                            OngoingCanvas.FieldData[i].ActiveErsDeployMode = ErsDeployMode.Overtake;
+                            break;
+                    }
+
+
+                }
 
             }
 
