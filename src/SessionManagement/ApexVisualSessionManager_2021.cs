@@ -324,15 +324,7 @@ namespace ApexVisual.SessionManagement
 
                 for (int i = 0; i < pp.FieldParticipantData.Length; i++)
                 {
-                    Console.WriteLine("Index: " + i.ToString() + "   # of common: " + OngoingCanvas.FieldData.Length.ToString());
-                    foreach (CommonCarData ccd in OngoingCanvas.FieldData)
-                    {
-                        Console.WriteLine("in one now.");
-                        ccd.IsAiControlled = false;
-                    }
-                    OngoingCanvas.FieldData[i].IsAiControlled = false;
-                    //OngoingCanvas.FieldData[i].IsAiControlled = pp.FieldParticipantData[i].IsAiControlled;
-                    
+                    OngoingCanvas.FieldData[i].IsAiControlled = pp.FieldParticipantData[i].IsAiControlled;
                     
                     //Driver
                     List<KeyValuePair<Codemasters.F1_2021.Driver, Driver>> DriverDict = new List<KeyValuePair<Codemasters.F1_2021.Driver, Driver>>();
