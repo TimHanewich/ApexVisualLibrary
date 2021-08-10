@@ -493,6 +493,56 @@ namespace ApexVisual.SessionManagement
 
                 }
             }
+            else if (pt == PacketType.CarTelemetry)
+            {
+                TelemetryPacket tp = new TelemetryPacket();
+                tp.LoadBytes(bytes);
+
+                //Check the #
+                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length != tp.FieldTelemetryData.Length)
+                {
+                    OngoingCanvas.FieldData = new CommonCarData[tp.FieldTelemetryData.Length];
+                }
+
+
+                for (int i = 0; i < tp.FieldTelemetryData.Length; i++)
+                {
+                    OngoingCanvas.FieldData[i].SpeedKph = tp.FieldTelemetryData[i].SpeedKph;
+                    OngoingCanvas.FieldData[i].Throttle = tp.FieldTelemetryData[i].Throttle;
+                    OngoingCanvas.FieldData[i].Steer = tp.FieldTelemetryData[i].Steer;
+                    OngoingCanvas.FieldData[i].Brake = tp.FieldTelemetryData[i].Brake;
+                    OngoingCanvas.FieldData[i].Clutch = tp.FieldTelemetryData[i].Clutch;
+                    OngoingCanvas.FieldData[i].Gear = tp.FieldTelemetryData[i].Gear;
+                    OngoingCanvas.FieldData[i].EngineRpm = tp.FieldTelemetryData[i].EngineRpm;
+                    OngoingCanvas.FieldData[i].DrsActive = tp.FieldTelemetryData[i].DrsActive;
+                    OngoingCanvas.FieldData[i].RevLightsPercentage = tp.FieldTelemetryData[i].RevLightsPercentage;
+                    
+                    //brake temperature
+                    OngoingCanvas.FieldData[i].BrakeTemperature = new WheelDataArray();
+                    OngoingCanvas.FieldData[i].BrakeTemperature.FrontLeft = tp.FieldTelemetryData[i].BrakeTemperature.FrontLeft;
+                    OngoingCanvas.FieldData[i].BrakeTemperature.FrontRight = tp.FieldTelemetryData[i].BrakeTemperature.FrontRight;
+                    OngoingCanvas.FieldData[i].BrakeTemperature.RearLeft = tp.FieldTelemetryData[i].BrakeTemperature.RearLeft;
+                    OngoingCanvas.FieldData[i].BrakeTemperature.RearRight = tp.FieldTelemetryData[i].BrakeTemperature.RearRight;
+
+                    //Tyre surface temperature
+                    OngoingCanvas.FieldData[i].TyreSurfaceTemperature = new WheelDataArray();
+                    OngoingCanvas.FieldData[i].TyreSurfaceTemperature.FrontLeft = tp.FieldTelemetryData[i].TyreSurfaceTemperature.FrontLeft;
+                    OngoingCanvas.FieldData[i].TyreSurfaceTemperature.FrontRight = tp.FieldTelemetryData[i].TyreSurfaceTemperature.FrontRight;
+                    OngoingCanvas.FieldData[i].TyreSurfaceTemperature.RearLeft = tp.FieldTelemetryData[i].TyreSurfaceTemperature.RearLeft;
+                    OngoingCanvas.FieldData[i].TyreSurfaceTemperature.RearRight = tp.FieldTelemetryData[i].TyreSurfaceTemperature.RearRight;
+
+                    //Tyre inner temperature
+                    OngoingCanvas.FieldData[i].TyreInnerTemperature = new WheelDataArray();
+                    OngoingCanvas.FieldData[i].TyreInnerTemperature.FrontLeft = tp.FieldTelemetryData[i].TyreInnerTemperature.FrontLeft;
+                    OngoingCanvas.FieldData[i].TyreInnerTemperature.FrontRight = tp.FieldTelemetryData[i].TyreInnerTemperature.FrontRight;
+                    OngoingCanvas.FieldData[i].TyreInnerTemperature.RearLeft = tp.FieldTelemetryData[i].TyreInnerTemperature.RearLeft;
+                    OngoingCanvas.FieldData[i].TyreInnerTemperature.RearRight = tp.FieldTelemetryData[i].TyreInnerTemperature.RearRight;
+
+                    OngoingCanvas.FieldData[i].EngineTemperature = tp.FieldTelemetryData[i].EngineTemperature;
+                }
+
+
+            }
 
         }
 
