@@ -1,6 +1,7 @@
 using System;
 using ApexVisual;
 using Codemasters.F1_2021;
+using System.Collections.Generic;
 
 namespace ApexVisual.SessionManagement
 {
@@ -316,9 +317,181 @@ namespace ApexVisual.SessionManagement
                             OngoingCanvas.FieldData[i].CurrentDriverStatus = DriverStatus.OutLap;
                             break;
                     }
-                    
+                }
+            }
+            else if (pt == PacketType.Participants)
+            {
+                ParticipantPacket pp = new ParticipantPacket();
+                pp.LoadBytes(bytes);
+
+                //Create them if they don't exist
+                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length != pp.FieldParticipantData.Length)
+                {
+                    OngoingCanvas.FieldData = new CommonCarData[pp.FieldParticipantData.Length];
                 }
 
+                for (int i = 0; i < pp.FieldParticipantData.Length; i++)
+                {
+                    OngoingCanvas.FieldData[i].IsAiControlled = pp.FieldParticipantData[i].IsAiControlled;
+                    
+                    //Driver
+                    List<KeyValuePair<Codemasters.F1_2021.Driver, Driver>> DriverDict = new List<KeyValuePair<Codemasters.F1_2021.Driver, Driver>>();
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.CarlosSainz, Driver.CarlosSainz));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DaniilKvyat, Driver.DaniilKvyat));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DanielRicciardo, Driver.DanielRicciardo));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.FernandoAlonso, Driver.FernandoAlonso));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.FelipeMassa, Driver.FelipeMassa));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.KimiRaikkonen, Driver.KimiRaikkonen));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.MaxVerstappen, Driver.MaxVerstappen));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NicoHulkenburg, Driver.NicoHulkenburg));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.KevinMagnussen, Driver.KevinMagnussen));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.RomainGrosjean, Driver.RomainGrosjean));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.SebastianVettel, Driver.SebastianVettel));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.SergioPerez, Driver.SergioPerez));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.ValtteriBottas, Driver.ValtteriBottas));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.EstebanOcon, Driver.EstebanOcon));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.LanceStroll, Driver.LanceStroll));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.ArronBarnes, Driver.ArronBarnes));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.MartinGiles, Driver.MartinGiles));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.AlexMurray, Driver.AlexMurray));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.LucasRoth, Driver.LucasRoth));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.IgorCorreia, Driver.IgorCorreia));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.SophieLevasseur, Driver.SophieLevasseur));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JonasSchiffer, Driver.JonasSchiffer));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.AlainForest, Driver.AlainForest));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JayLetourneau, Driver.JayLetourneau));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.EstoSaari, Driver.EstoSaari));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.YasarAtiyeh, Driver.YasarAtiyeh));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.CallistoCalabresi, Driver.CallistoCalabresi));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NaotaIzum, Driver.NaotaIzum));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.HowardClarke, Driver.HowardClarke));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.WilheimKaufmann, Driver.WilheimKaufmann));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.MarieLaursen, Driver.MarieLaursen));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.FlavioNieves, Driver.FlavioNieves));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.PeterBelousov, Driver.PeterBelousov));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.KlimekMichalski, Driver.KlimekMichalski));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.SantiagoMoreno, Driver.SantiagoMoreno));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.BenjaminCoppens, Driver.BenjaminCoppens));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NoahVisser, Driver.NoahVisser));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.GertWaldmuller, Driver.GertWaldmuller));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JulianQuesada, Driver.JulianQuesada));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DanielJones, Driver.DanielJones));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.ArtemMarkelov, Driver.ArtemMarkelov));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.TadasukeMakino, Driver.TadasukeMakino));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.SeanGelael, Driver.SeanGelael));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NyckDeVries, Driver.NyckDeVries));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JackAitken, Driver.JackAitken));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.GeorgeRussell, Driver.GeorgeRussell));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.MaximilianGünther, Driver.MaximilianGünther));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NireiFukuzumi, Driver.NireiFukuzumi));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.LucaGhiotto, Driver.LucaGhiotto));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.LandoNorris, Driver.LandoNorris));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.SergioSetteCamara, Driver.SergioSetteCamara));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.LouisDeletraz, Driver.LouisDeletraz));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.AntonioFuoco, Driver.AntonioFuoco));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.CharlesLeclerc, Driver.CharlesLeclerc));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.PierreGasly, Driver.PierreGasly));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.AlexanderAlbon, Driver.AlexanderAlbon));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NicholasLatifi, Driver.NicholasLatifi));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DorianBoccolacci, Driver.DorianBoccolacci));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NikoKari, Driver.NikoKari));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.RobertKubica, Driver.RobertKubica));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.ArjunMaini, Driver.ArjunMaini));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.AlessioLorandi, Driver.AlessioLorandi));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.RubenMeijer, Driver.RubenMeijer));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.RashidNair, Driver.RashidNair));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JackTremblay, Driver.JackTremblay));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DevinButler, Driver.DevinButler));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.LukasWeber, Driver.LukasWeber));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.AntonioGiovinazzi, Driver.AntonioGiovinazzi));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.RobertKubica, Driver.RobertKubica));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.AlainProst, Driver.AlainProst));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.ArytonSenna, Driver.ArytonSenna));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NobuharuMatsushita, Driver.NobuharuMatsushita));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NikitaMazepin, Driver.NikitaMazepin));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.GuanyaZhou, Driver.GuanyaZhou));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.MickSchumacher, Driver.MickSchumacher));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.CallumIlott, Driver.CallumIlott));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JuanManuelCorrea, Driver.JuanManuelCorrea));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JordanKing, Driver.JordanKing));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.MahaveerRaghunathan, Driver.MahaveerRaghunathan));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.TatianaCalderon, Driver.TatianaCalderon));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.AnthoineHubert, Driver.AnthoineHubert));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.GuilianoAlesi, Driver.GuilianoAlesi));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.RalphBoschung, Driver.RalphBoschung));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.MichaelSchumacher, Driver.MichaelSchumacher));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DanTicktum, Driver.DanTicktum));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.MarcusArmstrong, Driver.MarcusArmstrong));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.ChristianLundgaard, Driver.ChristianLundgaard));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.YukiTsunoda, Driver.YukiTsunoda));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JehanDaruvala, Driver.JehanDaruvala));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.GulhermeSamaia, Driver.GulhermeSamaia));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.PedroPiquet, Driver.PedroPiquet));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.FelipeDrugovich, Driver.FelipeDrugovich));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.RobertSchwartzman, Driver.RobertSchwartzman));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.RoyNissany, Driver.RoyNissany));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.MarinoSato, Driver.MarinoSato));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.AidanJackson, Driver.AidanJackson));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.CasperAkkerman, Driver.CasperAkkerman));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JensonButton, Driver.JensonButton));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DavidCoulthard, Driver.DavidCoulthard));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NicoRosberg, Driver.NicoRosberg));
+                    foreach (KeyValuePair<Codemasters.F1_2021.Driver, Driver> kvp in DriverDict)
+                    {
+                        if (pp.FieldParticipantData[i].PilotingDriver == kvp.Key)
+                        {
+                            OngoingCanvas.FieldData[i].Pilot = kvp.Value;
+                        }
+                    }
+
+                    //Constructor (team)
+                    List<KeyValuePair<Codemasters.F1_2021.Team, Team>> TeamDict = new List<KeyValuePair<Codemasters.F1_2021.Team, Team>>();
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Mercedes, Team.Mercedes));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Ferrari, Team.Ferrari));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.RedBullRacing, Team.RedBullRacing));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Williams, Team.Williams));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.AstonMartin, Team.AstonMartin));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Alpine, Team.Alpine));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.AlphaTauri, Team.AlphaTauri));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Haas, Team.Haas));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.McLaren, Team.McLaren));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.AlfaRomeo, Team.AlfaRomeo));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.ArtGP19, Team.ArtGP19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Campos19, Team.Campos19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Carlin19, Team.Carlin19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.SauberJuniorCharouz19, Team.SauberJuniorCharouz19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Dams19, Team.Dams19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.UniVirtuosi19, Team.UniVirtuosi19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.MPMotorsport19, Team.MPMotorsport19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Prema19, Team.Prema19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Trident19, Team.Trident19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Arden19, Team.Arden19));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.ArtGP20, Team.ArtGP20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Campos20, Team.Campos20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Carlin20, Team.Carlin20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Charouz20, Team.Charouz20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Dams20, Team.Dams20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.UniVirtuosi20, Team.UniVirtuosi20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.MPMotorsport20, Team.MPMotorsport20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Prema20, Team.Prema20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Trident20, Team.Trident20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.BWT20, Team.BWT20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Hitech20, Team.Hitech20));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Mercedes2020, Team.Mercedes2020));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Ferrari2020, Team.Ferrari2020));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.RedBull2020, Team.RedBull2020));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Williams2020, Team.Williams2020));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.RacingPoint2020, Team.RacingPoint2020));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Renault2020, Team.Renault2020));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.AlphaTauri2020, Team.AlphaTauri2020));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Haas2020, Team.Haas2020));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.McLaren2020, Team.McLaren2020));
+                    TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.AlfaRomeo2020, Team.AlfaRomeo2020));
+
+                    OngoingCanvas.FieldData[i].RaceNumber = pp.FieldParticipantData[i].CarRaceNumber;
+                    OngoingCanvas.FieldData[i].Name = pp.FieldParticipantData[i].Name;
+
+                }
             }
 
         }
