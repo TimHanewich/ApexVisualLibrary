@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ApexVisual
 {
-    public class FieldCommonCarData
+    public class CommonSessionData
     {
         //Taken from packet header
         public ulong SessionId {get; set;}

@@ -7,10 +7,10 @@ namespace ApexVisual.SessionManagement
     public partial class ApexVisualSessionManager
     {
         //Events
-        public event FieldCommonCarDataHandler DataUpdateAvailable;
+        public event CommonSessionDataHandler DataUpdateAvailable;
 
         //Ongoing canvas
-        private FieldCommonCarData OngoingCanvas;
+        private CommonSessionData OngoingCanvas;
 
 
         public void IngestBytes(byte[] bytes)
@@ -23,7 +23,7 @@ namespace ApexVisual.SessionManagement
             //Be sure there is a canvas
             if (OngoingCanvas == null)
             {
-                OngoingCanvas = new FieldCommonCarData();
+                OngoingCanvas = new CommonSessionData();
             }
             
             //Route it based on the game
@@ -39,7 +39,7 @@ namespace ApexVisual.SessionManagement
 
         #region "Utility functions"
 
-        private void TryRaiseDataUpdate(FieldCommonCarData fccd)
+        private void TryRaiseDataUpdate(CommonSessionData fccd)
         {
             try
             {
