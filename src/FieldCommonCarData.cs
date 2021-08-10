@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ApexVisual
 {
@@ -22,5 +23,32 @@ namespace ApexVisual
         public SafetyCarStatus CurrentSafetyCarStatus {get; set;}
 
         public CommonCarData[] FieldData {get; set;}
+
+        public void InitializeFieldDataIfNeeded(int number_needed)
+        {
+            bool NeedToDo = false;
+            if (FieldData == null)
+            {
+                NeedToDo = true;
+            }
+            else
+            {
+                if (FieldData.Length != number_needed)
+                {
+                    NeedToDo = true;
+                }
+            }
+
+            if (NeedToDo)
+            {
+                List<CommonCarData> ToAdd = new List<CommonCarData>();
+                for (int i = 0; i < number_needed; i++)
+                {
+                    ToAdd.Add(new CommonCarData());
+                }
+                FieldData = ToAdd.ToArray();
+            }
+
+        }
     }
 }

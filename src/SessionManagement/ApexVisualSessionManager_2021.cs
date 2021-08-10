@@ -18,10 +18,7 @@ namespace ApexVisual.SessionManagement
                 mp.LoadBytes(bytes);
 
                 //Add the correct number of common car data
-                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length < mp.FieldMotionData.Length)
-                {
-                    OngoingCanvas.FieldData = new CommonCarData[mp.FieldMotionData.Length];
-                }
+                OngoingCanvas.InitializeFieldDataIfNeeded(mp.FieldMotionData.Length);
 
                 //Update the basics
                 OngoingCanvas.SessionId = mp.UniqueSessionId;
@@ -249,10 +246,8 @@ namespace ApexVisual.SessionManagement
                 LapPacket lp = new LapPacket();
                 lp.LoadBytes(bytes);
 
-                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length != lp.FieldLapData.Length)
-                {
-                    OngoingCanvas.FieldData = new CommonCarData[lp.FieldLapData.Length];
-                }
+                //Initialize
+                OngoingCanvas.InitializeFieldDataIfNeeded(lp.FieldLapData.Length);
 
                 //Update all
                 for (int i = 0; i < lp.FieldLapData.Length; i++)
@@ -325,14 +320,19 @@ namespace ApexVisual.SessionManagement
                 pp.LoadBytes(bytes);
 
                 //Create them if they don't exist
-                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length != pp.FieldParticipantData.Length)
-                {
-                    OngoingCanvas.FieldData = new CommonCarData[pp.FieldParticipantData.Length];
-                }
+                OngoingCanvas.InitializeFieldDataIfNeeded(pp.FieldParticipantData.Length);
 
                 for (int i = 0; i < pp.FieldParticipantData.Length; i++)
                 {
-                    OngoingCanvas.FieldData[i].IsAiControlled = pp.FieldParticipantData[i].IsAiControlled;
+                    Console.WriteLine("Index: " + i.ToString() + "   # of common: " + OngoingCanvas.FieldData.Length.ToString());
+                    foreach (CommonCarData ccd in OngoingCanvas.FieldData)
+                    {
+                        Console.WriteLine("in one now.");
+                        ccd.IsAiControlled = false;
+                    }
+                    OngoingCanvas.FieldData[i].IsAiControlled = false;
+                    //OngoingCanvas.FieldData[i].IsAiControlled = pp.FieldParticipantData[i].IsAiControlled;
+                    
                     
                     //Driver
                     List<KeyValuePair<Codemasters.F1_2021.Driver, Driver>> DriverDict = new List<KeyValuePair<Codemasters.F1_2021.Driver, Driver>>();
@@ -499,10 +499,7 @@ namespace ApexVisual.SessionManagement
                 tp.LoadBytes(bytes);
 
                 //Check the #
-                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length != tp.FieldTelemetryData.Length)
-                {
-                    OngoingCanvas.FieldData = new CommonCarData[tp.FieldTelemetryData.Length];
-                }
+                OngoingCanvas.InitializeFieldDataIfNeeded(tp.FieldTelemetryData.Length);
 
 
                 for (int i = 0; i < tp.FieldTelemetryData.Length; i++)
@@ -547,10 +544,7 @@ namespace ApexVisual.SessionManagement
                 csp.LoadBytes(bytes);
 
                 //Check the number of common data
-                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length != csp.FieldCarStatusData.Length)
-                {
-                    OngoingCanvas.FieldData = new CommonCarData[csp.FieldCarStatusData.Length];
-                }
+                OngoingCanvas.InitializeFieldDataIfNeeded(csp.FieldCarStatusData.Length);
 
                 for (int i = 0; i < csp.FieldCarStatusData.Length; i++)
                 {
@@ -632,10 +626,7 @@ namespace ApexVisual.SessionManagement
                 cdp.LoadBytes(bytes);
 
                 //Check the #
-                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length != cdp.FieldCarDamageData.Length)
-                {
-                    OngoingCanvas.FieldData = new CommonCarData[cdp.FieldCarDamageData.Length];
-                }
+                OngoingCanvas.InitializeFieldDataIfNeeded(cdp.FieldCarDamageData.Length);
 
                 for (int i = 0; i < cdp.FieldCarDamageData.Length; i++)
                 {
