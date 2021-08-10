@@ -66,5 +66,13 @@ namespace ApexVisual
         public byte RaceNumber {get; set;}
         public string Name {get; set;}
 
+        //Taken from car damage packet
+        public WheelDataArray TyreWear {get; set;}
+        public WheelDataArray TyreDamage {get; set;}
+        public WheelDataArray BrakeDamage {get; set;}
+        public byte FrontLeftWingDamage {get; set;}
+        public byte FrontRightWingDamage {get; set;}
+        public byte RearWingDamage {get; set;}
+
     }
 }

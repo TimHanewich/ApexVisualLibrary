@@ -626,7 +626,47 @@ namespace ApexVisual.SessionManagement
                 }
 
             }
+            else if (pt == PacketType.CarDamage)
+            {
+                CarDamagePacket cdp = new CarDamagePacket();
+                cdp.LoadBytes(bytes);
 
+                //Check the #
+                if (OngoingCanvas.FieldData == null || OngoingCanvas.FieldData.Length != cdp.FieldCarDamageData.Length)
+                {
+                    OngoingCanvas.FieldData = new CommonCarData[cdp.FieldCarDamageData.Length];
+                }
+
+                for (int i = 0; i < cdp.FieldCarDamageData.Length; i++)
+                {
+                    //Tyre wear
+                    OngoingCanvas.FieldData[i].TyreWear = new WheelDataArray();
+                    OngoingCanvas.FieldData[i].TyreWear.FrontLeft = cdp.FieldCarDamageData[i].TyreDamage.FrontLeft;
+                    OngoingCanvas.FieldData[i].TyreWear.FrontRight = cdp.FieldCarDamageData[i].TyreDamage.FrontRight;
+                    OngoingCanvas.FieldData[i].TyreWear.RearLeft = cdp.FieldCarDamageData[i].TyreDamage.RearLeft;
+                    OngoingCanvas.FieldData[i].TyreWear.RearRight = cdp.FieldCarDamageData[i].TyreDamage.RearRight;
+
+                    //Tyre damage
+                    OngoingCanvas.FieldData[i].TyreDamage = new WheelDataArray();
+                    OngoingCanvas.FieldData[i].TyreDamage.FrontLeft = cdp.FieldCarDamageData[i].TyreDamage.FrontLeft;
+                    OngoingCanvas.FieldData[i].TyreDamage.FrontRight = cdp.FieldCarDamageData[i].TyreDamage.FrontRight;
+                    OngoingCanvas.FieldData[i].TyreDamage.RearLeft = cdp.FieldCarDamageData[i].TyreDamage.RearLeft;
+                    OngoingCanvas.FieldData[i].TyreDamage.RearRight = cdp.FieldCarDamageData[i].TyreDamage.RearRight;
+
+                    //Brake damage
+                    OngoingCanvas.FieldData[i].BrakeDamage = new WheelDataArray();
+                    OngoingCanvas.FieldData[i].BrakeDamage.FrontLeft = cdp.FieldCarDamageData[i].BrakeDamage.FrontLeft;
+                    OngoingCanvas.FieldData[i].BrakeDamage.FrontRight = cdp.FieldCarDamageData[i].BrakeDamage.FrontRight;
+                    OngoingCanvas.FieldData[i].BrakeDamage.RearLeft = cdp.FieldCarDamageData[i].BrakeDamage.RearLeft;
+                    OngoingCanvas.FieldData[i].BrakeDamage.RearRight = cdp.FieldCarDamageData[i].BrakeDamage.RearRight;
+
+                    OngoingCanvas.FieldData[i].FrontLeftWingDamage = cdp.FieldCarDamageData[i].FrontLeftWingDamage;
+                    OngoingCanvas.FieldData[i].FrontRightWingDamage = cdp.FieldCarDamageData[i].FrontRightWingDamange;
+                    OngoingCanvas.FieldData[i].RearWingDamage = cdp.FieldCarDamageData[i].RearWingDamage;
+                }
+
+
+            }
         }
 
     }
