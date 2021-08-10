@@ -6,7 +6,7 @@ namespace ApexVisual
 {
     public class ApexVisualToolkit
     {
-        public string GenerateSessionAsCsv(CommonSessionData[] session_data, byte for_index)
+        public static string GenerateSessionAsCsv(CommonSessionData[] session_data, byte for_index)
         {
             CsvFile csv = new CsvFile();
 
