@@ -2,7 +2,7 @@ using System;
 
 namespace ApexVisual.SessionManagement
 {
-    public class WheelDataArray
+    public struct WheelDataArray
     {
         public float RearLeft { get; set; }
         public float RearRight { get; set; }
