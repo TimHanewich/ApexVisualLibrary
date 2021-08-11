@@ -75,7 +75,7 @@ namespace ApexVisual.SessionManagement
             {
                 CopiedCarData.Add(ccd.Copy());
             }
-            FieldData = CopiedCarData.ToArray();
+            ToReturn.FieldData = CopiedCarData.ToArray();
 
             return ToReturn;
         }
