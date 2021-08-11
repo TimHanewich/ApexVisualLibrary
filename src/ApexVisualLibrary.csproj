@@ -2,6 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PackageId>ApexVisual</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Tim Hanewich</Authors>
+    <Product>ApexVisual</Product>
+    <Description>.NET class library supporting the Apex Visual application</Description>
+    <Copyright>Tim Hanewich</Copyright>
+    <PackageLicenseFile>license.md</PackageLicenseFile>
+    <PackageIcon>logo.jpg</PackageIcon>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TimHanewich/ApexVisualLibrary</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>apex visual</PackageTags>
+    <AssemblyVersion>0.0.0.0</AssemblyVersion>
+    <FileVersion>0.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +24,17 @@
     <PackageReference Include="Codemasters.F1_2021" Version="0.1.1" />
     <PackageReference Include="TimHanewich.Csv" Version="1.0.0" />
     <PackageReference Include="TimHanewich.Toolkit" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\license.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="logo.jpg">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
