@@ -12,6 +12,16 @@ namespace ApexVisual.SessionManagement
         {
             PacketType pt = CodemastersToolkit.GetPacketType(bytes);
 
+            //Update the basics (any packet should have this in the header because every packet has a header)
+            Packet p = new Packet();
+            p.LoadBytes(bytes);
+
+            //Update the basics
+            OngoingCanvas.SessionId = p.UniqueSessionId;
+            OngoingCanvas.SessionTime = p.SessionTime;
+            OngoingCanvas.FrameIdentifier = p.FrameIdentifier;
+            OngoingCanvas.PlayerCarIndex = p.PlayerCarIndex;
+
             if (pt == PacketType.Motion)
             {
                 MotionPacket mp = new MotionPacket();
@@ -19,13 +29,7 @@ namespace ApexVisual.SessionManagement
 
                 //Add the correct number of common car data
                 OngoingCanvas.InitializeFieldDataIfNeeded(mp.FieldMotionData.Length);
-
-                //Update the basics
-                OngoingCanvas.SessionId = mp.UniqueSessionId;
-                OngoingCanvas.SessionTime = mp.SessionTime;
-                OngoingCanvas.FrameIdentifier = mp.FrameIdentifier;
-                OngoingCanvas.PlayerCarIndex = mp.PlayerCarIndex;
-
+                
                 //Update the car data
                 for (int i = 0; i < mp.FieldMotionData.Length; i++)
                 {
