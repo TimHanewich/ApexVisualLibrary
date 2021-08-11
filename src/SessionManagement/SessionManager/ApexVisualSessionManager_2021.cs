@@ -257,8 +257,8 @@ namespace ApexVisual.SessionManagement
                 //Update all
                 for (int i = 0; i < lp.FieldLapData.Length; i++)
                 {
-                    OngoingCanvas.FieldData[i].LastLapTimeSeconds = lp.FieldLapData[i].LastLapTime;
-                    OngoingCanvas.FieldData[i].CurrentLapTimeSeconds = lp.FieldLapData[i].CurrentLapTime;
+                    OngoingCanvas.FieldData[i].LastLapTimeSeconds = Convert.ToSingle(lp.FieldLapData[i].LastLapTimeMilliseconds) / 1000f;
+                    OngoingCanvas.FieldData[i].CurrentLapTimeSeconds = Convert.ToSingle(lp.FieldLapData[i].CurrentLapTimeMilliseconds) / 1000f;
                     OngoingCanvas.FieldData[i].Sector1TimeSeconds = Convert.ToSingle(lp.FieldLapData[i].Sector1TimeMilliseconds) / 1000f;
                     OngoingCanvas.FieldData[i].Sector2TimeSeconds = Convert.ToSingle(lp.FieldLapData[i].Sector2TimeMilliseconds) / 1000f;
                     OngoingCanvas.FieldData[i].LapDistanceMeters = lp.FieldLapData[i].LapDistance;
@@ -281,15 +281,15 @@ namespace ApexVisual.SessionManagement
                     }
                     
                     //Sector
-                    switch (lp.FieldLapData[i].Sector)
+                    switch (lp.FieldLapData[i].InSector)
                     {
-                        case 0:
+                        case LapPacket.Sector.Sector1:
                             OngoingCanvas.FieldData[i].CurrentSector = Sector.Sector1;
                             break;
-                        case 1:
+                        case LapPacket.Sector.Sector2:
                             OngoingCanvas.FieldData[i].CurrentSector = Sector.Sector2;
                             break;
-                        case 2:
+                        case LapPacket.Sector.Sector3:
                             OngoingCanvas.FieldData[i].CurrentSector = Sector.Sector3;
                             break;
                     }
