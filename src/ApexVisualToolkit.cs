@@ -96,78 +96,89 @@ namespace ApexVisual
             dr.Values.Add("Front Right Wing Damage");
             dr.Values.Add("Rear Wing Damage");
 
-            for (int i = 0; i < session_data.Length; i = i + every)
+            //Print them
+            CommonSessionData LastSeenCommonSessionData = session_data[0];
+            foreach (CommonSessionData csd in session_data)
             {
-                DataRow ndr = csv.AddNewRow();
-                CommonSessionData csd = session_data[i];
+                if (csd.FrameIdentifier != LastSeenCommonSessionData.FrameIdentifier) //We are on a new frame now. So print the most complete version of the last frame!
+                {
+                    if (LastSeenCommonSessionData.FieldData != null)
+                    {
+                        DataRow ndr = csv.AddNewRow();
 
-                ndr.Values.Add(csd.SessionTime.ToString());
-                ndr.Values.Add(csd.FrameIdentifier.ToString());
-                ndr.Values.Add(csd.CurrentWeather.ToString());
-                ndr.Values.Add(csd.TrackTemperatureCelsius.ToString());
-                ndr.Values.Add(csd.AirTemperatureCelsius.ToString());
-                ndr.Values.Add(csd.SessionTimeLeftSeconds.ToString());
-                ndr.Values.Add(csd.CurrentSafetyCarStatus.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].PositionX.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].PositionY.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].PositionZ.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].gForceLateral.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].gForceLongitudinal.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].gForceVertical.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].FrontWheelAngle.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].CurrentLapTimeSeconds.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].LapDistanceMeters.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TotalDistanceMeters.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].CarPosition.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].CurrentLapNumber.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].CurrentPitStatus.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].CurrentSector.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].CurrentLapInvalid.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].CurrentDriverStatus.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].SpeedKph.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].Throttle.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].Steer.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].Brake.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].Clutch.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].Gear.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].EngineRpm.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].DrsActive.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].BrakeTemperature.FrontLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].BrakeTemperature.FrontRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].BrakeTemperature.RearLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].BrakeTemperature.RearRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreSurfaceTemperature.FrontLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreSurfaceTemperature.FrontRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreSurfaceTemperature.RearLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreSurfaceTemperature.RearRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreInnerTemperature.FrontLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreInnerTemperature.FrontRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreInnerTemperature.RearLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreInnerTemperature.RearRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].EngineTemperature.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].ActiveFuelMix.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].FuelInTank.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].DrsAllowed.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].EquippedTyreCompound.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreAgeLaps.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].StoredErsEnergy.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].ActiveErsDeployMode.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreWear.FrontLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreWear.FrontRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreWear.RearLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreWear.RearRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreDamage.FrontLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreDamage.FrontRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreDamage.RearLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].TyreDamage.RearRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].BrakeDamage.FrontLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].BrakeDamage.FrontRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].BrakeDamage.RearLeft.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].BrakeDamage.RearRight.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].FrontLeftWingDamage.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].FrontRightWingDamage.ToString());
-                ndr.Values.Add(csd.FieldData[for_index].RearWingDamage.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.SessionTime.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FrameIdentifier.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.CurrentWeather.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.TrackTemperatureCelsius.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.AirTemperatureCelsius.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.SessionTimeLeftSeconds.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.CurrentSafetyCarStatus.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].PositionX.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].PositionY.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].PositionZ.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].gForceLateral.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].gForceLongitudinal.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].gForceVertical.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].FrontWheelAngle.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].CurrentLapTimeSeconds.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].LapDistanceMeters.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TotalDistanceMeters.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].CarPosition.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].CurrentLapNumber.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].CurrentPitStatus.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].CurrentSector.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].CurrentLapInvalid.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].CurrentDriverStatus.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].SpeedKph.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].Throttle.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].Steer.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].Brake.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].Clutch.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].Gear.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].EngineRpm.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].DrsActive.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].BrakeTemperature.FrontLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].BrakeTemperature.FrontRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].BrakeTemperature.RearLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].BrakeTemperature.RearRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreSurfaceTemperature.FrontLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreSurfaceTemperature.FrontRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreSurfaceTemperature.RearLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreSurfaceTemperature.RearRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreInnerTemperature.FrontLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreInnerTemperature.FrontRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreInnerTemperature.RearLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreInnerTemperature.RearRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].EngineTemperature.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].ActiveFuelMix.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].FuelInTank.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].DrsAllowed.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].EquippedTyreCompound.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreAgeLaps.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].StoredErsEnergy.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].ActiveErsDeployMode.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreWear.FrontLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreWear.FrontRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreWear.RearLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreWear.RearRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreDamage.FrontLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreDamage.FrontRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreDamage.RearLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].TyreDamage.RearRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].BrakeDamage.FrontLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].BrakeDamage.FrontRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].BrakeDamage.RearLeft.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].BrakeDamage.RearRight.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].FrontLeftWingDamage.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].FrontRightWingDamage.ToString());
+                        ndr.Values.Add(LastSeenCommonSessionData.FieldData[for_index].RearWingDamage.ToString());
+                    }
+                }
+
+                //Update last seens
+                LastSeenCommonSessionData = csd; 
             }
+
 
             return csv.GenerateAsCsvFileContent();
         }
