@@ -484,6 +484,13 @@ namespace ApexVisual.SessionManagement
                     TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.Haas2020, Team.Haas2020));
                     TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.McLaren2020, Team.McLaren2020));
                     TeamDict.Add(new KeyValuePair<Codemasters.F1_2021.Team, Team>(Codemasters.F1_2021.Team.AlfaRomeo2020, Team.AlfaRomeo2020));
+                    foreach (KeyValuePair<Codemasters.F1_2021.Team, Team> kvp in TeamDict)
+                    {
+                        if (pp.FieldParticipantData[i].ManufacturingTeam == kvp.Key)
+                        {
+                            OngoingCanvas.FieldData[i].Constructor = kvp.Value;
+                        }
+                    }
 
                     OngoingCanvas.FieldData[i].RaceNumber = pp.FieldParticipantData[i].CarRaceNumber;
                     OngoingCanvas.FieldData[i].Name = pp.FieldParticipantData[i].Name;
