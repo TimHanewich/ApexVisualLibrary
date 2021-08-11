@@ -43,7 +43,7 @@ namespace ApexVisual.SessionManagement
         {
             try
             {
-                DataUpdateAvailable.Invoke(fccd);
+                DataUpdateAvailable.Invoke(fccd.Copy());
             }
             catch
             {
