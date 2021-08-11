@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 
 namespace ApexVisual.SessionManagement
 {
@@ -73,6 +74,69 @@ namespace ApexVisual.SessionManagement
         public byte FrontLeftWingDamage {get; set;}
         public byte FrontRightWingDamage {get; set;}
         public byte RearWingDamage {get; set;}
+
+        public CommonCarData Copy()
+        {
+            CommonCarData ToReturn = new CommonCarData();
+
+            ToReturn.PositionX = PositionX;
+            ToReturn.PositionY = PositionY;
+            ToReturn.PositionZ = PositionZ;
+            ToReturn.gForceLateral = gForceLateral;
+            ToReturn.gForceLongitudinal = gForceLongitudinal;
+            ToReturn.gForceVertical = gForceVertical;
+            ToReturn.WheelSpeed = WheelSpeed;
+            ToReturn.FrontWheelAngle = FrontWheelAngle;
+            ToReturn.LastLapTimeSeconds = LastLapTimeSeconds;
+            ToReturn.CurrentLapTimeSeconds = CurrentLapTimeSeconds;
+            ToReturn.Sector1TimeSeconds = Sector1TimeSeconds;
+            ToReturn.Sector2TimeSeconds = Sector2TimeSeconds;
+            ToReturn.LapDistanceMeters = LapDistanceMeters;
+            ToReturn.TotalDistanceMeters = TotalDistanceMeters;
+            ToReturn.CarPosition = CarPosition;
+            ToReturn.CurrentLapNumber = CurrentLapNumber;
+            ToReturn.CurrentPitStatus = CurrentPitStatus;
+            ToReturn.CurrentSector = CurrentSector;
+            ToReturn.CurrentLapInvalid = CurrentLapInvalid;
+            ToReturn.Penalties = Penalties;
+            ToReturn.StartingGridPosition = StartingGridPosition;
+            ToReturn.CurrentDriverStatus = CurrentDriverStatus;
+            ToReturn.SpeedKph = SpeedKph;
+            ToReturn.Throttle = Throttle;
+            ToReturn.Steer = Steer;
+            ToReturn.Brake = Brake;
+            ToReturn.Clutch = Clutch;
+            ToReturn.Gear = Gear;
+            ToReturn.EngineRpm = EngineRpm;
+            ToReturn.DrsActive = DrsActive;
+            ToReturn.RevLightsPercentage = RevLightsPercentage;
+            ToReturn.BrakeTemperature = BrakeTemperature;
+            ToReturn.TyreSurfaceTemperature = TyreSurfaceTemperature;
+            ToReturn.TyreInnerTemperature = TyreInnerTemperature;
+            ToReturn.EngineTemperature = EngineTemperature;
+            ToReturn.ActiveFuelMix = ActiveFuelMix;
+            ToReturn.FuelInTank = FuelInTank;
+            ToReturn.FuelCapacity = FuelCapacity;
+            ToReturn.FuelRemainingLaps = FuelRemainingLaps;
+            ToReturn.DrsAllowed = DrsAllowed;
+            ToReturn.EquippedTyreCompound = EquippedTyreCompound;
+            ToReturn.TyreAgeLaps = TyreAgeLaps;
+            ToReturn.StoredErsEnergy = StoredErsEnergy;
+            ToReturn.ActiveErsDeployMode = ActiveErsDeployMode;
+            ToReturn.IsAiControlled = IsAiControlled;
+            ToReturn.Pilot = Pilot;
+            ToReturn.Constructor = Constructor;
+            ToReturn.RaceNumber = RaceNumber;
+            ToReturn.Name = Name;
+            ToReturn.TyreWear = TyreWear;
+            ToReturn.TyreDamage = TyreDamage;
+            ToReturn.BrakeDamage = BrakeDamage;
+            ToReturn.FrontLeftWingDamage = FrontLeftWingDamage;
+            ToReturn.FrontRightWingDamage = FrontRightWingDamage;
+            ToReturn.RearWingDamage = RearWingDamage;
+
+            return ToReturn;
+        }
 
     }
 }

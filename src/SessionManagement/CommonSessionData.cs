@@ -50,5 +50,34 @@ namespace ApexVisual.SessionManagement
             }
 
         }
+    
+        public CommonSessionData Copy()
+        {
+            CommonSessionData ToReturn = new CommonSessionData();
+
+            ToReturn.SessionId = SessionId;
+            ToReturn.SessionTime = SessionTime;
+            ToReturn.FrameIdentifier = FrameIdentifier;
+            ToReturn.PlayerCarIndex = PlayerCarIndex;
+            ToReturn.CurrentWeather = CurrentWeather;
+            ToReturn.TrackTemperatureCelsius = TrackTemperatureCelsius;
+            ToReturn.AirTemperatureCelsius = AirTemperatureCelsius;
+            ToReturn.LapsInRace = LapsInRace;
+            ToReturn.ThisSessionType = ThisSessionType;
+            ToReturn.SessionTrack = SessionTrack;
+            ToReturn.SessionTimeLeftSeconds = SessionTimeLeftSeconds;
+            ToReturn.SessionDurationSeconds = SessionDurationSeconds;
+            ToReturn.CurrentSafetyCarStatus = CurrentSafetyCarStatus;
+
+            //Copy each car data
+            List<CommonCarData> CopiedCarData = new List<CommonCarData>();
+            foreach (CommonCarData ccd in FieldData)
+            {
+                CopiedCarData.Add(ccd.Copy());
+            }
+            FieldData = CopiedCarData.ToArray();
+
+            return ToReturn;
+        }
     }
 }
