@@ -18,7 +18,7 @@ namespace ApexVisual.SessionManagement
             ByteArrayManager BAM = new ByteArrayManager(bytes);
 
             //Get the packet format (game)
-            ushort pformat = BitConverter.ToUInt16(BAM.NextBytes(2));
+            ushort pformat = BitConverter.ToUInt16(BAM.NextBytes(2), 0);
 
             //Be sure there is a canvas
             if (OngoingCanvas == null)
@@ -54,7 +54,7 @@ namespace ApexVisual.SessionManagement
         private uint GetFrameFromHeaderBytes(byte[] bytes)
         {
             //18, 19, 20, 21
-            uint Frame = BitConverter.ToUInt32(new byte[] {bytes[18], bytes[19], bytes[20], bytes[21]});
+            uint Frame = BitConverter.ToUInt32(new byte[] {bytes[18], bytes[19], bytes[20], bytes[21]}, 0);
             return Frame;
         }
 
