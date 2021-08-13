@@ -45,6 +45,9 @@ namespace ApexVisual.SessionManagement
         Haas2020 = 92,
         McLaren2020 = 93,
         AlfaRomeo2020 = 94,
+        Renault = 95,
+        RacingPoint = 96,
+        ToroRosso = 97,
 
         MyTeam = 255
     }

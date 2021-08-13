@@ -196,12 +196,243 @@ namespace ApexVisual
     
         public static Color GetTeamColorByTeam(Team t, ushort year)
         {
+            if (year == 2019)
+            {
+                if (t == Team.Mercedes)
+                {
+                    return Color.FromArgb(255, 0, 210, 190);
+                }
+                else if (t == Team.Haas)
+                {
+                    return Color.FromArgb(255, 189, 158, 87);
+                }
+                else if (t == Team.McLaren)
+                {
+                    return Color.FromArgb(255, 255, 135, 0);
+                }
+                else if (t == Team.AlfaRomeo)
+                {
+                    return Color.FromArgb(255, 155, 0, 0);
+                }
+                else if (t == Team.RedBullRacing)
+                {
+                    return Color.FromArgb(255, 30, 65, 255);
+                }
+                else if (t == Team.Renault)
+                {
+                    return Color.FromArgb(255, 255, 245, 0);
+                }
+                else if (t == Team.Ferrari)
+                {
+                    return Color.FromArgb(255, 220, 0, 0);
+                }
+                else if (t == Team.ToroRosso)
+                {
+                    return Color.FromArgb(255, 70, 155, 255);
+                }
+                else if (t == Team.Williams)
+                {
+                    return Color.FromArgb(255, 255, 255, 255);
+                }
+                else if (t == Team.RacingPoint)
+                {
+                    return Color.FromArgb(255, 245, 150, 200);
+                }
+            }
+            else if (year == 2020)
+            {
+                if (t == Team.Mercedes)
+                {
+                    return Color.FromArgb(255, 0, 210, 190);
+                }
+                else if (t == Team.Haas)
+                {
+                    return Color.FromArgb(255, 120, 120, 120);
+                }
+                else if (t == Team.McLaren)
+                {
+                    return Color.FromArgb(255, 255, 135, 0);
+                }
+                else if (t == Team.AlfaRomeo)
+                {
+                    return Color.FromArgb(255, 155, 0, 0);
+                }
+                else if (t == Team.RedBullRacing)
+                {
+                    return Color.FromArgb(255, 6, 0, 239);
+                }
+                else if (t == Team.Renault)
+                {
+                    return Color.FromArgb(255, 255, 245, 0);
+                }
+                else if (t == Team.Ferrari)
+                {
+                    return Color.FromArgb(255, 220, 0, 0);
+                }
+                else if (t == Team.AlphaTauri)
+                {
+                    return Color.FromArgb(255, 255, 255, 255);
+                }
+                else if (t == Team.Williams)
+                {
+                    return Color.FromArgb(255, 0, 130, 250);
+                }
+                else if (t == Team.RacingPoint)
+                {
+                    return Color.FromArgb(255, 245, 150, 200);
+                }
+            }
+            else if (year == 2021)
+            {
+                if (t == Team.Mercedes)
+                {
+                    return Color.FromArgb(255, 0, 210, 190);
+                }
+                else if (t == Team.Haas)
+                {
+                    return Color.FromArgb(255, 255, 255, 255);
+                }
+                else if (t == Team.McLaren)
+                {
+                    return Color.FromArgb(255, 255, 152, 0);
+                }
+                else if (t == Team.AlfaRomeo)
+                {
+                    return Color.FromArgb(255, 144, 0, 0);
+                }
+                else if (t == Team.RedBullRacing)
+                {
+                    return Color.FromArgb(255, 6, 0, 239);
+                }
+                else if (t == Team.Alpine)
+                {
+                    return Color.FromArgb(255, 0, 144, 255);
+                }
+                else if (t == Team.Ferrari)
+                {
+                    return Color.FromArgb(255, 220, 0, 0);
+                }
+                else if (t == Team.AlphaTauri)
+                {
+                    return Color.FromArgb(255, 43, 69, 98);
+                }
+                else if (t == Team.Williams)
+                {
+                    return Color.FromArgb(255, 0, 90, 255);
+                }
+                else if (t == Team.AstonMartin)
+                {
+                    return Color.FromArgb(255, 0, 111, 98);
+                }
+            }
 
+            throw new Exception("Team colors unavailable for format year '" + year.ToString() + "' or for the specified team.");
         }
 
         public static string GetDriverDisplayNameByDriver(Driver d)
         {
+            if (d == Driver.LewisHamilton)
+            {
+                return "L. Hamilton";
+            }
+            else if (d == Driver.ValtteriBottas)
+            {
+                return "V. Bottas";
+            }
+            else if (d == Driver.RomainGrosjean)
+            {
+                return "R. Grosjean";
+            }
+            else if (d == Driver.KevinMagnussen)
+            {
+                return "K. Magnussen";
+            }
+            else if (d == Driver.ValtteriBottas)
+            {
+                return "V. Bottas";
+            }
+            else if (d == Driver.RobertKubica)
+            {
+                return "R. Kubica";
+            }
+            else if (d == Driver.SergioPerez)
+            {
+                return "S. Perez";
+            }
+            else if (d == Driver.LanceStroll)
+            {
+                return "L. Stroll";
+            }
+            else if (d == Driver.CarlosSainz)
+            {
+                return "C. Sainz";
+            }
+            else if (d == Driver.LandoNorris)
+            {
+                return "L. Norris";
+            }
+            else if (d == Driver.KimiRaikkonen)
+            {
+                return "K. Raikkonen";
+            }
+            else if (d == Driver.AntonioGiovinazzi)
+            {
+                return "A. Giovinazzi";
+            }
+            else if (d == Driver.MaxVerstappen)
+            {
+                return "M. Verstappen";
+            }
+            else if (d == Driver.AlexanderAlbon)
+            {
+                return "A. Albon";
+            }
+            else if (d == Driver.DanielRicciardo)
+            {
+                return "D. Ricciardo";
+            }
+            else if (d == Driver.NicoHulkenburg)
+            {
+                return "N. Hulkenburg";
+            }
+            else if (d == Driver.SebastianVettel)
+            {
+                return "S. Vettel";
+            }
+            else if (d == Driver.CharlesLeclerc)
+            {
+                return "C. Leclerc";
+            }
+            else if (d == Driver.PierreGasly)
+            {
+                return "P. Gasly";
+            }
+            else if (d == Driver.DaniilKvyat)
+            {
+                return "D. Kvyat";
+            }
+            else if (d == Driver.GeorgeRussell)
+            {
+                return "G. Russell";
+            }
+            else if (d == Driver.NicholasLatifi)
+            {
+                return "N. Latifi";
+            }
+            else if (d == Driver.EstebanOcon)
+            {
+                return "E. Ocon";
+            }
+            else if (d == Driver.FernandoAlonso)
+            {
+                return "F. Alonso";
+            }
+            else if (d == Driver.FelipeMassa)
+            {
+                return "F. Massa";
+            }
 
+            return d.ToString();
         }
 
         public static string CleanseString(string original, string allowed_characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_ ")
