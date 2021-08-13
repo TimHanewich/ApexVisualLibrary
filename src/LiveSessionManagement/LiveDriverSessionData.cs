@@ -72,7 +72,7 @@ namespace ApexVisual.LiveSessionManagement
                     //If we just started a new lap and it ids our best lap so far, plug in all of the times
                     if (ccd.CurrentLapNumber != LastSeenData.CurrentLapNumber) //It is a new lap we just started
                     {
-                        if (ccd.LastLapTimeSeconds < FastesLapTimeSeenSeconds) //If the lap that just finished is the fastest lap so far.
+                        if (ccd.LastLapTimeSeconds < FastesLapTimeSeenSeconds && ccd.LastLapTimeSeconds > 0 && ccd.CurrentLapNumber >= 1) //If the lap that just finished is the fastest lap so far. And the last lap time was NOT 0 and the current lap number is at least 1.
                         {
                             Qualifying_Sector1Time = LastSeenData.Sector1TimeSeconds;
                             Qualifying_Sector2Time = LastSeenData.Sector2TimeSeconds;
