@@ -16,7 +16,6 @@ namespace ApexVisual.Analysis
         public SessionType SessionMode {get; set;}
         public Team SelectedTeam {get; set;}
         public Driver SelectedDriver {get; set;}
-        public string DriverName {get; set;}
         public DateTimeOffset SessionCreatedAt {get; set;}
 
         //Analysis objects
