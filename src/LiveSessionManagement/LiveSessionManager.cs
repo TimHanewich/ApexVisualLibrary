@@ -25,14 +25,14 @@ namespace ApexVisual.LiveSessionManagement
                     {
                         LiveDriverSessionData ldsd = new LiveDriverSessionData();
                         ldsd.SelectedDriver = csd.FieldData[t].Pilot;
-                        ldsd.TeamColor =  CodemastersToolkit.GetTeamColorByTeam(pp.FieldParticipantData[t].ManufacturingTeam);
-                        ldsd.SelectedTeam = pp.FieldParticipantData[t].ManufacturingTeam;
+                        ldsd.TeamColor =  ApexVisualToolkit.GetTeamColorByTeam(csd.FieldData[t].Constructor, csd.Format);
+                        ldsd.SelectedTeam = csd.FieldData[t].Constructor;
 
                         //The driver display name
-                        ldsd.DriverDisplayName = CodemastersToolkit.GetDriverDisplayNameFromDriver(pp.FieldParticipantData[t].PilotingDriver); //If the driver is not recognized (it is a real player, index 100, 101, 102, etc) this will return "Unknown"
-                        if (pp.FieldParticipantData[t].IsAiControlled == false) //If it is a player (the above most likely made the displat name 'Unknown', use the player name instead)
+                        ldsd.DriverDisplayName = ApexVisualToolkit.GetDriverDisplayNameByDriver(csd.FieldData[t].Pilot); //If the driver is not recognized (it is a real player, index 100, 101, 102, etc) this will return "Unknown"
+                        if (csd.FieldData[t].IsAiControlled == false) //If it is a player (the above most likely made the displat name 'Unknown', use the player name instead)
                         {
-                            ldsd.DriverDisplayName = ApexVisualToolkit.CleanseString(pp.FieldParticipantData[t].Name);
+                            ldsd.DriverDisplayName = ApexVisualToolkit.CleanseString(csd.FieldData[t].Name);
                         }
 
                         NewData.Add(ldsd);
@@ -44,46 +44,35 @@ namespace ApexVisual.LiveSessionManagement
             else //We already have established a list of live driver session data
             {
 
-                //If it is a lap packet, plug them in one by one
-                if (p.PacketType == PacketType.Lap)
+                //Update each
+                for (int t = 0; t < LiveDriverData.Length; t++)
                 {
-                    LapPacket lp = (LapPacket)p;
-                    for (int t = 0; t < LiveDriverData.Length; t++)
-                    {
-                        LiveDriverData[t].FeedLapData(lp.FieldLapData[t], lp.SessionTime);
-                    }
+                    LiveDriverData[t].Update(csd.FieldData[t], csd.SessionTime);
+                }
 
-                    //Supply the driver ahead distance for all cars (except first place)
-                    foreach (LiveDriverSessionData ldsd in LiveDriverData)
+
+                //Supply the driver ahead distance for all cars (except first place)
+                foreach (LiveDriverSessionData ldsd in LiveDriverData)
+                {
+                    if (ldsd.Position != 1) //Only do this for cars that are NOT in first place
                     {
-                        if (ldsd.Position != 1) //Only do this for cars that are NOT in first place
+                        //Find the car that is directly ahead
+                        foreach (CommonCarData ld in csd.FieldData)
                         {
-                            //Find the car that is directly ahead
-                            foreach (LapPacket.LapData ld in lp.FieldLapData)
+                            if (ld.CarPosition == ldsd.Position - 1) //If it is the car ahead
                             {
-                                if (ld.CarPosition == ldsd.Position - 1) //If it is the car ahead
-                                {
-                                    ldsd.SetDriverAheadData(ld.TotalDistance);
-                                }
+                                ldsd.SetDriverAheadData(ld.TotalDistanceMeters);
                             }
                         }
                     }
+                }
 
-                }
-                else if (p.PacketType == PacketType.Session) //if it is a session packet, we have to plug the session type into each
+                //Plug the session type into each
+                foreach (LiveDriverSessionData ldsd in LiveDriverData)
                 {
-                    SessionPacket sp = (SessionPacket)p;
-                    foreach (LiveDriverSessionData ldsd in LiveDriverData)
+                    if (csd.ThisSessionType.HasValue)
                     {
-                        ldsd.SetSessionType(sp.SessionTypeMode);
-                    }
-                }
-                else if (p.PacketType == PacketType.CarStatus)
-                {
-                    CarStatusPacket csp = (CarStatusPacket)p;
-                    for (int t = 0; t < LiveDriverData.Length; t++)
-                    {
-                        LiveDriverData[t].FeedCarStatusData(csp.FieldCarStatusData[t]);
+                        ldsd.SetSessionType(csd.ThisSessionType.Value);
                     }
                 }
             }
