@@ -85,6 +85,10 @@ namespace ApexVisual.SessionManagement
         Ferrari2000 = 132,
         Jordan1991 = 133,
         BWTArden = 134,
+        Ferrari1990 = 135,
+        McLaren2010 = 136,
+        Ferrari2010 = 137,
+
 
         MyTeam = 255
     }
