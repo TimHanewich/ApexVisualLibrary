@@ -10,14 +10,15 @@ namespace ApexVisual.SessionManagement
         public float SessionTime {get; set;}
         public uint FrameIdentifier {get; set;}
         public byte PlayerCarIndex {get; set;}
+        public ushort Format {get; set;} //Year of the F1 game. For example, '2021'
 
         //Taken from session packet
         public WeatherCondition CurrentWeather {get; set;}
         public byte TrackTemperatureCelsius {get; set;}
         public byte AirTemperatureCelsius {get; set;}
         public byte LapsInRace {get; set;}
-        public SessionType ThisSessionType {get; set;}
-        public Track SessionTrack {get; set;}
+        public SessionType? ThisSessionType {get; set;}
+        public Track? SessionTrack {get; set;}
         public ushort SessionTimeLeftSeconds {get; set;}
         public ushort SessionDurationSeconds {get; set;}
         public SafetyCarStatus CurrentSafetyCarStatus {get; set;}
@@ -59,6 +60,7 @@ namespace ApexVisual.SessionManagement
             ToReturn.SessionTime = SessionTime;
             ToReturn.FrameIdentifier = FrameIdentifier;
             ToReturn.PlayerCarIndex = PlayerCarIndex;
+            ToReturn.Format = Format;
             ToReturn.CurrentWeather = CurrentWeather;
             ToReturn.TrackTemperatureCelsius = TrackTemperatureCelsius;
             ToReturn.AirTemperatureCelsius = AirTemperatureCelsius;

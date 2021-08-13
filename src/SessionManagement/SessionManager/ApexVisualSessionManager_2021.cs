@@ -21,6 +21,7 @@ namespace ApexVisual.SessionManagement
             OngoingCanvas.SessionTime = p.SessionTime;
             OngoingCanvas.FrameIdentifier = p.FrameIdentifier;
             OngoingCanvas.PlayerCarIndex = p.PlayerCarIndex;
+            OngoingCanvas.Format = p.PacketFormat;
 
             if (pt == PacketType.Motion)
             {

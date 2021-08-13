@@ -38,8 +38,14 @@ namespace ApexVisual.Analysis
             //Get circuit
             foreach (CommonSessionData csd in session_data)
             {
-                Circuit = csd.SessionTrack;
-                SessionMode = csd.ThisSessionType;
+                if (csd.SessionTrack.HasValue)
+                {
+                    Circuit = csd.SessionTrack.Value;
+                }
+                if (csd.ThisSessionType.HasValue)
+                {
+                    SessionMode = csd.ThisSessionType.Value;
+                }
                 SelectedTeam = csd.FieldData[driver_index].Constructor;
                 SelectedDriver = csd.FieldData[driver_index].Pilot;
                 
@@ -67,7 +73,11 @@ namespace ApexVisual.Analysis
             LoadSummary(session_data, driver_index);
             
             //Summon this track
-            Track ToLoad = session_data[session_data.Length-1].SessionTrack;
+            if (session_data[session_data.Length-1].SessionTrack.HasValue == false)
+            {
+                throw new Exception("Final data packet does not include session track.");
+            }
+            Track ToLoad = session_data[session_data.Length-1].SessionTrack.Value;
             TrackDataContainer tdc = TrackDataContainer.LoadTrack(ToLoad);
 
             //Get list of all laps
