@@ -19,9 +19,9 @@ namespace ApexVisual.LiveCoaching
         private bool ApexTelemetryAlreadyBroadcastedForCurrentCorner = false;
 
         //Events
-        public CornerChangedEventHandler CornerChanged;
-        public CornerStageChangedEventHandler CornerStageChanged;
-        public CornerApexComparisonAvailableHandler ApexTelemetryReceived;
+        public event CornerChangedEventHandler CornerChanged;
+        public event CornerStageChangedEventHandler CornerStageChanged;
+        public event CornerApexComparisonAvailableHandler ApexTelemetryReceived;
 
         public LiveCoach(Track track)
         {
