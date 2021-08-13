@@ -20,25 +20,28 @@ namespace ApexVisual.LiveSessionManagement
             {
                 if (csd.FieldData != null) //We wait for the participant to set up
                 {
-                    List<LiveDriverSessionData> NewData = new List<LiveDriverSessionData>();
-                    for (int t = 0; t < csd.FieldData.Length; t++)
+                    if (csd.NumberOfActiveCars > 0)
                     {
-                        LiveDriverSessionData ldsd = new LiveDriverSessionData();
-                        ldsd.SelectedDriver = csd.FieldData[t].Pilot;
-                        ldsd.TeamColor =  ApexVisualToolkit.GetTeamColorByTeam(csd.FieldData[t].Constructor, csd.Format);
-                        ldsd.SelectedTeam = csd.FieldData[t].Constructor;
-
-                        //The driver display name
-                        ldsd.DriverDisplayName = ApexVisualToolkit.GetDriverDisplayNameByDriver(csd.FieldData[t].Pilot); //If the driver is not recognized (it is a real player, index 100, 101, 102, etc) this will return "Unknown"
-                        if (csd.FieldData[t].Pilot == Driver.PLAYER) //If it is a player (the above most likely made the displat name 'Unknown', use the player name instead)
+                        List<LiveDriverSessionData> NewData = new List<LiveDriverSessionData>();
+                        for (int t = 0; t < csd.NumberOfActiveCars; t++)
                         {
-                            ldsd.DriverDisplayName = ApexVisualToolkit.CleanseString(csd.FieldData[t].Name);
-                        }
+                            LiveDriverSessionData ldsd = new LiveDriverSessionData();
+                            ldsd.SelectedDriver = csd.FieldData[t].Pilot;
+                            ldsd.TeamColor =  ApexVisualToolkit.GetTeamColorByTeam(csd.FieldData[t].Constructor, csd.Format);
+                            ldsd.SelectedTeam = csd.FieldData[t].Constructor;
 
-                        NewData.Add(ldsd);
+                            //The driver display name
+                            ldsd.DriverDisplayName = ApexVisualToolkit.GetDriverDisplayNameByDriver(csd.FieldData[t].Pilot); //If the driver is not recognized (it is a real player, index 100, 101, 102, etc) this will return "Unknown"
+                            if (csd.FieldData[t].Pilot == Driver.PLAYER) //If it is a player (the above most likely made the displat name 'Unknown', use the player name instead)
+                            {
+                                ldsd.DriverDisplayName = ApexVisualToolkit.CleanseString(csd.FieldData[t].Name);
+                            }
+
+                            NewData.Add(ldsd);
+                        }
+                        LiveDriverData = NewData.ToArray();
+                        Initialized = true;
                     }
-                    LiveDriverData = NewData.ToArray();
-                    Initialized = true;
                 }
             }
             else //We already have established a list of live driver session data
