@@ -49,7 +49,7 @@ namespace ApexVisual.LiveSessionManagement
         public const int UpdateGapAheadEverySeconds = 5;
 
         //For tracking the fastest lap time seen so yet
-        public float FastesLapTimeSeenSeconds = float.MaxValue;
+        private float FastesLapTimeSeenSeconds = float.MaxValue;
 
         #endregion
 
