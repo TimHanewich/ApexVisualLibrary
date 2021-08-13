@@ -467,5 +467,13 @@ namespace ApexVisual
             }
             return ToReturn;
         }
+    
+        public static string GetLapTimeDisplayFromSeconds(float seconds)
+        {
+            int number_of_minutes = (int)Math.Floor(seconds / 60);
+            float remaining = seconds - (number_of_minutes * 60);
+            string s = number_of_minutes.ToString() + ":" + remaining.ToString("#00.000");
+            return s;
+        }
     }
 }
