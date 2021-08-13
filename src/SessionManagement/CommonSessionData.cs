@@ -76,12 +76,16 @@ namespace ApexVisual.SessionManagement
             ToReturn.NumberOfActiveCars = NumberOfActiveCars;
 
             //Copy each car data
-            List<CommonCarData> CopiedCarData = new List<CommonCarData>();
-            foreach (CommonCarData ccd in FieldData)
+            if (FieldData != null)
             {
-                CopiedCarData.Add(ccd.Copy());
+                List<CommonCarData> CopiedCarData = new List<CommonCarData>();
+                foreach (CommonCarData ccd in FieldData)
+                {
+                    CopiedCarData.Add(ccd.Copy());
+                }
+                ToReturn.FieldData = CopiedCarData.ToArray();
             }
-            ToReturn.FieldData = CopiedCarData.ToArray();
+            
 
             return ToReturn;
         }
