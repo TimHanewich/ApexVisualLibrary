@@ -29,7 +29,7 @@ namespace ApexVisual.LiveCoaching
             LastReceivedPackets = new CommonSessionData();
         }
 
-        public void InjestPacket(CommonSessionData csd)
+        public void Update(CommonSessionData csd)
         {
 
             //Coaching
