@@ -23,6 +23,9 @@ namespace ApexVisual.SessionManagement
         public ushort SessionDurationSeconds {get; set;}
         public SafetyCarStatus CurrentSafetyCarStatus {get; set;}
 
+        //Taken from participants packet
+        public byte NumberOfActiveCars {get; set;} //Number of cars in this data.
+
         public CommonCarData[] FieldData {get; set;}
 
         public void InitializeFieldDataIfNeeded(int number_needed)
@@ -70,6 +73,7 @@ namespace ApexVisual.SessionManagement
             ToReturn.SessionTimeLeftSeconds = SessionTimeLeftSeconds;
             ToReturn.SessionDurationSeconds = SessionDurationSeconds;
             ToReturn.CurrentSafetyCarStatus = CurrentSafetyCarStatus;
+            ToReturn.NumberOfActiveCars = NumberOfActiveCars;
 
             //Copy each car data
             List<CommonCarData> CopiedCarData = new List<CommonCarData>();

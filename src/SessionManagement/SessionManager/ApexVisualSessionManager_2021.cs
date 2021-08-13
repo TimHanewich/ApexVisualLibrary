@@ -325,6 +325,8 @@ namespace ApexVisual.SessionManagement
                 ParticipantPacket pp = new ParticipantPacket();
                 pp.LoadBytes(bytes);
 
+                OngoingCanvas.NumberOfActiveCars = pp.NumberOfActiveCars;
+
                 //Create them if they don't exist
                 OngoingCanvas.InitializeFieldDataIfNeeded(pp.FieldParticipantData.Length);
 
