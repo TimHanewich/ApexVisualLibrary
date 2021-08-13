@@ -434,6 +434,7 @@ namespace ApexVisual.SessionManagement
                     DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.JensonButton, Driver.JensonButton));
                     DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DavidCoulthard, Driver.DavidCoulthard));
                     DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.NicoRosberg, Driver.NicoRosberg));
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>((Codemasters.F1_2021.Driver)255, Driver.PLAYER));
                     foreach (KeyValuePair<Codemasters.F1_2021.Driver, Driver> kvp in DriverDict)
                     {
                         if (pp.FieldParticipantData[i].PilotingDriver == kvp.Key)

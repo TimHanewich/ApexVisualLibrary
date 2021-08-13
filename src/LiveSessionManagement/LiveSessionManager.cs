@@ -30,7 +30,7 @@ namespace ApexVisual.LiveSessionManagement
 
                         //The driver display name
                         ldsd.DriverDisplayName = ApexVisualToolkit.GetDriverDisplayNameByDriver(csd.FieldData[t].Pilot); //If the driver is not recognized (it is a real player, index 100, 101, 102, etc) this will return "Unknown"
-                        if (csd.FieldData[t].IsAiControlled == false) //If it is a player (the above most likely made the displat name 'Unknown', use the player name instead)
+                        if (csd.FieldData[t].Pilot == Driver.PLAYER) //If it is a player (the above most likely made the displat name 'Unknown', use the player name instead)
                         {
                             ldsd.DriverDisplayName = ApexVisualToolkit.CleanseString(csd.FieldData[t].Name);
                         }

@@ -104,7 +104,9 @@ namespace ApexVisual.SessionManagement
         CasperAkkerman = 103,
         JensonButton = 109,
         DavidCoulthard = 110,
-        NicoRosberg = 111
+        NicoRosberg = 111,
+
+        PLAYER = 255
     }
 
 }
