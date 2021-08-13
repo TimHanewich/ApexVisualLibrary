@@ -22,6 +22,24 @@ namespace testing
             }
             System.Threading.Tasks.Task.Delay(3000).Wait();
 
+
+            //Go through
+            foreach (CommonSessionData csd in AllData)
+            {
+                if (csd.FieldData != null)
+                {
+                    Console.Clear();
+                    foreach (CommonCarData ccd in csd.FieldData)
+                    {
+                        Console.WriteLine(ccd.Pilot.ToString());
+                    }
+                    System.Threading.Tasks.Task.Delay(5).Wait();
+                }
+            }
+            Console.ReadLine();
+            
+
+
             LiveSessionManager lsm = new LiveSessionManager();
             
             foreach (CommonSessionData csd in AllData)
