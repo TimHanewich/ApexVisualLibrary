@@ -644,10 +644,10 @@ namespace ApexVisual.SessionManagement
                 {
                     //Tyre wear
                     WheelDataArray wda_TyreWear = new WheelDataArray();
-                    wda_TyreWear.FrontLeft = cdp.FieldCarDamageData[i].TyreDamage.FrontLeft;
-                    wda_TyreWear.FrontRight = cdp.FieldCarDamageData[i].TyreDamage.FrontRight;
-                    wda_TyreWear.RearLeft = cdp.FieldCarDamageData[i].TyreDamage.RearLeft;
-                    wda_TyreWear.RearRight = cdp.FieldCarDamageData[i].TyreDamage.RearRight;
+                    wda_TyreWear.FrontLeft = cdp.FieldCarDamageData[i].TyreWear.FrontLeft;
+                    wda_TyreWear.FrontRight = cdp.FieldCarDamageData[i].TyreWear.FrontRight;
+                    wda_TyreWear.RearLeft = cdp.FieldCarDamageData[i].TyreWear.RearLeft;
+                    wda_TyreWear.RearRight = cdp.FieldCarDamageData[i].TyreWear.RearRight;
                     OngoingCanvas.FieldData[i].TyreWear = wda_TyreWear;
 
                     //Tyre damage
