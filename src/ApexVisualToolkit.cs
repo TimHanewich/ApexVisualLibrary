@@ -475,5 +475,24 @@ namespace ApexVisual
             string s = number_of_minutes.ToString() + ":" + remaining.ToString("#00.000");
             return s;
         }
+    
+        public static string GetDriverStatusFriendlyName(DriverStatus ds)
+        {
+            switch (ds)
+            {
+                case DriverStatus.InGarage:
+                    return "In Garage";
+                case DriverStatus.FlyingLap:
+                    return "Flying Lap";
+                case DriverStatus.InLap:
+                    return "In Lap";
+                case DriverStatus.OutLap:
+                    return "Out Lap";
+                case DriverStatus.OnTrack:
+                    return "On Track";
+                default:
+                    return ds.ToString();
+            }
+        }
     }
 }
