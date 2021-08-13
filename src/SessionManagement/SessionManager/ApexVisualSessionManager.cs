@@ -35,6 +35,10 @@ namespace ApexVisual.SessionManagement
             {
                 Load2020Bytes(bytes);
             }
+            else if (pformat == 2019)
+            {
+                Load2019Bytes(bytes);
+            }
             else
             {
                 throw new Exception("Telemetry format '" + pformat.ToString() + "' not supported.");
