@@ -431,6 +431,14 @@ namespace ApexVisual
             {
                 return "F. Massa";
             }
+            else if (d == Driver.NikitaMazepin)
+            {
+                return "N. Mazepin";
+            }
+            else if (d == Driver.MickSchumacher)
+            {
+                return "M. Schumacher";
+            }
 
             return d.ToString();
         }
