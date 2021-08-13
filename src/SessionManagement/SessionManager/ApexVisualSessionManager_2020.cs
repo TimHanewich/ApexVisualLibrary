@@ -502,8 +502,7 @@ namespace ApexVisual.SessionManagement
                     OngoingCanvas.FieldData[i].Brake = tp.FieldTelemetryData[i].Brake;
 
                     //Clutch
-                    byte ClutchByte = Convert.ToByte(Math.Floor(tp.FieldTelemetryData[i].Clutch * 255f));
-                    OngoingCanvas.FieldData[i].Clutch = ClutchByte;
+                    OngoingCanvas.FieldData[i].Clutch = Convert.ToByte(tp.FieldTelemetryData[i].Clutch);
 
                     OngoingCanvas.FieldData[i].Gear = tp.FieldTelemetryData[i].Gear;
                     OngoingCanvas.FieldData[i].EngineRpm = tp.FieldTelemetryData[i].EngineRpm;
