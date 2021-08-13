@@ -48,6 +48,9 @@ namespace ApexVisual.LiveSessionManagement
         private float LastUpdatedGapAheadAtSessionTime;
         public const int UpdateGapAheadEverySeconds = 5;
 
+        //For tracking the fastest lap time seen so yet
+        public float FastesLapTimeSeenSeconds = float.MaxValue;
+
         #endregion
 
         public void Update(CommonCarData ccd, float session_time)
@@ -69,16 +72,15 @@ namespace ApexVisual.LiveSessionManagement
                     //If we just started a new lap and it ids our best lap so far, plug in all of the times
                     if (ccd.CurrentLapNumber != LastSeenData.CurrentLapNumber) //It is a new lap we just started
                     {
+                        if (ccd.LastLapTimeSeconds < FastesLapTimeSeenSeconds) //If the lap that just finished is the fastest lap so far.
+                        {
+                            Qualifying_Sector1Time = LastSeenData.Sector1TimeSeconds;
+                            Qualifying_Sector2Time = LastSeenData.Sector2TimeSeconds;
+                            Qualifying_Sector3Time = ccd.LastLapTimeSeconds - LastSeenData.Sector1TimeSeconds - LastSeenData.Sector2TimeSeconds;
+                            Qualifying_LapTime = ccd.LastLapTimeSeconds;
 
-                        //Had to comment out the below on 8/13/2021 because the common session data format does not have best lap times yet.
-
-                        // if (ccd.LastLapTimeSeconds == ccd.be) //If the last lap (the one we just finished) is the fastest lap we have seen so far, update the s1, s2, s3, and lap time
-                        // {
-                        //     Qualifying_Sector1Time = (float)LastSeenLapData.Sector1TimeMilliseconds / 1000f;
-                        //     Qualifying_Sector2Time = (float)LastSeenLapData.Sector2TimeMilliseconds / 1000f;
-                        //     Qualifying_Sector3Time = ld.LastLapTime - Qualifying_Sector1Time - Qualifying_Sector2Time;
-                        //     Qualifying_LapTime = ld.LastLapTime;
-                        // }
+                            FastesLapTimeSeenSeconds = ccd.LastLapTimeSeconds; //Set the fastest seen lap time to this one.
+                        }
                     }
                 }
                 else //If it is a race
