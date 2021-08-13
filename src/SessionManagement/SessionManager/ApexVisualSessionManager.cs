@@ -31,6 +31,14 @@ namespace ApexVisual.SessionManagement
             {
                 Load2021Bytes(bytes);
             }
+            else if (pformat == 2020)
+            {
+                Load2020Bytes(bytes);
+            }
+            else
+            {
+                throw new Exception("Telemetry format '" + pformat.ToString() + "' not supported.");
+            }
 
             //Alert of the newly available data
             TryRaiseDataUpdate(OngoingCanvas);
