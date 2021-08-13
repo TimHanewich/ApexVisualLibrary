@@ -654,7 +654,7 @@ namespace ApexVisual.Analysis
                 LocationPerformanceAnalysis cpa = new LocationPerformanceAnalysis();
 
                 //Copy over the data from the TrackLocationOptima (by doing a quick Json serialization/deserialization)
-                cpa = JsonConvert.DeserializeObject<LocationPerformanceAnalysis>(JsonConvert.SerializeObject(tdc.Corners[c]));
+                //cpa = JsonConvert.DeserializeObject<LocationPerformanceAnalysis>(JsonConvert.SerializeObject(tdc.Corners[c]));
 
                 //Plug in the corner #
                 cpa.LocationNumber = (byte)(c + 1);
@@ -675,14 +675,6 @@ namespace ApexVisual.Analysis
                             Gears.Add(ts.Gear);
                         }
                     }
-
-                    // Had to comment out the below on 11/24/2020. The distance to apex method is removed.
-                    // //Collect the distance to apex
-                    // TelemetrySnapshot ca = la.Corners[c];
-                    // if (ca.Motion != null) //The motion packet is required to calculate distance to apex BECAUSE the motion packet contains position data
-                    // {
-                    //     Distances.Add(ca.DistanceToApex());
-                    // }
                 }
 
                 //Get the average speed
@@ -717,67 +709,6 @@ namespace ApexVisual.Analysis
                     cpa.AverageGear = float.NaN;
                 }
 
-                //Get average distance to apex
-                float distance_avg = 0;
-                if (Distances.Count > 0)
-                {
-                    foreach (float f in Distances)
-                    {
-                        distance_avg = distance_avg + f;
-                    }
-                    distance_avg = distance_avg / (float)Distances.Count;
-                    cpa.AverageDistanceToApex = distance_avg;
-                }
-                else
-                {
-                    cpa.AverageDistanceToApex = float.NaN;
-                }
-
-                #region "Consistency rating"
-
-                if (Speeds.Count > 0 && Gears.Count > 0 && Distances.Count > 0) //Only do the consistency rating if we have at least SOME data from all 3 parts
-                {
-                    //Get a list of floats - speeds
-                    List<float> Speeds_float = new List<float>();
-                    foreach (ushort us in Speeds)
-                    {
-                        Speeds_float.Add((float)us);
-                    }
-
-                    //Get a list of floats - gears
-                    List<float> Gears_float = new List<float>();
-                    foreach (sbyte sb in Gears)
-                    {
-                        Gears_float.Add((float)sb);
-                    }
-
-                    //Calculate the standard deviations
-                    float stdev_Speeds = MathToolkit.StandardDeviation(Speeds_float.ToArray());
-                    float stdev_Gears = MathToolkit.StandardDeviation(Gears_float.ToArray());
-                    float stdev_Distances = MathToolkit.StandardDeviation(Distances.ToArray());
-
-                    //Turn them into ratings by turning them into percentages of the average (if you don't do this, the higher numbers on corners would result in higher st deviation)
-                    float rating_Speeds = stdev_Speeds / speed_avg;
-                    float rating_Gears = stdev_Gears / gear_avg;
-                    float rating_Distances = stdev_Distances / distance_avg;
-
-                    //Calculate the consistency rating
-                    List<float> ConsistencyRatingAgg = new List<float>();
-                    ConsistencyRatingAgg.Add(rating_Speeds);
-                    ConsistencyRatingAgg.Add(rating_Gears * 0.5f); //The float is a weight (higher = this category deserves more weight)
-                    ConsistencyRatingAgg.Add(rating_Distances * 0.35f);
-                    
-                    //Plug in the consistency rating
-                    cpa.InconsistencyRating = ConsistencyRatingAgg.Sum();
-                }
-                else
-                {
-                    cpa.InconsistencyRating = float.NaN;
-                }
-
-                
-    
-                #endregion
 
                 corner_performances.Add(cpa);
 
