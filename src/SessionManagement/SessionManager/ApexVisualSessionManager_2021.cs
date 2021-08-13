@@ -336,6 +336,7 @@ namespace ApexVisual.SessionManagement
                     
                     //Driver
                     List<KeyValuePair<Codemasters.F1_2021.Driver, Driver>> DriverDict = new List<KeyValuePair<Codemasters.F1_2021.Driver, Driver>>();
+                    DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.LewisHamilton, Driver.LewisHamilton));
                     DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.CarlosSainz, Driver.CarlosSainz));
                     DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DaniilKvyat, Driver.DaniilKvyat));
                     DriverDict.Add(new KeyValuePair<Codemasters.F1_2021.Driver, Driver>(Codemasters.F1_2021.Driver.DanielRicciardo, Driver.DanielRicciardo));
