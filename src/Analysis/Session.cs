@@ -79,7 +79,7 @@ namespace ApexVisual.Analysis
                 {
                     foreach (CommonCarData ccd in csd.FieldData)
                     {
-                        if (AllLaps.Contains(ccd.CurrentLapNumber) == false)
+                        if (AllLaps.Contains(ccd.CurrentLapNumber) == false && ccd.CurrentLapNumber > 0)
                         {
                             AllLaps.Add(ccd.CurrentLapNumber);
                         }
