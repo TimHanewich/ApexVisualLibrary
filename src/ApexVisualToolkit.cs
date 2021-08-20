@@ -537,5 +537,94 @@ namespace ApexVisual
 
             return d.ToString();
         }
+    
+        #region "Soft, Medium, Hard tyre compounds for each track"
+
+        public static TyreCompound MediumTyreCompoundAtTrack(Track t)
+        {
+            List<KeyValuePair<Track, TyreCompound>> dict = new List<KeyValuePair<Track, TyreCompound>>();
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Sakhir, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Imola, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Portimao, TyreCompound.C2));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Catalunya, TyreCompound.C2));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Monaco, TyreCompound.C4));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Baku, TyreCompound.C4));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Montreal, TyreCompound.C4));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.PaulRicard, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Silverstone, TyreCompound.C2));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Hungaroring, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Spa, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Zandvoort, TyreCompound.C2));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Monza, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Sochi, TyreCompound.C4));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Singapore, TyreCompound.C4));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Suzuka, TyreCompound.C2));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Texas, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Mexico, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Brazil, TyreCompound.C4));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Melbourne, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.Jeddah, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.AbuDhabi, TyreCompound.C4));
+
+            //Shorts (assuming same as their larger configuraiton)
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.TexasShort, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.SakhirShort, TyreCompound.C3));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.SuzukaShort, TyreCompound.C2));
+            dict.Add(new KeyValuePair<Track, TyreCompound>(Track.SilverstoneShort, TyreCompound.C2));
+
+            foreach (KeyValuePair<Track, TyreCompound> kvp in dict)
+            {
+                if (kvp.Key == t)
+                {
+                    return kvp.Value;
+                }
+            }
+
+            //If we havne't hit it with the dict above, return a guess.
+            return TyreCompound.C3;
+        }
+
+        public static TyreCompound SoftTyreCompoundAtTrack(Track t)
+        {
+            TyreCompound MediumCompound = MediumTyreCompoundAtTrack(t);
+            switch (MediumCompound)
+            {
+                case TyreCompound.C1: //This should never happen. But need to handle the scenario anyway.
+                    return TyreCompound.C2;
+                case TyreCompound.C2:
+                    return TyreCompound.C3;
+                case TyreCompound.C3:
+                    return TyreCompound.C4;
+                case TyreCompound.C4:
+                    return TyreCompound.C5;
+                case TyreCompound.C5: //This should never happen. But need to handle the scenario anyway.
+                    return TyreCompound.C5;
+                default:
+                    return TyreCompound.C4;
+            }
+        }
+
+        public static TyreCompound HardTyreCompoundAtTrack(Track t)
+        {
+            TyreCompound MediumCompound = MediumTyreCompoundAtTrack(t);
+            switch (MediumCompound)
+            {
+                case TyreCompound.C1: //This should never happen. But need to handle the scenario anyway.
+                    return TyreCompound.C1;
+                case TyreCompound.C2:
+                    return TyreCompound.C1;
+                case TyreCompound.C3:
+                    return TyreCompound.C2;
+                case TyreCompound.C4:
+                    return TyreCompound.C3;
+                case TyreCompound.C5: //This should never happen. But need to handle the scenario anyway.
+                    return TyreCompound.C4;
+                default:
+                    return TyreCompound.C2;
+            }
+        }
+
+        #endregion
+    
     }
 }
