@@ -3,6 +3,7 @@ using ApexVisual.SessionManagement;
 using TimHanewich.Csv;
 using ApexVisual.Analysis;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace ApexVisual
 {
@@ -493,6 +494,48 @@ namespace ApexVisual
                 default:
                     return ds.ToString();
             }
+        }
+    
+        public static string GetDriverThreeLetters(Driver d)
+        {
+            List<KeyValuePair<Driver, string>> dict = new List<KeyValuePair<Driver, string>>();
+            dict.Add(new KeyValuePair<Driver, string>(Driver.KimiRaikkonen, "RAI"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.AntonioGiovinazzi, "GIO"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.PierreGasly, "GAS"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.YukiTsunoda, "TSU"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.FernandoAlonso, "ALO"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.EstebanOcon, "OCO"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.SebastianVettel, "VET"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.LanceStroll, "STR"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.CharlesLeclerc, "LEC"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.CarlosSainz, "SAI"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.NikitaMazepin, "MAZ"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.MickSchumacher, "MSC"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.DanielRicciardo, "RIC"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.LandoNorris, "NOR"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.LewisHamilton, "HAM"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.ValtteriBottas, "BOT"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.SergioPerez, "PER"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.MaxVerstappen, "VER"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.NicholasLatifi, "LAT"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.GeorgeRussell, "RUS"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.DaniilKvyat, "KVY"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.NicoHulkenburg, "HUL"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.AlexanderAlbon, "ALB"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.JackAitken, "AIT"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.RomainGrosjean, "GRO"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.KevinMagnussen, "MAG"));
+            dict.Add(new KeyValuePair<Driver, string>(Driver.RobertKubica, "KUB"));
+
+            foreach (KeyValuePair<Driver, string> kvp in dict)
+            {
+                if (kvp.Key == d)
+                {
+                    return kvp.Value;
+                }
+            }
+
+            return d.ToString();
         }
     }
 }
