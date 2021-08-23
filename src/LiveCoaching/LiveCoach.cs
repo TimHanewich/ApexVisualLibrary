@@ -113,7 +113,7 @@ namespace ApexVisual.LiveCoaching
                     if (AtCornerStage == CornerStage.Apex) //If the mode is currently "at apex", then wait until the user leaves the threshold and then mark it as "leaving"
                     {
                         //Measure the distance in between the car and that corner
-                        TrackLocationOptima at_corner = LoadedTrackData.Corners[AtCorner-1]; 
+                        TrackLocation at_corner = LoadedTrackData.Corners[AtCorner-1]; 
                         float distance_to_corner = ApexVisualToolkit.DistanceBetweenTwoPoints(at_corner, my_loc);
                         if (distance_to_corner > ApexDistanceThreshold)
                         {

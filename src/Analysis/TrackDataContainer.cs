@@ -129,17 +129,12 @@ namespace ApexVisual.Analysis
             ToReturn = "Sector,PositionX,PositionY,PositionZ,OptimalSpeedMph,OptimalGear,OptimalSteer,OptimalThrottle,OptimalBrake" + Environment.NewLine;
 
             //Corners
-            foreach (TrackLocationOptima corner in Corners)
+            foreach (TrackLocation corner in Corners)
             {
                 ToReturn = ToReturn + corner.Sector.ToString() + ",";
                 ToReturn = ToReturn + corner.PositionX.ToString() + ",";
                 ToReturn = ToReturn + corner.PositionY.ToString() + ",";
                 ToReturn = ToReturn + corner.PositionZ.ToString() + ",";
-                ToReturn = ToReturn + corner.OptimalSpeedMph.ToString() + ",";
-                ToReturn = ToReturn + corner.OptimalGear.ToString() + ",";
-                ToReturn = ToReturn + corner.OptimalSteer.ToString() + ",";
-                ToReturn = ToReturn + corner.OptimalThrottle.ToString() + ",";
-                ToReturn = ToReturn + corner.OptimalBrake.ToString() + Environment.NewLine;
             }
 
             //Remove the last indent
@@ -164,21 +159,16 @@ namespace ApexVisual.Analysis
             TrackDataContainer tdc = new TrackDataContainer();
 
             //Get corners
-            List<TrackLocationOptima> corners = new List<TrackLocationOptima>();
+            List<TrackLocation> corners = new List<TrackLocation>();
             int t = 0;
             for (t=1;t<csv.Rows.Count;t++)
             {
-                TrackLocationOptima tl = new TrackLocationOptima();
+                TrackLocation tl = new TrackLocation();
 
                 tl.Sector = Convert.ToByte(csv.Rows[t].Values[0]);
                 tl.PositionX = Convert.ToSingle(csv.Rows[t].Values[1]);
                 tl.PositionY = Convert.ToSingle(csv.Rows[t].Values[2]);
                 tl.PositionZ = Convert.ToSingle(csv.Rows[t].Values[3]);
-                tl.OptimalSpeedMph = Convert.ToSingle(csv.Rows[t].Values[4]);
-                tl.OptimalGear = Convert.ToSByte(csv.Rows[t].Values[5]);
-                tl.OptimalSteer = Convert.ToSingle(csv.Rows[t].Values[6]);
-                tl.OptimalThrottle = Convert.ToSingle(csv.Rows[t].Values[7]);
-                tl.OptimalBrake = Convert.ToSingle(csv.Rows[t].Values[8]);
 
                 corners.Add(tl);
             }
