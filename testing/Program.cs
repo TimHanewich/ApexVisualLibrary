@@ -5,6 +5,7 @@ using ApexVisual.SessionManagement;
 using ApexVisual.Analysis;
 using Newtonsoft.Json;
 using ApexVisual.LiveSessionManagement;
+using Newtonsoft.Json.Linq;
 
 namespace testing
 {
@@ -12,49 +13,38 @@ namespace testing
     {
         static void Main(string[] args)
         {
-            List<byte[]> bytes = JsonConvert.DeserializeObject<List<byte[]>>(System.IO.File.ReadAllText(@"C:\Users\tahan\Downloads\spa race.json"));
-            
-            ApexVisualSessionManager sm = new ApexVisualSessionManager();
-            sm.DataUpdateAvailable += Rec;
-            foreach (byte[] b in bytes)
-            {
-                sm.IngestBytes(b);
-            }
-            System.Threading.Tasks.Task.Delay(3000).Wait();
+            Console.Write("Give me the raw data: ");
+            string val = Console.ReadLine();
 
+            LocationTelemetry[] tele = OldToNewOptima(val);
 
-            //Go through
-            foreach (CommonSessionData csd in AllData)
-            {
-                if (csd.FieldData != null)
-                {
-                    Console.Clear();
-                    foreach (CommonCarData ccd in csd.FieldData)
-                    {
-                        Console.WriteLine(ccd.Pilot.ToString());
-                    }
-                    System.Threading.Tasks.Task.Delay(5).Wait();
-                }
-            }
-            Console.ReadLine();
-            
+            Console.WriteLine();
+            Console.WriteLine(JsonConvert.SerializeObject(tele).Replace("\"", "\\\""));
 
-
-            LiveSessionManager lsm = new LiveSessionManager();
-            
-            foreach (CommonSessionData csd in AllData)
-            {
-                lsm.Update(csd);
-            }
-
-            Console.WriteLine(JsonConvert.SerializeObject(lsm.LiveDriverData));
         }
 
-        public static List<CommonSessionData> AllData = new List<CommonSessionData>();
-
-        public static void Rec(CommonSessionData csd)
+        public static LocationTelemetry[] OldToNewOptima(string old)
         {
-            AllData.Add(csd);
+            string toconvjson = old.Replace("\\", "");
+            JObject mjo = JObject.Parse(toconvjson);
+            JArray ja = JArray.Parse(mjo.Property("Corners").Value.ToString());
+
+            List<LocationTelemetry> ToReturn = new List<LocationTelemetry>();
+            foreach (JObject jo in ja)
+            {
+                LocationTelemetry lt = new LocationTelemetry();
+
+                lt.SpeedMph = Convert.ToSingle(jo.Property("OptimalSpeedMph").Value.ToString());
+                lt.Gear = Convert.ToSByte(jo.Property("OptimalGear").Value.ToString());
+                lt.Steer = Convert.ToSingle(jo.Property("OptimalSteer").Value.ToString());
+                lt.Throttle = Convert.ToSingle(jo.Property("OptimalThrottle").Value.ToString());
+                lt.Brake = Convert.ToSingle(jo.Property("OptimalBrake").Value.ToString());
+
+                ToReturn.Add(lt);
+            }
+
+            return ToReturn.ToArray();
         }
+
     }
 }
