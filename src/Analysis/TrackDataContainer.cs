@@ -9,7 +9,7 @@ namespace ApexVisual.Analysis
 {
     public class TrackDataContainer
     {
-        public TrackLocationOptima[] Corners { get; set; }
+        public TrackLocation[] Corners { get; set; }
 
         public static TrackDataContainer LoadTrack(Track track_)
         {
