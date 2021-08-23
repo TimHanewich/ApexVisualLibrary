@@ -9,10 +9,11 @@ namespace ApexVisual.Analysis
 {
     public class TrackDataContainer
     {
+        private Track LoadedTrack {get; set;}
         public TrackLocation[] Corners { get; set; }
 
         public static TrackDataContainer LoadTrack(Track track_)
-        {
+        {           
             Dictionary<Track, string> TrackJsonDict = new Dictionary<Track, string>();
 
             //Australia
@@ -113,6 +114,7 @@ namespace ApexVisual.Analysis
             else
             {
                 TrackDataContainer tdc = JsonConvert.DeserializeObject<TrackDataContainer>(Jsn);
+                tdc.LoadedTrack = track_; //Save the loaded track
                 return tdc;
             }
 
@@ -182,5 +184,50 @@ namespace ApexVisual.Analysis
 
         #endregion
         
+        public void LoadF1OptimalTelemetry(ushort year)
+        {
+            if (year == 2020)
+            {
+                switch (LoadedTrack)
+                {
+                    case Track.Melbourne:
+                        LoadOptimalCornerLocationTelemetryFromJson("[{\"SpeedMph\":104.0,\"Gear\":5,\"Steer\":0.4311181,\"Throttle\":0.31348175,\"Brake\":0.0},{\"SpeedMph\":128.0,\"Gear\":5,\"Steer\":-0.22025225,\"Throttle\":1.0,\"Brake\":0.0},{\"SpeedMph\":57.0,\"Gear\":2,\"Steer\":0.6054804,\"Throttle\":0.0,\"Brake\":0.0},{\"SpeedMph\":93.0,\"Gear\":4,\"Steer\":-0.45920163,\"Throttle\":0.7219937,\"Brake\":0.0},{\"SpeedMph\":159.0,\"Gear\":7,\"Steer\":0.15782991,\"Throttle\":0.4675648,\"Brake\":0.0},{\"SpeedMph\":93.0,\"Gear\":4,\"Steer\":0.3077855,\"Throttle\":0.3591377,\"Brake\":0.0},{\"SpeedMph\":125.0,\"Gear\":5,\"Steer\":-0.061840277,\"Throttle\":1.0,\"Brake\":0.0},{\"SpeedMph\":167.0,\"Gear\":7,\"Steer\":0.08520175,\"Throttle\":1.0,\"Brake\":0.0},{\"SpeedMph\":70.0,\"Gear\":3,\"Steer\":0.42675725,\"Throttle\":0.19467956,\"Brake\":0.0},{\"SpeedMph\":108.0,\"Gear\":4,\"Steer\":-0.07863022,\"Throttle\":1.0,\"Brake\":0.0},{\"SpeedMph\":152.0,\"Gear\":7,\"Steer\":-0.14940904,\"Throttle\":0.6246816,\"Brake\":0.0},{\"SpeedMph\":167.0,\"Gear\":7,\"Steer\":0.14162126,\"Throttle\":1.0,\"Brake\":0.0},{\"SpeedMph\":90.0,\"Gear\":4,\"Steer\":0.46917954,\"Throttle\":0.2531157,\"Brake\":0.0},{\"SpeedMph\":132.0,\"Gear\":6,\"Steer\":0.35959715,\"Throttle\":0.60427666,\"Brake\":0.0},{\"SpeedMph\":49.0,\"Gear\":2,\"Steer\":-0.6571424,\"Throttle\":0.13790867,\"Brake\":0.0},{\"SpeedMph\":118.0,\"Gear\":5,\"Steer\":0.41245505,\"Throttle\":0.6445061,\"Brake\":0.0}]");
+                        break;
+                    default:
+                        throw new Exception("Optimal corner telemetry data not available for track '" + LoadedTrack.ToString() + "' for year 2020.");
+                }
+            }
+            else
+            {
+                throw new Exception("Optimal telemetry data for year '" + year.ToString() + "' is not available.");
+            }
+        }
+
+        #region "Utility functions"
+
+        private void LoadOptimalCornerLocationTelemetryFromJson(string json)
+        {
+            //Error check
+            if (Corners == null)
+            {
+                throw new Exception("Unable to load optimal corner telemetry because corners haven't been loaded for this track data container.");
+            }
+
+            LocationTelemetry[] lt = JsonConvert.DeserializeObject<LocationTelemetry[]>(json);
+
+            //Check the # of corners are correct
+            if (lt.Length != Corners.Length)
+            {
+                throw new Exception("Unable to load optimal corner telemetry. # of corners for this track: " + Corners.Length.ToString() + ". Number of corner optima supplied: " + lt.Length.ToString());
+            }
+
+            for (int t = 0; t < lt.Length; t++)
+            {
+                Corners[t].OptimalTelemetry = lt[t];
+            }
+        }
+
+        #endregion
+    
     }
 }
