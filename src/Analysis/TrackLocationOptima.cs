@@ -2,13 +2,13 @@ using System;
 
 namespace ApexVisual.Analysis
 {
-    public class TrackLocationOptima : TrackLocation
+    public class LocationTelemetry
     {
         //Optimums
-        public float OptimalSpeedMph {get; set;} //Probably a major point of interest
-        public sbyte OptimalGear {get; set;} //Probably a major point of interest
-        public float OptimalSteer {get; set;}
-        public float OptimalThrottle {get; set;}
-        public float OptimalBrake {get; set;}
+        public float SpeedMph {get; set;} //Probably a major point of interest
+        public sbyte Gear {get; set;} //Probably a major point of interest
+        public float Steer {get; set;}
+        public float Throttle {get; set;}
+        public float Brake {get; set;}
     }
 }

@@ -9,5 +9,7 @@ namespace ApexVisual.Analysis
         public float PositionY { get; set; }
         public float PositionZ { get; set; }
         public byte Sector { get; set; }
+
+        public LocationTelemetry OptimalTelemetry {get; set;}
     }
 }
