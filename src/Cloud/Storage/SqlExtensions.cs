@@ -743,8 +743,7 @@ namespace ApexVisual.Cloud.Storage
         }
 
         #endregion
-
-        
+  
         #region "Helper functions"
 
         private static SqlConnection GetSqlConnection(this ApexVisualManager avm)
@@ -762,5 +761,6 @@ namespace ApexVisual.Cloud.Storage
         }
 
         #endregion
+    
     }
 }
