@@ -13,27 +13,6 @@ namespace ApexVisual.Cloud.Storage
     public static class SqlExtensions
     {
 
-        #region "Existance Check operations"
-
-        public static async Task<bool> SessionExistsAsync(this ApexVisualManager avm, string session_id)
-        {
-            SqlConnection sql = GetSqlConnection(avm);
-            sql.Open();
-
-            string cmd = "select SessionId from Session where SessionId='" + session_id + "'";
-            SqlCommand sqlcmd = new SqlCommand(cmd, sql);
-            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
-            
-            bool exists = dr.Read();
-
-            sql.Close();
-
-            return exists;
-        }
-
-
-        #endregion
-
         #region "User operations"
 
         public static async Task<bool> UserAccountExists(this ApexVisualManager avm, string username)
