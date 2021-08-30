@@ -32,7 +32,7 @@ namespace ApexVisual.Cloud.Storage
 
         public static async Task<ApexVisualUserAccount> DownloadUserAccountAsync(this ApexVisualManager avm, string username)
         {
-            string cmd = "select * from UserAccount where Username='" + username + "'";
+            string cmd = "select Id, Password, Email, AccountCreatedAt, PhotoBlobId from UserAccount where Username='" + username + "'";
             SqlConnection sqlcon = GetSqlConnection(avm);
             sqlcon.Open();
             SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
@@ -48,11 +48,14 @@ namespace ApexVisual.Cloud.Storage
             //Prepare the return assets
             ApexVisualUserAccount ToReturn = new ApexVisualUserAccount();
 
-            //Username
+            //Id
             if (dr.IsDBNull(0) == false)
             {
-                ToReturn.Username = dr.GetString(0);
+                ToReturn.Id = dr.GetGuid(0);
             }
+            
+            //Usernmae
+            ToReturn.Username = username;
 
             //Password
             if (dr.IsDBNull(1) == false)
@@ -63,22 +66,20 @@ namespace ApexVisual.Cloud.Storage
             //Email
             if (dr.IsDBNull(2) == false)
             {
-                ToReturn.Email = dr.GetString(2); 
+                ToReturn.Email = dr.GetString(2);
             }
-            
-            //Account created at
+
+            //AccountCreatedAt
             if (dr.IsDBNull(3) == false)
             {
                 ToReturn.AccountCreatedAt = dr.GetDateTime(3);
             }
 
-            //Photo blob id
+            //Photoblobid
             if (dr.IsDBNull(4) == false)
             {
                 ToReturn.PhotoBlobId = dr.GetString(4);
             }
-            
-            sqlcon.Close();
 
             return ToReturn;
         }
