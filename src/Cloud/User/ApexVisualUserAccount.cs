@@ -16,7 +16,7 @@ namespace ApexVisual.Cloud.User
         private static int PasswordMaxLength = 30;
         private static int PasswordMinLength = 1;
 
-
+        public Guid Id {get; set;}
         public string Username { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
