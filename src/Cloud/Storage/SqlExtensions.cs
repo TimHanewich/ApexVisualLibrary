@@ -53,7 +53,7 @@ namespace ApexVisual.Cloud.Storage
             {
                 ToReturn.Id = dr.GetGuid(0);
             }
-            
+
             //Usernmae
             ToReturn.Username = username;
 
@@ -168,57 +168,6 @@ namespace ApexVisual.Cloud.Storage
 
             sqlcon.Close();
 
-            return ToReturn.ToArray();
-        }
-
-        public static async Task<ApexVisualUserAccount[]> DownloadNewlyRegisteredUsersAsync(this ApexVisualManager avm, DateTime date)
-        {
-            string cmd = "select * from UserAccount where " + GetTimeStampDayFilter("AccountCreatedAt", date);
-            SqlConnection sqlcon = GetSqlConnection(avm);
-            sqlcon.Open();
-            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
-            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
-
-            List<ApexVisualUserAccount> ToReturn = new List<ApexVisualUserAccount>();
-
-            while (dr.Read())
-            {
-                ApexVisualUserAccount avua = new ApexVisualUserAccount();
-
-                //Username
-                if (dr.IsDBNull(0) == false)
-                {
-                    avua.Username = dr.GetString(0);
-                }
-
-                //Password
-                if (dr.IsDBNull(1) == false)
-                {
-                    avua.Password = dr.GetString(1);
-                }
-
-                //Email
-                if (dr.IsDBNull(2) == false)
-                {
-                    avua.Email = dr.GetString(2); 
-                }
-                
-                //Account created at
-                if (dr.IsDBNull(3) == false)
-                {
-                    avua.AccountCreatedAt = dr.GetDateTime(3);
-                }
-
-                //Photo blob id
-                if (dr.IsDBNull(4) == false)
-                {
-                    avua.PhotoBlobId = dr.GetString(4);
-                }
-                
-                ToReturn.Add(avua);
-            }
-
-            sqlcon.Close();
             return ToReturn.ToArray();
         }
 
