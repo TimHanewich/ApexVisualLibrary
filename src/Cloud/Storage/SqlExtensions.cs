@@ -101,6 +101,7 @@ namespace ApexVisual.Cloud.Storage
             
             //Prepare the KVP's for this record insert/update
             List<KeyValuePair<string, string>> ColumnValuePairs = new List<KeyValuePair<string, string>>();
+            ColumnValuePairs.Add(new KeyValuePair<string, string>("Id", "'" + useraccount.Id + "'"));
             ColumnValuePairs.Add(new KeyValuePair<string, string>("Username", "'" + useraccount.Username + "'"));
             ColumnValuePairs.Add(new KeyValuePair<string, string>("Password", "'" + useraccount.Password + "'"));
             ColumnValuePairs.Add(new KeyValuePair<string, string>("Email", "'" + useraccount.Email + "'"));
