@@ -21,7 +21,7 @@ namespace ApexVisual.Cloud.User
         public string Password { get; set; }
         public string Email { get; set; }
         public DateTimeOffset AccountCreatedAt { get; set; }
-        public string PhotoBlobId { get; set; }
+        public Guid PhotoBlobId { get; set; }
 
         public ApexVisualUserAccount()
         {

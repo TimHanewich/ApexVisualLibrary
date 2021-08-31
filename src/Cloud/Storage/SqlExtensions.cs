@@ -78,7 +78,7 @@ namespace ApexVisual.Cloud.Storage
             //Photoblobid
             if (dr.IsDBNull(4) == false)
             {
-                ToReturn.PhotoBlobId = dr.GetString(4);
+                ToReturn.PhotoBlobId = dr.GetGuid(4);
             }
 
             return ToReturn;
@@ -107,7 +107,7 @@ namespace ApexVisual.Cloud.Storage
             ColumnValuePairs.Add(new KeyValuePair<string, string>("Password", "'" + useraccount.Password + "'"));
             ColumnValuePairs.Add(new KeyValuePair<string, string>("Email", "'" + useraccount.Email + "'"));
             ColumnValuePairs.Add(new KeyValuePair<string, string>("AccountCreatedAt", "'" + useraccount.AccountCreatedAt.Year.ToString("0000") + "-" + useraccount.AccountCreatedAt.Month.ToString("00") + "-" + useraccount.AccountCreatedAt.Day.ToString("00") + " " + useraccount.AccountCreatedAt.Hour.ToString("00") + ":" + useraccount.AccountCreatedAt.Minute.ToString("00") + "." + useraccount.AccountCreatedAt.Second.ToString() + "'"));
-            if (useraccount.PhotoBlobId != null && useraccount.PhotoBlobId != "")
+            if (useraccount.PhotoBlobId != Guid.Empty)
             {
                 ColumnValuePairs.Add(new KeyValuePair<string, string>("PhotoBlobId", "'" + useraccount.PhotoBlobId + "'"));
             }
