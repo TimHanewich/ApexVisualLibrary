@@ -15,7 +15,7 @@ namespace ApexVisual.Cloud.Storage
 
         #region "User operations"
 
-        public static async Task<bool> UserAccountExists(this ApexVisualManager avm, string username)
+        public static async Task<bool> UserAccountExistsAsync(this ApexVisualManager avm, string username)
         {
             string cmd = "select Username from UserAccount where Username='" + username + "'";
             SqlConnection sqlcon = GetSqlConnection(avm);
@@ -114,7 +114,7 @@ namespace ApexVisual.Cloud.Storage
 
             //Get the appropriate cmd to send
             string cmd = "";
-            bool AlreadyExists = await avm.UserAccountExists(useraccount.Username);
+            bool AlreadyExists = await avm.UserAccountExistsAsync(useraccount.Username);
             if (AlreadyExists == false) //It is a new account
             {
                 //Prepare the command string
