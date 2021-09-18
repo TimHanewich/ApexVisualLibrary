@@ -412,9 +412,12 @@ namespace ApexVisual.Analysis
                 List<CommonSessionData> lap_frames = new List<CommonSessionData>();
                 foreach (CommonSessionData csd in frames_sorted)
                 {
-                    if (csd.FieldData[driver_index].CurrentLapNumber == lapnum)
+                    if (csd.FieldData != null)
                     {
-                        lap_frames.Add(csd);
+                        if (csd.FieldData[driver_index].CurrentLapNumber == lapnum)
+                        {
+                            lap_frames.Add(csd);
+                        }
                     }
                 }
 
@@ -532,10 +535,13 @@ namespace ApexVisual.Analysis
                 List<CommonSessionData> lap_frames = new List<CommonSessionData>();
                 foreach (CommonSessionData frame in frames_sorted)
                 {
-                    if (frame.FieldData[driver_index].CurrentLapNumber == lapnum)
+                    if (frame.FieldData != null)
                     {
-                        lap_frames.Add(frame);
-                    }
+                        if (frame.FieldData[driver_index].CurrentLapNumber == lapnum)
+                        {
+                            lap_frames.Add(frame);
+                        }
+                    } 
                 }
 
                 //Count the number of gear changes
@@ -628,35 +634,37 @@ namespace ApexVisual.Analysis
                     }
                 }
 
-                WheelDataArray tyrewear_start = lap_frames[0].FieldData[driver_index].TyreWear;
-                WheelDataArray tyrewear_end = lap_frames[lap_frames.Count-1].FieldData[driver_index].TyreWear;
-                float AvgTyreWear_Start = (tyrewear_start.RearLeft + tyrewear_start.RearRight + tyrewear_start.FrontLeft + tyrewear_start.FrontRight) / 4f;
-                float AvgTyreWear_End = (tyrewear_end.RearLeft + tyrewear_end.RearRight + tyrewear_end.FrontLeft + tyrewear_end.FrontRight) / 4f;
-                float avginctyrewear = AvgTyreWear_End - AvgTyreWear_Start;
-
-                //Plug it in
-                foreach (Lap la in _Lap)
+                if (lap_frames.Count > 0)
                 {
-                    if (la.LapNumber == lapnum)
+                    WheelDataArray tyrewear_start = lap_frames[0].FieldData[driver_index].TyreWear;
+                    WheelDataArray tyrewear_end = lap_frames[lap_frames.Count-1].FieldData[driver_index].TyreWear;
+                    float AvgTyreWear_Start = (tyrewear_start.RearLeft + tyrewear_start.RearRight + tyrewear_start.FrontLeft + tyrewear_start.FrontRight) / 4f;
+                    float AvgTyreWear_End = (tyrewear_end.RearLeft + tyrewear_end.RearRight + tyrewear_end.FrontLeft + tyrewear_end.FrontRight) / 4f;
+                    float avginctyrewear = AvgTyreWear_End - AvgTyreWear_Start;
+
+                    //Plug it in
+                    foreach (Lap la in _Lap)
                     {
-                        //Incremental tyre wear
-                        WheelDataArray wda_IncTyreWear = new WheelDataArray();
-                        wda_IncTyreWear.RearLeft = tyrewear_end.RearLeft - tyrewear_start.RearLeft;
-                        wda_IncTyreWear.RearRight = tyrewear_end.RearRight - tyrewear_start.RearRight;
-                        wda_IncTyreWear.FrontLeft = tyrewear_end.FrontLeft - tyrewear_start.FrontLeft;
-                        wda_IncTyreWear.FrontRight = tyrewear_end.FrontRight - tyrewear_start.FrontRight;
-                        la.IncrementalTyreWear = wda_IncTyreWear;
-                        
-                        //Beginning (snapshot) tyre wear
-                        WheelDataArray wda_BegTyreWear = new WheelDataArray();
-                        wda_BegTyreWear.RearLeft = tyrewear_start.RearLeft;
-                        wda_BegTyreWear.RearRight = tyrewear_start.RearRight;
-                        wda_BegTyreWear.FrontLeft = tyrewear_start.FrontLeft;
-                        wda_BegTyreWear.FrontRight = tyrewear_start.FrontRight;
-                        la.BeginningTyreWear = wda_BegTyreWear;
+                        if (la.LapNumber == lapnum)
+                        {
+                            //Incremental tyre wear
+                            WheelDataArray wda_IncTyreWear = new WheelDataArray();
+                            wda_IncTyreWear.RearLeft = tyrewear_end.RearLeft - tyrewear_start.RearLeft;
+                            wda_IncTyreWear.RearRight = tyrewear_end.RearRight - tyrewear_start.RearRight;
+                            wda_IncTyreWear.FrontLeft = tyrewear_end.FrontLeft - tyrewear_start.FrontLeft;
+                            wda_IncTyreWear.FrontRight = tyrewear_end.FrontRight - tyrewear_start.FrontRight;
+                            la.IncrementalTyreWear = wda_IncTyreWear;
+                            
+                            //Beginning (snapshot) tyre wear
+                            WheelDataArray wda_BegTyreWear = new WheelDataArray();
+                            wda_BegTyreWear.RearLeft = tyrewear_start.RearLeft;
+                            wda_BegTyreWear.RearRight = tyrewear_start.RearRight;
+                            wda_BegTyreWear.FrontLeft = tyrewear_start.FrontLeft;
+                            wda_BegTyreWear.FrontRight = tyrewear_start.FrontRight;
+                            la.BeginningTyreWear = wda_BegTyreWear;
+                        }
                     }
                 }
-
             }
 
             #endregion
