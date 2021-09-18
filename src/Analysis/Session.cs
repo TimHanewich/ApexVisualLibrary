@@ -308,25 +308,50 @@ namespace ApexVisual.Analysis
                 
 
             }
-            
+           
+            #region "Sort packets by time (if needed)"
 
             //Sort the packets by time - this is not required for the above process, so I am doing it here for the timing stuff
             List<CommonSessionData> frames_aslist = session_data.ToList();
             List<CommonSessionData> frames_sorted = new List<CommonSessionData>();
-            while (frames_aslist.Count > 0)
+
+            //First check if they need to be sorted
+            bool NeedToSort = false;
+            uint LastSeenFrameIdentifier = frames_aslist[0].FrameIdentifier;
+            foreach (CommonSessionData csd in frames_aslist)
             {
-                CommonSessionData winner = frames_aslist[0];
-                foreach (CommonSessionData csd in frames_aslist)
+                if (NeedToSort == false)
                 {
-                    if (csd.SessionTime < winner.SessionTime)
+                    if (csd.FrameIdentifier < LastSeenFrameIdentifier && csd.FrameIdentifier != 0)
                     {
-                        winner = csd;
+                        NeedToSort = true;
                     }
                 }
-                frames_sorted.Add(winner);
-                frames_aslist.Remove(winner);
             }
 
+            //Sort if we have to
+            if (NeedToSort)
+            {
+                while (frames_aslist.Count > 0)
+                {
+                    CommonSessionData winner = frames_aslist[0];
+                    foreach (CommonSessionData csd in frames_aslist)
+                    {
+                        if (csd.SessionTime < winner.SessionTime)
+                        {
+                            winner = csd;
+                        }
+                    }
+                    frames_sorted.Add(winner);
+                    frames_aslist.Remove(winner);
+                }
+            }
+            else
+            {
+                frames_sorted.AddRange(frames_aslist);
+            }
+            
+            #endregion
 
             //Plug in the sector times and lap times
             CommonSessionData last_frame = null;
