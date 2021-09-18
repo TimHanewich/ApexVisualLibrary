@@ -216,10 +216,6 @@ namespace ApexVisual.Cloud.Storage
             ColumnValuePairs.Add(new KeyValuePair<string, string>("Id", "'" + ToReturn.ToString() + "'"));
 
             //Session id
-            if (log.SessionId == null)
-            {
-                log.SessionId = new Guid(); //Blank (000000, etc.)
-            }
             ColumnValuePairs.Add(new KeyValuePair<string, string>("SessionId", "'" + log.SessionId.ToString() + "'"));
             
             //Username
