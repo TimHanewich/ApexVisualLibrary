@@ -277,6 +277,17 @@ namespace ApexVisual.Analysis
                         throw new Exception("Optimal corner telemetry data not available for track '" + LoadedTrack.ToString() + "' for year 2020.");
                 }
             }
+            else if (year == 2021)
+            {
+                switch(LoadedTrack)
+                {
+                    case Track.Portimao:
+                        LoadOptimalCornerLocationTelemetryFromJson("[{\"SpeedMph\":95.69117,\"Gear\":4,\"Steer\":0.19125836,\"Throttle\":0.3714518,\"Brake\":0.0},{\"SpeedMph\":136.70166,\"Gear\":6,\"Steer\":0.09406505,\"Throttle\":0.4847312,\"Brake\":0.0},{\"SpeedMph\":52.81655,\"Gear\":2,\"Steer\":0.6162688,\"Throttle\":0.09055735,\"Brake\":0.0},{\"SpeedMph\":121.78876,\"Gear\":5,\"Steer\":-0.23472437,\"Throttle\":0.64159167,\"Brake\":0.0},{\"SpeedMph\":45.98147,\"Gear\":2,\"Steer\":-0.7748981,\"Throttle\":0.08976045,\"Brake\":0.0},{\"SpeedMph\":159.07103,\"Gear\":6,\"Steer\":-0.057728235,\"Throttle\":1.0,\"Brake\":0.0},{\"SpeedMph\":141.67264,\"Gear\":6,\"Steer\":0.096195266,\"Throttle\":0.0,\"Brake\":0.0},{\"SpeedMph\":71.45769,\"Gear\":3,\"Steer\":0.34285167,\"Throttle\":0.07080328,\"Brake\":0.0},{\"SpeedMph\":168.3916,\"Gear\":7,\"Steer\":-0.10181749,\"Throttle\":1.0,\"Brake\":0.0},{\"SpeedMph\":141.05127,\"Gear\":6,\"Steer\":0.13318825,\"Throttle\":0.0,\"Brake\":0.7580227},{\"SpeedMph\":84.506485,\"Gear\":4,\"Steer\":0.40922213,\"Throttle\":0.30602577,\"Brake\":0.0},{\"SpeedMph\":151.61458,\"Gear\":6,\"Steer\":-0.14942113,\"Throttle\":1.0,\"Brake\":0.0},{\"SpeedMph\":62.13712,\"Gear\":2,\"Steer\":-0.57719964,\"Throttle\":0.0,\"Brake\":0.0},{\"SpeedMph\":80.77826,\"Gear\":3,\"Steer\":0.4610465,\"Throttle\":0.17457303,\"Brake\":0.0},{\"SpeedMph\":179.57628,\"Gear\":7,\"Steer\":0.10162083,\"Throttle\":1.0,\"Brake\":0.0}]");
+                        break;
+                    default:
+                        throw new Exception("Optimal corner tleemetry data not available for 2021 for track '" + LoadedTrack.ToString() + "'");
+                }
+            }
             else
             {
                 throw new Exception("Optimal telemetry data for year '" + year.ToString() + "' is not available.");
