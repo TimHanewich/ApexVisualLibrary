@@ -139,167 +139,173 @@ namespace ApexVisual.Analysis
                     }
                 }
 
-
-                //Find the best packetframe for each corner
-                List<TelemetrySnapshot> _TelemetrySnapshot = new List<TelemetrySnapshot>();
-                int c = 1;
-                for (c=1;c<=tdc.Corners.Length;c++)
+                //Only try to analyze this lap # if there is data for the lap!
+                if (ThisLapFrames.Count > 0)
                 {
-
-                    //Find the best packetframe for this corner
-                    TrackLocation this_corner = tdc.Corners[c-1];
-                    CommonCarData winner = ThisLapFrames[0];
-                    float min_distance_found = float.MaxValue;
-                    foreach (CommonCarData ccd in ThisLapFrames)
+                    //Find the best packetframe for each corner
+                    List<TelemetrySnapshot> _TelemetrySnapshot = new List<TelemetrySnapshot>();
+                    int c = 1;
+                    for (c=1;c<=tdc.Corners.Length;c++)
                     {
-                        TrackLocation this_location = new TrackLocation();
-                        this_location.PositionX = ccd.PositionX;
-                        this_location.PositionY = ccd.PositionY;
-                        this_location.PositionZ = ccd.PositionZ;
 
-                        //Sector
-                        switch (ccd.CurrentSector)
-                        {
-                            case Sector.Sector1:
-                                this_location.Sector = 1;
-                                break;
-                            case Sector.Sector2:
-                                this_location.Sector = 2;
-                                break;
-                            case Sector.Sector3:
-                                this_location.Sector = 3;
-                                break;
-                        }
-
-                        if (this_location.Sector == this_corner.Sector) //Only consider packets that are in the same sector
-                        {
-                            float this_distance = ApexVisualToolkit.DistanceBetweenTwoPoints(this_corner, this_location);
-                            if (this_distance < min_distance_found && this_distance < 40) //It has to be be within 40. If it isn't, it is not considered a corner hit!
-                            {
-                                winner = ccd;
-                                min_distance_found = this_distance;
-                            }
-                        }
-                    }
-
-                    //Add the corner analysis
-                    TelemetrySnapshot ca = new TelemetrySnapshot();
-                    ca.LocationNumber = (byte)c;
-                    if (min_distance_found < float.MaxValue) //we found a suitable packet, so therefore the min distance shold be less than max. Fill in the details
-                    {
-                        //Position
-                        ca.PositionX = winner.PositionX;
-                        ca.PositionY = winner.PositionY;
-                        ca.PositionZ = winner.PositionZ;
-
-                        //gForce
-                        ca.gForceLateral = winner.gForceLateral;
-                        ca.gForceLongitudinal = winner.gForceLongitudinal;
-                        ca.gForceVertical = winner.gForceVertical;
-
-                        //Lap data
-                        ca.CurrentLapTime = winner.CurrentLapTimeSeconds;
-                        ca.CarPosition = winner.CarPosition;
-                        ca.LapInvalid = winner.CurrentLapInvalid;
-                        ca.Penalties = winner.Penalties;
-                        
-                        //Telemetry data
-                        ca.SpeedKph = winner.SpeedKph;
-                        ca.Throttle = winner.Throttle;
-                        ca.Steer = winner.Steer;
-                        ca.Brake = winner.Brake;
-                        ca.Clutch = winner.Clutch;
-                        ca.Gear = winner.Gear;
-                        ca.EngineRpm = winner.EngineRpm;
-                        ca.DrsActive = winner.DrsActive;
-                        
-                        //Wheel data arrays
-                        ca.BrakeTemperature = winner.BrakeTemperature;
-                        ca.TyreSurfaceTemperature = winner.TyreSurfaceTemperature;
-                        ca.TyreInnerTemperature = winner.TyreInnerTemperature;
-
-                        //Other data
-                        ca.EngineTemperature = winner.EngineTemperature;
-                        
-                        //Car status
-                        ca.SelectedFuelMix = winner.ActiveFuelMix;
-                        ca.FuelLevel = winner.FuelInTank;
-
-                        //Other wheel data arrays
-                        ca.TyreWearPercent = winner.TyreWear;
-                        ca.TyreDamagePercent = winner.TyreDamage;
-
-                        //Other data
-                        ca.FrontLeftWingDamage = winner.FrontLeftWingDamage;
-                        ca.FrontRightWingDamage = winner.FrontRightWingDamage;
-                        ca.RearWingDamage = winner.RearWingDamage;
-                        ca.ErsStored = winner.StoredErsEnergy;
-
-                        //Add it to the list. (This is in this block because nothing should be added to the list if the corner was not found. So NO EMPTY TelemetrySnapshots in this array to represent a corner that was not found)
-                        _TelemetrySnapshot.Add(ca);
-                    }
-                    else //if we were not able to find a suitable packet for that corner, populate it with just a blank PacketFrame as a place holder.
-                    {
-                        //Do nothing (that Lap just won't have data for that corner. It can scan through all of the track locations )
-                    }
-                }
-                this_lap_analysis.Corners = _TelemetrySnapshot.ToArray();
-                
-
-                //Get the tyre compound that is being used for this lap
-                List<TyreCompound> CompoundsUsedThisLap = new List<TyreCompound>();
-                foreach (CommonCarData ccd in ThisLapFrames)
-                {
-                    //Add the compound to the list
-                    TyreCompound this_comp = ccd.EquippedTyreCompound;
-                    if (CompoundsUsedThisLap.Contains(this_comp) == false)
-                    {
-                        CompoundsUsedThisLap.Add(this_comp);
-                    }
-                }
-                if (CompoundsUsedThisLap.Count == 1) //If there is only one tyre compound that was used this lap, plug that one in
-                {
-                    this_lap_analysis.EquippedTyreCompound = CompoundsUsedThisLap[0];
-                }
-                else //If there were multiple compounds that were used, check which one was used more
-                {
-
-                    //Find the one that is used most
-                    int HighestSeen = 0;
-                    TyreCompound winner = CompoundsUsedThisLap[0];
-                    foreach (TyreCompound tc in CompoundsUsedThisLap)
-                    {
-                        //Count it
-                        int this_times = 0;
+                        //Find the best packetframe for this corner
+                        TrackLocation this_corner = tdc.Corners[c-1];
+                        CommonCarData winner = ThisLapFrames[0];
+                        float min_distance_found = float.MaxValue;
                         foreach (CommonCarData ccd in ThisLapFrames)
                         {
-                            TyreCompound thistc = ccd.EquippedTyreCompound;
-                            if (thistc == tc)
+                            TrackLocation this_location = new TrackLocation();
+                            this_location.PositionX = ccd.PositionX;
+                            this_location.PositionY = ccd.PositionY;
+                            this_location.PositionZ = ccd.PositionZ;
+
+                            //Sector
+                            switch (ccd.CurrentSector)
                             {
-                                this_times = this_times + 1;
+                                case Sector.Sector1:
+                                    this_location.Sector = 1;
+                                    break;
+                                case Sector.Sector2:
+                                    this_location.Sector = 2;
+                                    break;
+                                case Sector.Sector3:
+                                    this_location.Sector = 3;
+                                    break;
+                            }
+
+                            if (this_location.Sector == this_corner.Sector) //Only consider packets that are in the same sector
+                            {
+                                float this_distance = ApexVisualToolkit.DistanceBetweenTwoPoints(this_corner, this_location);
+                                if (this_distance < min_distance_found && this_distance < 40) //It has to be be within 40. If it isn't, it is not considered a corner hit!
+                                {
+                                    winner = ccd;
+                                    min_distance_found = this_distance;
+                                }
                             }
                         }
 
-                        //Is it greater? if so, kick out the winner
-                        if (this_times >= HighestSeen)
+                        //Add the corner analysis
+                        TelemetrySnapshot ca = new TelemetrySnapshot();
+                        ca.LocationNumber = (byte)c;
+                        if (min_distance_found < float.MaxValue) //we found a suitable packet, so therefore the min distance shold be less than max. Fill in the details
                         {
-                            HighestSeen = this_times;
-                            winner = tc;
+                            //Position
+                            ca.PositionX = winner.PositionX;
+                            ca.PositionY = winner.PositionY;
+                            ca.PositionZ = winner.PositionZ;
+
+                            //gForce
+                            ca.gForceLateral = winner.gForceLateral;
+                            ca.gForceLongitudinal = winner.gForceLongitudinal;
+                            ca.gForceVertical = winner.gForceVertical;
+
+                            //Lap data
+                            ca.CurrentLapTime = winner.CurrentLapTimeSeconds;
+                            ca.CarPosition = winner.CarPosition;
+                            ca.LapInvalid = winner.CurrentLapInvalid;
+                            ca.Penalties = winner.Penalties;
+                            
+                            //Telemetry data
+                            ca.SpeedKph = winner.SpeedKph;
+                            ca.Throttle = winner.Throttle;
+                            ca.Steer = winner.Steer;
+                            ca.Brake = winner.Brake;
+                            ca.Clutch = winner.Clutch;
+                            ca.Gear = winner.Gear;
+                            ca.EngineRpm = winner.EngineRpm;
+                            ca.DrsActive = winner.DrsActive;
+                            
+                            //Wheel data arrays
+                            ca.BrakeTemperature = winner.BrakeTemperature;
+                            ca.TyreSurfaceTemperature = winner.TyreSurfaceTemperature;
+                            ca.TyreInnerTemperature = winner.TyreInnerTemperature;
+
+                            //Other data
+                            ca.EngineTemperature = winner.EngineTemperature;
+                            
+                            //Car status
+                            ca.SelectedFuelMix = winner.ActiveFuelMix;
+                            ca.FuelLevel = winner.FuelInTank;
+
+                            //Other wheel data arrays
+                            ca.TyreWearPercent = winner.TyreWear;
+                            ca.TyreDamagePercent = winner.TyreDamage;
+
+                            //Other data
+                            ca.FrontLeftWingDamage = winner.FrontLeftWingDamage;
+                            ca.FrontRightWingDamage = winner.FrontRightWingDamage;
+                            ca.RearWingDamage = winner.RearWingDamage;
+                            ca.ErsStored = winner.StoredErsEnergy;
+
+                            //Add it to the list. (This is in this block because nothing should be added to the list if the corner was not found. So NO EMPTY TelemetrySnapshots in this array to represent a corner that was not found)
+                            _TelemetrySnapshot.Add(ca);
+                        }
+                        else //if we were not able to find a suitable packet for that corner, populate it with just a blank PacketFrame as a place holder.
+                        {
+                            //Do nothing (that Lap just won't have data for that corner. It can scan through all of the track locations )
                         }
                     }
+                    this_lap_analysis.Corners = _TelemetrySnapshot.ToArray();
+                    
 
-                    //Plug it in
-                    this_lap_analysis.EquippedTyreCompound = winner;
+                    //Get the tyre compound that is being used for this lap
+                    List<TyreCompound> CompoundsUsedThisLap = new List<TyreCompound>();
+                    foreach (CommonCarData ccd in ThisLapFrames)
+                    {
+                        //Add the compound to the list
+                        TyreCompound this_comp = ccd.EquippedTyreCompound;
+                        if (CompoundsUsedThisLap.Contains(this_comp) == false)
+                        {
+                            CompoundsUsedThisLap.Add(this_comp);
+                        }
+                    }
+                    if (CompoundsUsedThisLap.Count == 1) //If there is only one tyre compound that was used this lap, plug that one in
+                    {
+                        this_lap_analysis.EquippedTyreCompound = CompoundsUsedThisLap[0];
+                    }
+                    else //If there were multiple compounds that were used, check which one was used more
+                    {
+
+                        //Find the one that is used most
+                        int HighestSeen = 0;
+                        TyreCompound winner = CompoundsUsedThisLap[0];
+                        foreach (TyreCompound tc in CompoundsUsedThisLap)
+                        {
+                            //Count it
+                            int this_times = 0;
+                            foreach (CommonCarData ccd in ThisLapFrames)
+                            {
+                                TyreCompound thistc = ccd.EquippedTyreCompound;
+                                if (thistc == tc)
+                                {
+                                    this_times = this_times + 1;
+                                }
+                            }
+
+                            //Is it greater? if so, kick out the winner
+                            if (this_times >= HighestSeen)
+                            {
+                                HighestSeen = this_times;
+                                winner = tc;
+                            }
+                        }
+
+                        //Plug it in
+                        this_lap_analysis.EquippedTyreCompound = winner;
+                    }
+
+
+
+                    //Add this to the list of lap analyses
+                    _Lap.Add(this_lap_analysis);
+
+                    //Update the percent complete
+                    float AdditionalPercentCompletePerLap = (0.90f - 0.15f) / (float)AllLaps.Count;
+                    PercentLoadComplete = PercentLoadComplete + AdditionalPercentCompletePerLap;
                 }
 
 
-
-                //Add this to the list of lap analyses
-                _Lap.Add(this_lap_analysis);
-
-                //Update the percent complete
-                float AdditionalPercentCompletePerLap = (0.90f - 0.15f) / (float)AllLaps.Count;
-                PercentLoadComplete = PercentLoadComplete + AdditionalPercentCompletePerLap;
+                
 
             }
             
