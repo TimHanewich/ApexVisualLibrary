@@ -334,75 +334,71 @@ namespace ApexVisual.Analysis
             {
                 if (last_frame != null)
                 {
-
                     if (this_frame.FieldData != null)
                     {
-                        float S1_Time_S = 0;
-                        float S2_Time_S = 0;
-                        float S3_Time_S = 0;
-                        float LapTime_S = 0;
-                        bool Lap_Invalid_In_Last_Frame = false;
+                        if (last_frame.FieldData != null)
+                        {
+                            float S1_Time_S = 0;
+                            float S2_Time_S = 0;
+                            float S3_Time_S = 0;
+                            float LapTime_S = 0;
+                            bool Lap_Invalid_In_Last_Frame = false;
 
-                        if (last_frame.FieldData[driver_index].CurrentSector == Sector.Sector1 && this_frame.FieldData[driver_index].CurrentSector == Sector.Sector2) //We went from sector 1 to sector 2
-                        {
-                            S1_Time_S = (float)this_frame.FieldData[driver_index].Sector1TimeSeconds;
-                        }
-                        else if (last_frame.FieldData[driver_index].CurrentSector == Sector.Sector2 && this_frame.FieldData[driver_index].CurrentSector == Sector.Sector3) //We went from sector 2 to sector 3
-                        {
-                            S2_Time_S = (float)this_frame.FieldData[driver_index].Sector2TimeSeconds;
-                        }
-                        else if (last_frame.FieldData[driver_index].CurrentLapNumber < this_frame.FieldData[driver_index].CurrentLapNumber) //We just finished the lap, and thus sector 3
-                        {
-                            float last_s1_seconds = (float)last_frame.FieldData[driver_index].Sector1TimeSeconds;
-                            float last_s2_seconds = (float)last_frame.FieldData[driver_index].Sector1TimeSeconds;
-                            LapTime_S = this_frame.FieldData[driver_index].LastLapTimeSeconds;
-                            S3_Time_S = LapTime_S - last_s1_seconds - last_s2_seconds;
-                        }
-
-                        if (last_frame.FieldData[driver_index].CurrentLapInvalid)
-                        {
-                            Lap_Invalid_In_Last_Frame = true;
-                        }
-
-
-                        //If any of the numbers up there changed (are not 0), it means that we either changed sector or changed lap. If we did, we need to plug that data into the Lap
-                        if (S1_Time_S > 0 || S2_Time_S > 0 || S3_Time_S > 0 || Lap_Invalid_In_Last_Frame)
-                        {
-                            //Find the lap analysis
-                            foreach (Lap la in _Lap)
+                            if (last_frame.FieldData[driver_index].CurrentSector == Sector.Sector1 && this_frame.FieldData[driver_index].CurrentSector == Sector.Sector2) //We went from sector 1 to sector 2
                             {
-                                if (la.LapNumber == last_frame.FieldData[driver_index].CurrentLapNumber)
+                                S1_Time_S = (float)this_frame.FieldData[driver_index].Sector1TimeSeconds;
+                            }
+                            else if (last_frame.FieldData[driver_index].CurrentSector == Sector.Sector2 && this_frame.FieldData[driver_index].CurrentSector == Sector.Sector3) //We went from sector 2 to sector 3
+                            {
+                                S2_Time_S = (float)this_frame.FieldData[driver_index].Sector2TimeSeconds;
+                            }
+                            else if (last_frame.FieldData[driver_index].CurrentLapNumber < this_frame.FieldData[driver_index].CurrentLapNumber) //We just finished the lap, and thus sector 3
+                            {
+                                float last_s1_seconds = (float)last_frame.FieldData[driver_index].Sector1TimeSeconds;
+                                float last_s2_seconds = (float)last_frame.FieldData[driver_index].Sector1TimeSeconds;
+                                LapTime_S = this_frame.FieldData[driver_index].LastLapTimeSeconds;
+                                S3_Time_S = LapTime_S - last_s1_seconds - last_s2_seconds;
+                            }
+
+                            if (last_frame.FieldData[driver_index].CurrentLapInvalid)
+                            {
+                                Lap_Invalid_In_Last_Frame = true;
+                            }
+
+
+                            //If any of the numbers up there changed (are not 0), it means that we either changed sector or changed lap. If we did, we need to plug that data into the Lap
+                            if (S1_Time_S > 0 || S2_Time_S > 0 || S3_Time_S > 0 || Lap_Invalid_In_Last_Frame)
+                            {
+                                //Find the lap analysis
+                                foreach (Lap la in _Lap)
                                 {
-                                    
-                                    if (S1_Time_S > 0)
+                                    if (la.LapNumber == last_frame.FieldData[driver_index].CurrentLapNumber)
                                     {
-                                        la.Sector1Time = S1_Time_S;
-                                    }
+                                        
+                                        if (S1_Time_S > 0)
+                                        {
+                                            la.Sector1Time = S1_Time_S;
+                                        }
 
-                                    if (S2_Time_S > 0)
-                                    {
-                                        la.Sector2Time = S2_Time_S;
-                                    }
+                                        if (S2_Time_S > 0)
+                                        {
+                                            la.Sector2Time = S2_Time_S;
+                                        }
 
-                                    if (S3_Time_S > 0)
-                                    {
-                                        la.Sector3Time = S3_Time_S;
-                                    }
+                                        if (S3_Time_S > 0)
+                                        {
+                                            la.Sector3Time = S3_Time_S;
+                                        }
 
-                                    if (Lap_Invalid_In_Last_Frame)
-                                    {
-                                        la.LapInvalid = true;
+                                        if (Lap_Invalid_In_Last_Frame)
+                                        {
+                                            la.LapInvalid = true;
+                                        }
                                     }
-
                                 }
                             }
                         }
                     }
-
-                    
-
-
-
                 }
                 last_frame = this_frame;
             }
