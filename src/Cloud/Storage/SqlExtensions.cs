@@ -225,7 +225,7 @@ namespace ApexVisual.Cloud.Storage
             }
 
             //TimeStamp
-            if (log.TimeStamp == null)
+            if (log.TimeStamp.Year < 1900)
             {
                 log.TimeStamp = DateTimeOffset.Now;
             }
