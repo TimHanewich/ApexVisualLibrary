@@ -46,18 +46,26 @@ namespace ApexVisual.Analysis
                 {
                     SessionMode = csd.ThisSessionType.Value;
                 }
-                SelectedTeam = csd.FieldData[driver_index].Constructor;
-                SelectedDriver = csd.FieldData[driver_index].Pilot;
-                
-                //Name
-                string driver_name = csd.FieldData[driver_index].Name.TrimEnd('\0');
-                string driver_name_clean = "";
-                foreach (char c in driver_name)
+
+                //Selected Team & Driver
+                if (csd.FieldData != null)
                 {
-                    int as_int = Convert.ToInt32(c);
-                    if ((as_int < 127 && as_int != 92) == true || as_int == 160) //It is in the normal character range and not a backward slash OR it is a blank space.
+                    SelectedTeam = csd.FieldData[driver_index].Constructor;
+                    SelectedDriver = csd.FieldData[driver_index].Pilot;
+
+                    //Name
+                    if (csd.FieldData[driver_index].Name != null)
                     {
-                        driver_name_clean = driver_name_clean + c.ToString();
+                        string driver_name = csd.FieldData[driver_index].Name.TrimEnd('\0');
+                        string driver_name_clean = "";
+                        foreach (char c in driver_name)
+                        {
+                            int as_int = Convert.ToInt32(c);
+                            if ((as_int < 127 && as_int != 92) == true || as_int == 160) //It is in the normal character range and not a backward slash OR it is a blank space.
+                            {
+                                driver_name_clean = driver_name_clean + c.ToString();
+                            }
+                        }
                     }
                 }
             }
