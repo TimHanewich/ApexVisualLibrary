@@ -294,6 +294,38 @@ namespace ApexVisual.Analysis
             }
         }
 
+        public void LoadAnyF1OptimalTelemetry(params ushort[] year_priorities)
+        {
+            if (year_priorities.Length == 0)
+            {
+                LoadAnyF1OptimalTelemetry(2023, 2022, 2021, 2020, 2019, 2018, 2017);
+            }
+            else
+            {
+                bool LoadedSuccessfully = false;
+                foreach (ushort us in year_priorities)
+                {
+                    if (LoadedSuccessfully == false)
+                    {
+                        try
+                        {
+                            LoadF1OptimalTelemetry(us);
+                            LoadedSuccessfully = true;
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+
+                if (LoadedSuccessfully == false)
+                {
+                    throw new Exception("Unable to find optimal data for track '" + LoadedTrack.ToString() + "' for any default years.");
+                }
+            }
+        }        
+
         #region "Utility functions"
 
         private void LoadOptimalCornerLocationTelemetryFromJson(string json)
