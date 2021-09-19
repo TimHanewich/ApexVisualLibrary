@@ -12,6 +12,6 @@ namespace ApexVisual.SessionDocumentation
         public SessionType Mode {get; set;}
         public Team Team {get; set;}
         public Driver Driver {get; set;}
-        public DateTime UploadedAtUtc {get; set;}
+        public DateTime CreatedAtUtc {get; set;}
     }
 }
