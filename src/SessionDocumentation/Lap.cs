@@ -17,7 +17,7 @@ namespace ApexVisual.SessionDocumentation
         public byte PercentCoasting {get; set;}
         public byte PercentOnMaxThrottle {get; set;}
         public byte PercentOnMaxBrake {get; set;}
-        public float EndingDrs {get; set;}
+        public float EndingErs {get; set;}
         public byte GearChanges {get; set;}
         public TyreCompound EquippedTyreCompound {get; set;}
         public Guid EndingTyreWear {get; set;}
