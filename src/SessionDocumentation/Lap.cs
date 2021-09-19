@@ -6,7 +6,7 @@ namespace ApexVisual.SessionDocumentation
     public class Lap
     {
         public Guid Id {get; set;}
-        public Guid FromSession {get; set;}
+        public UInt64 FromSession {get; set;}
         public byte LapNumber {get; set;}
         public float Sector1Time {get; set;}
         public float Sector2Time {get; set;}
