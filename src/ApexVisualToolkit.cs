@@ -540,12 +540,12 @@ namespace ApexVisual
     
         public static byte FloatPercentToByte(float f)
         {
-            if (f < 1 && f > 0f)
+            if (f <= 1 && f >= 0f)
             {
                 byte ToReturn = Convert.ToByte(Math.Round(f * 100f, 0));
                 return ToReturn;
             }
-            else if (f > 0f && f < 100f)
+            else if (f >= 0f && f <= 100f)
             {
                 byte ToReturn = Convert.ToByte(Math.Round(f, 0));
                 return ToReturn;
