@@ -52,6 +52,8 @@ namespace ApexVisual.SessionDocumentation
 
         //In construction (working on)
         private Lap ConstructingLap;
+        private List<TelemetrySnapshot> HoldingTelemetrySnapshotsForThisLap;
+        private List<WheelDataArray> HoldingWheelDataArraysForThisLap;
 
         public SessionDocumentationEngine()
         {
@@ -61,6 +63,9 @@ namespace ApexVisual.SessionDocumentation
             _WheelDataArrays = new List<WheelDataArray>();
             
             LastSeen = null;
+            ConstructingLap = null;
+            HoldingTelemetrySnapshotsForThisLap = new List<TelemetrySnapshot>();
+            HoldingWheelDataArraysForThisLap = new List<WheelDataArray>();
         }
 
         public void Update(CommonSessionData csd)
@@ -181,18 +186,22 @@ namespace ApexVisual.SessionDocumentation
                             EndingTyreWear.RearRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearRight);
                             ConstructingLap.EndingTyreWear = EndingTyreWear.Id;
                             
-                            //Add the lap, add the ending tyre wear wheel data aray
-                            _Laps.Add(ConstructingLap);
-                            _WheelDataArrays.Add(EndingTyreWear);
+                            //Add all of the data
+                            _Laps.Add(ConstructingLap); //Add the lap
+                            _WheelDataArrays.Add(EndingTyreWear); //Add the wheel data arrays that tie directly to the lap
+                            _TelemetrySnapshots.AddRange(HoldingTelemetrySnapshotsForThisLap); //Add the telemetry snapshots for this lap
+                            _WheelDataArrays.AddRange(HoldingWheelDataArraysForThisLap); //Add the wheel data arrays for the lap
 
                         }
 
-                        //Write the new lap
+                        //Set up for the new lap
                         ConstructingLap = new Lap();
                         ConstructingLap.Id = Guid.NewGuid();
                         ConstructingLap.FromSession = csd.SessionId;
                         ConstructingLap.LapNumber = csd.FieldData[driver_index].CurrentLapNumber;
                         ConstructingLap.EquippedTyreCompound = csd.FieldData[driver_index].EquippedTyreCompound;
+                        HoldingTelemetrySnapshotsForThisLap.Clear();
+                        HoldingWheelDataArraysForThisLap.Clear();
                     }
 
 
@@ -287,10 +296,10 @@ namespace ApexVisual.SessionDocumentation
 
                         ts.StoredErs = LastSeen.FieldData[driver_index].StoredErsEnergy;
 
-                        //Add all that were made
-                        _TelemetrySnapshots.Add(ts);
-                        _WheelDataArrays.Add(wda_TyreWearPercent);
-                        _WheelDataArrays.Add(wda_TyreDamagePercent);
+                        //Add it to the holding pen. It will be added to the results later after the lap is completed.
+                        HoldingTelemetrySnapshotsForThisLap.Add(ts);
+                        HoldingWheelDataArraysForThisLap.Add(wda_TyreWearPercent);
+                        HoldingWheelDataArraysForThisLap.Add(wda_TyreDamagePercent);
                     }
                 } 
             }
