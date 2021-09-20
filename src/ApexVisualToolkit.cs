@@ -538,6 +538,17 @@ namespace ApexVisual
             return d.ToString();
         }
     
+        public static byte FloatPercentToByte(float f)
+        {
+            if (f > 1 || f < 0f)
+            {
+                throw new Exception("Unable to convert value '" + f.ToString() + "' to a byte percent representation");
+            }
+
+            byte ToReturn = Convert.ToByte(Math.Round(f * 100f, 0));
+            return ToReturn;
+        }
+
         #region "Soft, Medium, Hard tyre compounds for each track"
 
         public static TyreCompound MediumTyreCompoundAtTrack(Track t)
