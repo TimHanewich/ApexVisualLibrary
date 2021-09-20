@@ -75,7 +75,7 @@ namespace ApexVisual.SessionDocumentation
             {
                 if (csd.SessionTrack.HasValue)
                 {
-                    LiveCoach lc = new LiveCoach(csd.SessionTrack.Value);
+                    lc = new LiveCoach(csd.SessionTrack.Value);
                     lc.CornerStageChanged += CornerStagedChanged;
                 }
             }
