@@ -175,10 +175,10 @@ namespace ApexVisual.SessionDocumentation
                             //Ending tyre wear
                             WheelDataArray EndingTyreWear = new WheelDataArray();
                             EndingTyreWear.Id = Guid.NewGuid();
-                            EndingTyreWear.FrontLeft = LastSeen.FieldData[driver_index].TyreWear.FrontLeft;
-                            EndingTyreWear.FrontRight = LastSeen.FieldData[driver_index].TyreWear.FrontRight;
-                            EndingTyreWear.RearLeft = LastSeen.FieldData[driver_index].TyreWear.RearLeft;
-                            EndingTyreWear.RearRight = LastSeen.FieldData[driver_index].TyreWear.RearRight;
+                            EndingTyreWear.FrontLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.FrontLeft);
+                            EndingTyreWear.FrontRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.FrontRight);
+                            EndingTyreWear.RearLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearLeft);
+                            EndingTyreWear.RearRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearRight);
                             ConstructingLap.EndingTyreWear = EndingTyreWear.Id;
                             
                             //Add the lap, add the ending tyre wear wheel data aray
@@ -270,19 +270,19 @@ namespace ApexVisual.SessionDocumentation
                         //Tyre wear percent
                         WheelDataArray wda_TyreWearPercent = new WheelDataArray();
                         wda_TyreWearPercent.Id = Guid.NewGuid();
-                        wda_TyreWearPercent.RearLeft = LastSeen.FieldData[driver_index].TyreWear.RearLeft;
-                        wda_TyreWearPercent.RearRight = LastSeen.FieldData[driver_index].TyreWear.RearRight;
-                        wda_TyreWearPercent.FrontRight = LastSeen.FieldData[driver_index].TyreWear.FrontRight;
-                        wda_TyreWearPercent.FrontLeft = LastSeen.FieldData[driver_index].TyreWear.FrontLeft;
+                        wda_TyreWearPercent.RearLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearLeft);
+                        wda_TyreWearPercent.RearRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearRight);
+                        wda_TyreWearPercent.FrontRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.FrontRight);
+                        wda_TyreWearPercent.FrontLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.FrontLeft);
                         ts.TyreWearPercent = wda_TyreWearPercent.Id;
 
                         //Tyre damage percent
                         WheelDataArray wda_TyreDamagePercent = new WheelDataArray();
                         wda_TyreDamagePercent.Id = Guid.NewGuid();
-                        wda_TyreDamagePercent.RearLeft = LastSeen.FieldData[driver_index].TyreDamage.RearLeft;
-                        wda_TyreDamagePercent.RearRight = LastSeen.FieldData[driver_index].TyreDamage.RearRight;
-                        wda_TyreDamagePercent.FrontLeft = LastSeen.FieldData[driver_index].TyreDamage.FrontLeft;
-                        wda_TyreDamagePercent.FrontRight = LastSeen.FieldData[driver_index].TyreDamage.FrontRight;
+                        wda_TyreDamagePercent.RearLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreDamage.RearLeft);
+                        wda_TyreDamagePercent.RearRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreDamage.RearRight);
+                        wda_TyreDamagePercent.FrontLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreDamage.FrontLeft);
+                        wda_TyreDamagePercent.FrontRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreDamage.FrontRight);
                         ts.TyreDamagePercent = wda_TyreDamagePercent.Id;
 
                         ts.StoredErs = LastSeen.FieldData[driver_index].StoredErsEnergy;
