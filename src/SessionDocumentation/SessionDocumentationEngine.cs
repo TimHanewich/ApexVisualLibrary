@@ -53,7 +53,7 @@ namespace ApexVisual.SessionDocumentation
         //In construction (working on)
         private Lap ConstructingLap;
 
-        public SessionDocumentationEngine(byte DriverIndex)
+        public SessionDocumentationEngine()
         {
             _Sessions = new List<Session>();
             _Laps = new List<Lap>();
@@ -61,13 +61,15 @@ namespace ApexVisual.SessionDocumentation
             _WheelDataArrays = new List<WheelDataArray>();
             
             LastSeen = null;
-            driver_index = DriverIndex;
         }
 
         public void Update(CommonSessionData csd)
         {
 
             #region "set up"
+
+            //Set the driver index. This is a priority!
+            driver_index = csd.PlayerCarIndex;
 
             if (lc == null)
             {
