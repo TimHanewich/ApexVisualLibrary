@@ -6,6 +6,9 @@ using ApexVisual.Analysis;
 using Newtonsoft.Json;
 using ApexVisual.LiveSessionManagement;
 using Newtonsoft.Json.Linq;
+using Codemasters.F1_2021;
+using ApexVisual.LiveCoaching;
+using ApexVisual.SessionDocumentation;
 
 namespace testing
 {
@@ -13,38 +16,50 @@ namespace testing
     {
         static void Main(string[] args)
         {
-            Console.Write("Give me the raw data: ");
-            string val = Console.ReadLine();
+            List<byte[]> bytes = JsonConvert.DeserializeObject<List<byte[]>>(System.IO.File.ReadAllText(@"C:\Users\tahan\Downloads\Sample Telemetry Data\2021\spa race.json"));
+            Console.Write("Converting... ");
+            CommonSessionData[] AllData = ApexVisualSessionManager.BulkConvert(bytes);
+            Console.WriteLine(AllData.Length.ToString("#,##0"));
 
-            LocationTelemetry[] tele = OldToNewOptima(val);
-
-            Console.WriteLine();
-            Console.WriteLine(JsonConvert.SerializeObject(tele).Replace("\"", "\\\""));
-
-        }
-
-        public static LocationTelemetry[] OldToNewOptima(string old)
-        {
-            string toconvjson = old.Replace("\\", "");
-            JObject mjo = JObject.Parse(toconvjson);
-            JArray ja = JArray.Parse(mjo.Property("Corners").Value.ToString());
-
-            List<LocationTelemetry> ToReturn = new List<LocationTelemetry>();
-            foreach (JObject jo in ja)
+            Console.Write("Feeding... ");
+            SessionDocumentationEngine sde = new SessionDocumentationEngine();
+            foreach (CommonSessionData csd in AllData)
             {
-                LocationTelemetry lt = new LocationTelemetry();
-
-                lt.SpeedMph = Convert.ToSingle(jo.Property("OptimalSpeedMph").Value.ToString());
-                lt.Gear = Convert.ToSByte(jo.Property("OptimalGear").Value.ToString());
-                lt.Steer = Convert.ToSingle(jo.Property("OptimalSteer").Value.ToString());
-                lt.Throttle = Convert.ToSingle(jo.Property("OptimalThrottle").Value.ToString());
-                lt.Brake = Convert.ToSingle(jo.Property("OptimalBrake").Value.ToString());
-
-                ToReturn.Add(lt);
+                sde.Update(csd);
             }
+            Console.WriteLine("Done");
 
-            return ToReturn.ToArray();
+            Console.WriteLine(sde.Sessions.Length.ToString() + " sessions");
+            Console.WriteLine(sde.Laps.Length.ToString() + " laps");
+            Console.WriteLine(sde.TelemetrySnapshots.Length.ToString() + " telemetry snapshot");
+            Console.WriteLine(sde.WheelDataArrays.Length.ToString() + " wheel data arrays");
+
+            
+
         }
 
+        public static UInt64 DecodeFromSql(Int64 value)
+        {
+            return Convert.ToUInt64(value + Int64.MaxValue) + 1;
+        }
+
+        public static Int64 EncodeForSql(UInt64 value)
+        {
+            if (value > Int64.MaxValue)
+            {
+                UInt64 ToConvert = value - Convert.ToUInt64(Int64.MaxValue) - 1;
+                return Convert.ToInt64(ToConvert);
+            }
+            else
+            {
+                Int64 ToPullDown = Convert.ToInt64(value);
+                return ToPullDown - Int64.MaxValue - 1;
+            }
+        }
+
+        public static void SaveIt(CommonSessionData csd)
+        {
+
+        }
     }
 }
