@@ -48,6 +48,29 @@ namespace ApexVisual.SessionManagement
             TryRaiseDataUpdate(OngoingCanvas);
         }
 
+        #region "All in one bulk convert"
+
+        private static List<CommonSessionData> ForBulkConverting;
+
+        public static CommonSessionData[] BulkConvert(List<byte[]> all_bytes)
+        {
+            ApexVisualSessionManager sm = new ApexVisualSessionManager();
+            ForBulkConverting = new List<CommonSessionData>();
+            ForBulkConverting.Clear();
+            sm.DataUpdateAvailable += SaveUpdate;
+            foreach (byte[] b in all_bytes)
+            {
+                sm.IngestBytes(b);
+            }
+            return ForBulkConverting.ToArray();
+        }
+
+        private static void SaveUpdate(CommonSessionData csd)
+        {
+            ForBulkConverting.Add(csd);
+        }
+
+        #endregion
 
         #region "Utility functions"
 
