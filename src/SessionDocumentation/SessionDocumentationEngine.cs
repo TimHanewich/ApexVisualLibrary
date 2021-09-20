@@ -205,7 +205,7 @@ namespace ApexVisual.SessionDocumentation
             LastSeen = csd;
         }
 
-        public void CornerStagedChanged(CornerStage stage)
+        private void CornerStagedChanged(CornerStage stage)
         {
             if (stage == CornerStage.Apex)
             {
