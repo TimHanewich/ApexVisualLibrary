@@ -5,9 +5,9 @@ namespace ApexVisual.SessionDocumentation
     public class WheelDataArray
     {
         public Guid Id {get; set;}
-        public float RearLeft { get; set; }
-        public float RearRight { get; set; }
-        public float FrontLeft { get; set; }
-        public float FrontRight { get; set; }
+        public byte RearLeft { get; set; }
+        public byte RearRight { get; set; }
+        public byte FrontLeft { get; set; }
+        public byte FrontRight { get; set; }
     }
 }
