@@ -718,7 +718,6 @@ namespace ApexVisual.Cloud.Storage
         public static async Task<Session> DownloadSessionAsync(this ApexVisualManager avm, ulong id)
         {
             long ToSearchFor = ApexVisualToolkit.ULongToLong(id);
-            Console.WriteLine("To search for: " + ToSearchFor.ToString());
             string cmd = "select SessionId, Owner, Game, Track, Mode, Team, Driver, CreatedAtUtc from Session where SessionId = " + ToSearchFor.ToString();
             SqlConnection sqlcon = GetSqlConnection(avm);
             sqlcon.Open();
