@@ -21,5 +21,13 @@ namespace ApexVisual.SessionDocumentation
         public byte GearChanges {get; set;}
         public TyreCompound EquippedTyreCompound {get; set;}
         public Guid EndingTyreWear {get; set;}
+
+        public float LapTime
+        {
+            get
+            {
+                return Sector1Time + Sector2Time + Sector3Time;
+            }
+        }
     }
 }
