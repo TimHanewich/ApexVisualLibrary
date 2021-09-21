@@ -135,6 +135,12 @@ namespace ApexVisual.SessionDocumentation
 
             //Get the session to update
             Session SessionToEdit = _Session;
+
+            //Throw an error if the ID of the session being provided does NOT match what we have. In other words - it is a different session.
+            if (csd.SessionId != SessionToEdit.SessionId)
+            {
+                throw new Exception("New Session ID was provided to SessionDocumentationEngine. Expecting session: " + SessionToEdit.SessionId.ToString() + ". Provided: " + csd.SessionId.ToString());
+            }
             
             //Update details if we have a session to edit
             if (SessionToEdit != null)
