@@ -9,12 +9,20 @@ namespace ApexVisual.SessionDocumentation
     public class SessionDocumentationEngine
     {
         //private Variables
+        private OriginalCapture _OriginalCapture;
         private Session _Session;
         private List<Lap> _Laps;
         private List<TelemetrySnapshot> _TelemetrySnapshots;
         private List<WheelDataArray> _WheelDataArrays;
 
         //Publicly accessing variables
+        public OriginalCapture OriginalCapture
+        {
+            get
+            {
+                return _OriginalCapture;
+            }
+        }
         public Session Session
         {
             get
@@ -130,6 +138,12 @@ namespace ApexVisual.SessionDocumentation
                     ToAdd.SessionId = csd.SessionId;
                     ToAdd.CreatedAtUtc = DateTime.UtcNow;
                     _Session = ToAdd;
+
+                    //Add the original capture too
+                    OriginalCapture oc = new OriginalCapture();
+                    oc.SessionId = csd.SessionId;
+                    oc.CapturedAtUtc = DateTime.UtcNow;
+                    _OriginalCapture = oc;
                 } 
             }
 
