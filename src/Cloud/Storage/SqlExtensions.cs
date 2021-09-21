@@ -766,6 +766,18 @@ namespace ApexVisual.Cloud.Storage
                 ToReturn.Track = (ApexVisual.SessionManagement.Track)dr.GetByte(dr.GetOrdinal("Track"));
             }
 
+            //Mode
+            if (dr.GetOrdinal("Mode") > -1)
+            {
+                ToReturn.Mode = (SessionType)dr.GetByte(dr.GetOrdinal("Mode"));
+            }
+
+            //Team
+            if (dr.GetOrdinal("Team") > -1)
+            {
+                ToReturn.Team = (ApexVisual.SessionManagement.Team)dr.GetByte(dr.GetOrdinal("Team"));
+            }
+
             //Driver
             if (dr.GetOrdinal("Driver") > -1)
             {
