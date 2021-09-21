@@ -6,6 +6,7 @@ namespace ApexVisual.SessionDocumentation
     {
         public Guid Id {get; set;}
         public Guid FromLap {get; set;}
+        public float SessionTime {get; set;}
         public TrackLocationType LocationType {get; set;}
         public byte LocationNumber {get; set;}
         public float PositionX {get; set;}
