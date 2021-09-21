@@ -7,6 +7,8 @@ using ApexVisual.Cloud.DeveloperMessaging;
 using ApexVisual.Cloud.User;
 using ApexVisual.Cloud.ActivityLogging;
 using ApexVisual.SessionManagement;
+using ApexVisual.SessionDocumentation;
+using TimHanewich.SqlHelper;
 
 namespace ApexVisual.Cloud.Storage
 {
@@ -691,6 +693,95 @@ namespace ApexVisual.Cloud.Storage
 
         #endregion
   
+        #region "Session v2"
+
+        public static async Task UploadSessionAsync(this ApexVisualManager avm, Session s)
+        {
+            InsertHelper ih = new InsertHelper("Session");
+            ih.Add("SessionId", EncodeForSql(s.SessionId).ToString()); //be sure to encode the session id from unsigned to signed.
+            ih.Add("Owner", s.Owner.ToString(), true);
+            ih.Add("Game", Convert.ToInt32(s.Game).ToString());
+            ih.Add("Track", Convert.ToInt32(s.Track).ToString());
+            ih.Add("Mode", Convert.ToInt32(s.Mode).ToString());
+            ih.Add("Team", Convert.ToInt32(s.Team).ToString());
+            ih.Add("Driver", Convert.ToInt32(s.Driver).ToString());
+            ih.Add("CreatedAtUtc", s.CreatedAtUtc.ToString(), true);
+            string cmd = ih.ToString();
+
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            await sqlcmd.ExecuteNonQueryAsync();
+            sqlcon.Close();
+        }
+
+        public static async Task<Session> DownloadSessionAsync(this ApexVisualManager avm, UInt64 id)
+        {
+            long ToSearchFor = EncodeForSql(id);
+            string cmd = "select SessionId, Owner, Game, Track, Mode, Team, Driver, CreatedAtUtc from Session where SessionId = " + ToSearchFor.ToString();
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            if (dr.HasRows)
+            {
+                await dr.ReadAsync();
+                Session ToReturn = ExtractSessionFromSqlDataReader(dr);
+                sqlcon.Close();
+                return ToReturn;
+            }
+            else
+            {
+                sqlcon.Close();
+                throw new Exception("Unable to find session with session id '" + id.ToString() + "'");
+            }
+        }
+
+        private static Session ExtractSessionFromSqlDataReader(SqlDataReader dr)
+        {
+            Session ToReturn = new Session();
+
+            //SessionId
+            if (dr.GetOrdinal("SessionId") > -1)
+            {
+                ToReturn.SessionId = DecodeFromSql(dr.GetInt64(dr.GetOrdinal("SessionId")));
+            }
+
+            //Owner
+            if (dr.GetOrdinal("Owner") > -1)
+            {
+                ToReturn.Owner = dr.GetGuid(dr.GetOrdinal("Owner"));
+            }
+
+            //Game
+            if (dr.GetOrdinal("Game") > -1)
+            {
+                ToReturn.Game = (CodemastersF1Game)dr.GetByte(dr.GetOrdinal("Game"));
+            }
+
+            //Track
+            if (dr.GetOrdinal("Track") > -1)
+            {
+                ToReturn.Track = (ApexVisual.SessionManagement.Track)dr.GetByte(dr.GetOrdinal("Track"));
+            }
+
+            //Driver
+            if (dr.GetOrdinal("Driver") > -1)
+            {
+                ToReturn.Driver = (ApexVisual.SessionManagement.Driver)dr.GetByte(dr.GetOrdinal("Driver"));
+            }
+
+            //CreatedAtUtc
+            if (dr.GetOrdinal("CreatedAtUtc") > -1)
+            {
+                ToReturn.CreatedAtUtc = dr.GetDateTime(dr.GetOrdinal("CreatedAtUtc"));
+            }
+
+            return ToReturn;
+        }
+
+        #endregion
+
         #region "Helper functions"
 
         private static SqlConnection GetSqlConnection(this ApexVisualManager avm)
@@ -705,6 +796,25 @@ namespace ApexVisual.Cloud.Storage
             string date_END = (date.AddDays(1)).Year.ToString("0000") + "-" + (date.AddDays(1)).Month.ToString("00") + "-" + (date.AddDays(1)).Day.ToString("00");
             string ToReturn = column_name + " >= '" + date_START + "' and " + column_name + " < '" + date_END + "'";
             return ToReturn;
+        }
+
+        public static UInt64 DecodeFromSql(Int64 value)
+        {
+            return Convert.ToUInt64(value + Int64.MaxValue) + 1;
+        }
+
+        public static Int64 EncodeForSql(UInt64 value)
+        {
+            if (value > Int64.MaxValue)
+            {
+                UInt64 ToConvert = value - Convert.ToUInt64(Int64.MaxValue) - 1;
+                return Convert.ToInt64(ToConvert);
+            }
+            else
+            {
+                Int64 ToPullDown = Convert.ToInt64(value);
+                return ToPullDown - Int64.MaxValue - 1;
+            }
         }
 
         #endregion
