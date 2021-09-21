@@ -175,8 +175,7 @@ namespace ApexVisual.SessionDocumentation
                         ConstructingLap.FromSession = csd.SessionId;
                         ConstructingLap.LapNumber = csd.FieldData[driver_index].CurrentLapNumber;
                         ConstructingLap.EquippedTyreCompound = csd.FieldData[driver_index].EquippedTyreCompound;
-                        HoldingTelemetrySnapshotsForThisLap.Clear();
-                        HoldingWheelDataArraysForThisLap.Clear();
+                        
                     }
                 }
             }
@@ -308,6 +307,8 @@ namespace ApexVisual.SessionDocumentation
             //Clear it
             ConstructingLap = new Lap();
             ConstructingLap.Id = Guid.NewGuid();
+            HoldingTelemetrySnapshotsForThisLap.Clear();
+            HoldingWheelDataArraysForThisLap.Clear();
         }
     }
 }
