@@ -698,7 +698,7 @@ namespace ApexVisual.Cloud.Storage
         public static async Task UploadSessionAsync(this ApexVisualManager avm, Session s)
         {
             InsertHelper ih = new InsertHelper("Session");
-            ih.Add("SessionId", EncodeForSql(s.SessionId).ToString()); //be sure to encode the session id from unsigned to signed.
+            ih.Add("SessionId", ApexVisualToolkit.ULongToLong(s.SessionId).ToString()); //be sure to encode the session id from unsigned to signed.
             ih.Add("Owner", s.Owner.ToString(), true);
             ih.Add("Game", Convert.ToInt32(s.Game).ToString());
             ih.Add("Track", Convert.ToInt32(s.Track).ToString());
@@ -715,9 +715,10 @@ namespace ApexVisual.Cloud.Storage
             sqlcon.Close();
         }
 
-        public static async Task<Session> DownloadSessionAsync(this ApexVisualManager avm, UInt64 id)
+        public static async Task<Session> DownloadSessionAsync(this ApexVisualManager avm, ulong id)
         {
-            long ToSearchFor = EncodeForSql(id);
+            long ToSearchFor = ApexVisualToolkit.ULongToLong(id);
+            Console.WriteLine("To search for: " + ToSearchFor.ToString());
             string cmd = "select SessionId, Owner, Game, Track, Mode, Team, Driver, CreatedAtUtc from Session where SessionId = " + ToSearchFor.ToString();
             SqlConnection sqlcon = GetSqlConnection(avm);
             sqlcon.Open();
@@ -744,7 +745,8 @@ namespace ApexVisual.Cloud.Storage
             //SessionId
             if (dr.GetOrdinal("SessionId") > -1)
             {
-                ToReturn.SessionId = DecodeFromSql(dr.GetInt64(dr.GetOrdinal("SessionId")));
+                long SID = dr.GetInt64(dr.GetOrdinal("SessionId"));
+                ToReturn.SessionId = ApexVisualToolkit.LongToUlong(SID);
             }
 
             //Owner
@@ -796,25 +798,6 @@ namespace ApexVisual.Cloud.Storage
             string date_END = (date.AddDays(1)).Year.ToString("0000") + "-" + (date.AddDays(1)).Month.ToString("00") + "-" + (date.AddDays(1)).Day.ToString("00");
             string ToReturn = column_name + " >= '" + date_START + "' and " + column_name + " < '" + date_END + "'";
             return ToReturn;
-        }
-
-        public static UInt64 DecodeFromSql(Int64 value)
-        {
-            return Convert.ToUInt64(value + Int64.MaxValue) + 1;
-        }
-
-        public static Int64 EncodeForSql(UInt64 value)
-        {
-            if (value > Int64.MaxValue)
-            {
-                UInt64 ToConvert = value - Convert.ToUInt64(Int64.MaxValue) - 1;
-                return Convert.ToInt64(ToConvert);
-            }
-            else
-            {
-                Int64 ToPullDown = Convert.ToInt64(value);
-                return ToPullDown - Int64.MaxValue - 1;
-            }
         }
 
         #endregion

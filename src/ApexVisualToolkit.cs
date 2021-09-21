@@ -556,6 +556,20 @@ namespace ApexVisual
             } 
         }
 
+        public static long ULongToLong(ulong value)
+        {
+            byte[] bytes = BitConverter.GetBytes(value);
+            long ToReturn = BitConverter.ToInt64(bytes);
+            return ToReturn;
+        }
+
+        public static ulong LongToUlong(long value)
+        {
+            byte[] bytes = BitConverter.GetBytes(value);
+            ulong ToReturn = BitConverter.ToUInt64(bytes);
+            return ToReturn;
+        }
+
         #region "Soft, Medium, Hard tyre compounds for each track"
 
         public static TyreCompound MediumTyreCompoundAtTrack(Track t)
