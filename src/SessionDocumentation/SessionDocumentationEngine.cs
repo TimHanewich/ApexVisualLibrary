@@ -50,6 +50,15 @@ namespace ApexVisual.SessionDocumentation
         private CommonSessionData LastSeen;
         private LiveCoach lc;
 
+        //Private variables for tracking mid-lap statistics
+        private uint OnThrottle;
+        private uint OnBrake;
+        private uint OnCoasting;
+        private uint OnMaxThrottle;
+        private uint OnMaxBrake;
+        private uint GearChanges;
+        private sbyte LastGearSeen;
+
         //In construction (working on)
         private Lap ConstructingLap;
         private List<TelemetrySnapshot> HoldingTelemetrySnapshotsForThisLap;
@@ -175,6 +184,45 @@ namespace ApexVisual.SessionDocumentation
                         ConstructingLap.LapNumber = csd.FieldData[driver_index].CurrentLapNumber;
                         ConstructingLap.EquippedTyreCompound = csd.FieldData[driver_index].EquippedTyreCompound;
                     }
+                    else //Document the mid-lap statistics. For example, percent on throttle.
+                    {
+                        //On Throttle?
+                        if (csd.FieldData[driver_index].Throttle > 0)
+                        {
+                            OnThrottle = OnThrottle + 1;
+                        }
+
+                        //On Brake?
+                        if (csd.FieldData[driver_index].Brake > 0)
+                        {
+                            OnBrake = OnBrake + 1;
+                        }
+
+                        //Coasting?
+                        if (csd.FieldData[driver_index].Throttle == 0 && csd.FieldData[driver_index].Brake == 0)
+                        {
+                            OnCoasting = OnCoasting + 1;
+                        }
+
+                        //On Max Throttle?
+                        if (csd.FieldData[driver_index].Throttle == 1)
+                        {
+                            OnMaxThrottle = OnMaxThrottle + 1;
+                        }
+
+                        //On Max Brake?
+                        if (csd.FieldData[driver_index].Brake == 1)
+                        {
+                            OnMaxBrake = OnMaxBrake + 1;
+                        }
+
+                        //Gear changes?
+                        if (LastGearSeen != csd.FieldData[driver_index].Gear)
+                        {
+                            GearChanges = GearChanges + 1;
+                            LastGearSeen = csd.FieldData[driver_index].Gear;
+                        }
+                    }
                 }
             }
 
@@ -294,6 +342,18 @@ namespace ApexVisual.SessionDocumentation
                 EndingTyreWear.RearLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearLeft);
                 EndingTyreWear.RearRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearRight);
                 ConstructingLap.EndingTyreWear = EndingTyreWear.Id;
+
+                #region "mid-lap statistis"
+
+                uint TotalCount = OnThrottle + OnBrake + OnCoasting; //Represents the # of packets in this lap.
+
+                ConstructingLap.PercentOnThrottle = ApexVisualToolkit.FloatPercentToByte(Convert.ToSingle(OnThrottle) / Convert.ToSingle(TotalCount));
+                ConstructingLap.PercentOnBrake = ApexVisualToolkit.FloatPercentToByte(Convert.ToSingle(OnBrake) / Convert.ToSingle(TotalCount));
+                ConstructingLap.PercentCoasting = ApexVisualToolkit.FloatPercentToByte(Convert.ToSingle(OnCoasting) / Convert.ToSingle(TotalCount));
+                ConstructingLap.PercentOnMaxThrottle = ApexVisualToolkit.FloatPercentToByte(Convert.ToSingle(OnMaxThrottle) / Convert.ToSingle(TotalCount));
+                ConstructingLap.PercentOnMaxBrake = ApexVisualToolkit.FloatPercentToByte(Convert.ToSingle(OnMaxBrake) / Convert.ToSingle(TotalCount));
+                
+                #endregion
                 
                 //Add all of the data
                 _Laps.Add(ConstructingLap); //Add the lap
@@ -302,11 +362,17 @@ namespace ApexVisual.SessionDocumentation
                 _WheelDataArrays.AddRange(HoldingWheelDataArraysForThisLap); //Add the wheel data arrays for the lap
             }
 
-            //Clear it
+            //Clear it for next time
             ConstructingLap = new Lap();
             ConstructingLap.Id = Guid.NewGuid();
             HoldingTelemetrySnapshotsForThisLap.Clear();
             HoldingWheelDataArraysForThisLap.Clear();
+            OnThrottle = 0;
+            OnBrake = 0;
+            OnCoasting = 0;
+            OnMaxThrottle = 0;
+            OnMaxBrake = 0;
+            GearChanges = 0;
         }
     }
 }
