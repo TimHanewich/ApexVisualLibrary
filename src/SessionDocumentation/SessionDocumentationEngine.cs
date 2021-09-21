@@ -45,10 +45,10 @@ namespace ApexVisual.SessionDocumentation
         }
         
         //Private variables for tracking status
+        private ApexVisualSessionManager sm;
         private byte driver_index;
         private CommonSessionData LastSeen;
         private LiveCoach lc;
-
 
         //In construction (working on)
         private Lap ConstructingLap;
@@ -62,10 +62,19 @@ namespace ApexVisual.SessionDocumentation
             _TelemetrySnapshots = new List<TelemetrySnapshot>();
             _WheelDataArrays = new List<WheelDataArray>();
             
+            //Set up the session manager
+            sm = new ApexVisualSessionManager();
+            sm.DataUpdateAvailable += Update;
+
             LastSeen = null;
             ConstructingLap = null;
             HoldingTelemetrySnapshotsForThisLap = new List<TelemetrySnapshot>();
             HoldingWheelDataArraysForThisLap = new List<WheelDataArray>();
+        }
+
+        public void Update(byte[] bytes)
+        {
+            sm.IngestBytes(bytes);
         }
 
         public void Update(CommonSessionData csd)
