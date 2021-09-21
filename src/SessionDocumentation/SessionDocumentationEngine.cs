@@ -284,6 +284,7 @@ namespace ApexVisual.SessionDocumentation
                         TelemetrySnapshot ts = new TelemetrySnapshot();
                         ts.Id = Guid.NewGuid();
                         ts.FromLap = ConstructingLap.Id;
+                        ts.SessionTime = LastSeen.SessionTime;
                         ts.LocationType = TrackLocationType.Corner;
                         ts.LocationNumber = lc.AtCorner;
                         ts.PositionX = LastSeen.FieldData[driver_index].PositionX;
