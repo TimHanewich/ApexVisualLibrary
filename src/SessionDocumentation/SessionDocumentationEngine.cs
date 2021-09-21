@@ -9,17 +9,17 @@ namespace ApexVisual.SessionDocumentation
     public class SessionDocumentationEngine
     {
         //private Variables
-        private List<Session> _Sessions;
+        private Session _Session;
         private List<Lap> _Laps;
         private List<TelemetrySnapshot> _TelemetrySnapshots;
         private List<WheelDataArray> _WheelDataArrays;
 
         //Publicly accessing variables
-        public Session[] Sessions
+        public Session Session
         {
             get
             {
-                return _Sessions.ToArray();
+                return _Session;
             }
         }
         public Lap[] Laps
@@ -57,7 +57,7 @@ namespace ApexVisual.SessionDocumentation
 
         public SessionDocumentationEngine()
         {
-            _Sessions = new List<Session>();
+            _Session = null;
             _Laps = new List<Lap>();
             _TelemetrySnapshots = new List<TelemetrySnapshot>();
             _WheelDataArrays = new List<WheelDataArray>();
@@ -108,13 +108,10 @@ namespace ApexVisual.SessionDocumentation
             {
 
                 //Add the session if we don't have the session yet.
-                bool NeedToAdd = true;
-                foreach (Session s in _Sessions)
+                bool NeedToAdd = false;
+                if (_Session == null)
                 {
-                    if (s.SessionId == csd.SessionId)
-                    {
-                        NeedToAdd = false;
-                    }
+                    NeedToAdd = true;
                 }
 
                 //Add it if we need to add it
@@ -123,20 +120,13 @@ namespace ApexVisual.SessionDocumentation
                     Session ToAdd = new Session();
                     ToAdd.SessionId = csd.SessionId;
                     ToAdd.CreatedAtUtc = DateTime.UtcNow;
-                    _Sessions.Add(ToAdd);
+                    _Session = ToAdd;
                 } 
             }
 
             //Get the session to update
-            Session SessionToEdit = null;
-            foreach (Session s in _Sessions)
-            {
-                if (s.SessionId == csd.SessionId)
-                {
-                    SessionToEdit = s;
-                }
-            }
-
+            Session SessionToEdit = _Session;
+            
             //Update details if we have a session to edit
             if (SessionToEdit != null)
             {
