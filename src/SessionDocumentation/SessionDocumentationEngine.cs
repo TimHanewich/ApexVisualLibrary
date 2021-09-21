@@ -168,43 +168,16 @@ namespace ApexVisual.SessionDocumentation
                     //Are we on a new lap now? (just crossed the line)
                     if (csd.FieldData[driver_index].CurrentLapNumber > LastSeen.FieldData[driver_index].CurrentLapNumber)
                     {
-                        //Save the last lap
-                        if (ConstructingLap != null)
-                        {
-                            ConstructingLap.Sector3Time = csd.FieldData[driver_index].LastLapTimeSeconds - LastSeen.FieldData[driver_index].Sector1TimeSeconds - LastSeen.FieldData[driver_index].Sector2TimeSeconds;
-                            ConstructingLap.EndingFuel = LastSeen.FieldData[driver_index].FuelInTank;
-                            ConstructingLap.Sector1Time = LastSeen.FieldData[driver_index].Sector1TimeSeconds;
-                            ConstructingLap.Sector2Time = LastSeen.FieldData[driver_index].Sector2TimeSeconds;
-                            ConstructingLap.EndingErs = LastSeen.FieldData[driver_index].StoredErsEnergy;
-                            
-                            //Ending tyre wear
-                            WheelDataArray EndingTyreWear = new WheelDataArray();
-                            EndingTyreWear.Id = Guid.NewGuid();
-                            EndingTyreWear.FrontLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.FrontLeft);
-                            EndingTyreWear.FrontRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.FrontRight);
-                            EndingTyreWear.RearLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearLeft);
-                            EndingTyreWear.RearRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearRight);
-                            ConstructingLap.EndingTyreWear = EndingTyreWear.Id;
-                            
-                            //Add all of the data
-                            _Laps.Add(ConstructingLap); //Add the lap
-                            _WheelDataArrays.Add(EndingTyreWear); //Add the wheel data arrays that tie directly to the lap
-                            _TelemetrySnapshots.AddRange(HoldingTelemetrySnapshotsForThisLap); //Add the telemetry snapshots for this lap
-                            _WheelDataArrays.AddRange(HoldingWheelDataArraysForThisLap); //Add the wheel data arrays for the lap
-
-                        }
+                        //Close the lap   
+                        CloseLap(csd.FieldData[driver_index].LastLapTimeSeconds);
 
                         //Set up for the new lap
-                        ConstructingLap = new Lap();
-                        ConstructingLap.Id = Guid.NewGuid();
                         ConstructingLap.FromSession = csd.SessionId;
                         ConstructingLap.LapNumber = csd.FieldData[driver_index].CurrentLapNumber;
                         ConstructingLap.EquippedTyreCompound = csd.FieldData[driver_index].EquippedTyreCompound;
                         HoldingTelemetrySnapshotsForThisLap.Clear();
                         HoldingWheelDataArraysForThisLap.Clear();
                     }
-
-
                 }
             }
 
@@ -303,6 +276,38 @@ namespace ApexVisual.SessionDocumentation
                     }
                 } 
             }
+        }
+    
+        private void CloseLap(float last_lap_time)
+        {
+            //Save the last lap
+            if (ConstructingLap != null)
+            {
+                ConstructingLap.Sector3Time = last_lap_time - LastSeen.FieldData[driver_index].Sector1TimeSeconds - LastSeen.FieldData[driver_index].Sector2TimeSeconds;
+                ConstructingLap.EndingFuel = LastSeen.FieldData[driver_index].FuelInTank;
+                ConstructingLap.Sector1Time = LastSeen.FieldData[driver_index].Sector1TimeSeconds;
+                ConstructingLap.Sector2Time = LastSeen.FieldData[driver_index].Sector2TimeSeconds;
+                ConstructingLap.EndingErs = LastSeen.FieldData[driver_index].StoredErsEnergy;
+                
+                //Ending tyre wear
+                WheelDataArray EndingTyreWear = new WheelDataArray();
+                EndingTyreWear.Id = Guid.NewGuid();
+                EndingTyreWear.FrontLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.FrontLeft);
+                EndingTyreWear.FrontRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.FrontRight);
+                EndingTyreWear.RearLeft = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearLeft);
+                EndingTyreWear.RearRight = ApexVisualToolkit.FloatPercentToByte(LastSeen.FieldData[driver_index].TyreWear.RearRight);
+                ConstructingLap.EndingTyreWear = EndingTyreWear.Id;
+                
+                //Add all of the data
+                _Laps.Add(ConstructingLap); //Add the lap
+                _WheelDataArrays.Add(EndingTyreWear); //Add the wheel data arrays that tie directly to the lap
+                _TelemetrySnapshots.AddRange(HoldingTelemetrySnapshotsForThisLap); //Add the telemetry snapshots for this lap
+                _WheelDataArrays.AddRange(HoldingWheelDataArraysForThisLap); //Add the wheel data arrays for the lap
+            }
+
+            //Clear it
+            ConstructingLap = new Lap();
+            ConstructingLap.Id = Guid.NewGuid();
         }
     }
 }
