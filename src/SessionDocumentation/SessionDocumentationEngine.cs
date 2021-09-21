@@ -175,7 +175,6 @@ namespace ApexVisual.SessionDocumentation
                         ConstructingLap.FromSession = csd.SessionId;
                         ConstructingLap.LapNumber = csd.FieldData[driver_index].CurrentLapNumber;
                         ConstructingLap.EquippedTyreCompound = csd.FieldData[driver_index].EquippedTyreCompound;
-                        
                     }
                 }
             }
