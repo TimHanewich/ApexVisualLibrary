@@ -162,6 +162,26 @@ namespace ApexVisual.SessionDocumentation
                     }
                 }
 
+                //Format/Game
+                switch (csd.Format)
+                {
+                    case 2017:
+                        SessionToEdit.Game = CodemastersF1Game.F1_2017;
+                        break;
+                    case 2018:
+                        SessionToEdit.Game = CodemastersF1Game.F1_2018;
+                        break;
+                    case 2019:
+                        SessionToEdit.Game = CodemastersF1Game.F1_2019;
+                        break;
+                    case 2020:
+                        SessionToEdit.Game = CodemastersF1Game.F1_2020;
+                        break;
+                    case 2021:
+                        SessionToEdit.Game = CodemastersF1Game.F1_2021;
+                        break;
+                }
+
             }
 
 
