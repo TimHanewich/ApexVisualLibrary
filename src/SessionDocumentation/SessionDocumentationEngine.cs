@@ -352,7 +352,8 @@ namespace ApexVisual.SessionDocumentation
                 ConstructingLap.PercentCoasting = ApexVisualToolkit.FloatPercentToByte(Convert.ToSingle(OnCoasting) / Convert.ToSingle(TotalCount));
                 ConstructingLap.PercentOnMaxThrottle = ApexVisualToolkit.FloatPercentToByte(Convert.ToSingle(OnMaxThrottle) / Convert.ToSingle(TotalCount));
                 ConstructingLap.PercentOnMaxBrake = ApexVisualToolkit.FloatPercentToByte(Convert.ToSingle(OnMaxBrake) / Convert.ToSingle(TotalCount));
-                
+                ConstructingLap.GearChanges = Convert.ToInt16(GearChanges);
+
                 #endregion
                 
                 //Add all of the data
