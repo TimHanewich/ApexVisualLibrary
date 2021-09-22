@@ -559,14 +559,14 @@ namespace ApexVisual
         public static long ULongToLong(ulong value)
         {
             byte[] bytes = BitConverter.GetBytes(value);
-            long ToReturn = BitConverter.ToInt64(bytes);
+            long ToReturn = BitConverter.ToInt64(bytes, 0);
             return ToReturn;
         }
 
         public static ulong LongToUlong(long value)
         {
             byte[] bytes = BitConverter.GetBytes(value);
-            ulong ToReturn = BitConverter.ToUInt64(bytes);
+            ulong ToReturn = BitConverter.ToUInt64(bytes, 0);
             return ToReturn;
         }
 
