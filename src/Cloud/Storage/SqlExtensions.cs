@@ -1192,7 +1192,7 @@ namespace ApexVisual.Cloud.Storage
         
         public static async Task<TelemetrySnapshot[]> DownloadTelemetrySnapshotsAsync(this ApexVisualManager avm, ulong session_id)
         {
-            string cmd = "select Id, FromLap, SessionTime, LocationType, LocationNumber, PositionX, PositionY, PositionZ, CurrentLapTime, CarPosition, LapInvalid, SpeedKph, Throttle, Steer, Brake, Gear, DrsActive, TyreWearPercent, TyreDamagePercent, StoredErs from TelemetrySnapshot inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(session_id).ToString();
+            string cmd = "select TelemetrySnapshot.Id as Id, FromLap, SessionTime, LocationType, LocationNumber, PositionX, PositionY, PositionZ, CurrentLapTime, CarPosition, LapInvalid, SpeedKph, Throttle, Steer, Brake, Gear, DrsActive, TyreWearPercent, TyreDamagePercent, StoredErs from TelemetrySnapshot inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(session_id).ToString();
             SqlConnection sqlcon = GetSqlConnection(avm);
             sqlcon.Open();
             SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);

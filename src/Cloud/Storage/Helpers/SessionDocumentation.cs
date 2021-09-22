@@ -19,6 +19,13 @@ namespace ApexVisual.Cloud.Storage.Helpers
         private List<WheelDataArray> _WheelDataArray;
 
         //Public vars
+        public OriginalCapture OriginalCapture
+        {
+            get
+            {
+                return _OriginalCapture;
+            }
+        }
         public Session Session
         {
             get
@@ -149,11 +156,25 @@ namespace ApexVisual.Cloud.Storage.Helpers
             _WheelDataArray.Clear();
             foreach (Guid g in ToDownloadWheelDataArrays)
             {
-                WheelDataArray wda = await avm.DownloadWheelDataArrayAsync(g);
-                _WheelDataArray.Add(wda);
+                try
+                {
+                    WheelDataArray wda = await avm.DownloadWheelDataArrayAsync(g);
+                    _WheelDataArray.Add(wda);
+                }
+                catch
+                {
+
+                }
             }
 
         }
+
+        // public async Task ComprehensiveUploadAsync(SessionDocumentationEngine sde)
+        // {
+            
+        // }
+
+        
 
         #endregion
 
