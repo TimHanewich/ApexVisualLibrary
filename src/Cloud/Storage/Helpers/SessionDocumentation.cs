@@ -87,6 +87,9 @@ namespace ApexVisual.Cloud.Storage.Helpers
             avm = apex_viusal_manager;
         }
 
+
+        #region "Retrieval"
+
         public async Task<OriginalCapture> OriginalCaptureAsync()
         {
             if (_OriginalCapture == null)
@@ -96,6 +99,37 @@ namespace ApexVisual.Cloud.Storage.Helpers
             }
             return _OriginalCapture;
         }
+
+        public async Task<Lap> LapAsync(byte lap_number)
+        {
+            foreach (Lap l in _Laps)
+            {
+                if (l.LapNumber == lap_number)
+                {
+                    return l;
+                }
+            }
+            Lap lll = await avm.DownloadLapAsync(_Session.SessionId, lap_number);
+            _Laps.Add(lll);
+            return lll;
+        }
+
+        public async Task<Lap[]> AllLapsAsync()
+        {
+            Lap[] laps = await avm.DownloadLapsFromSessionAsync(Session.SessionId);
+            _Laps.Clear();
+            _Laps.AddRange(laps);
+            return laps;
+        }
+
+        public async Task<byte[]> AvailableLapsAsync()
+        {
+            ThrowExceptionIfAvmNotProvided();
+            byte[] ToReturn = await avm.AvailableLapsAsync(Session.SessionId);
+            return ToReturn;
+        }
+
+        #endregion
 
         #region  "UTILITY"
 

@@ -946,6 +946,39 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn.ToArray();
         }
 
+        public static async Task<Lap> DownloadLapAsync(this ApexVisualManager avm, ulong session_id, byte lap_number)
+        {
+            string cmd = "select Id, FromSession, LapNumber, Sector1Time, Sector2Time, Sector3Time, EndingFuel, PercentOnThrottle, PercentOnBrake, PercentCoasting, PercentOnMaxThrottle, PercentOnMaxBrake, EndingErs, GearChanges, EquippedTyreCompound, EndingTyreWear from Lap where FromSession = " + ApexVisualToolkit.ULongToLong(session_id).ToString() + " and LapNumber = " + lap_number.ToString();
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            if (dr.HasRows == false)
+            {
+                sqlcon.Close();
+                throw new Exception("Unable to find lap " + lap_number.ToString() + " for session " + session_id.ToString());
+            }
+            await dr.ReadAsync();
+            Lap ToReturn = ExtractLapFromSqlDataReader(dr);
+            return ToReturn;
+        }
+
+        public static async Task<byte[]> AvailableLapsAsync(this ApexVisualManager avm, ulong session_id)
+        {
+            string cmd = "select LapNumber from Lap where FromSession = " + ApexVisualToolkit.ULongToLong(session_id).ToString();
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            List<byte> ToReturn = new List<byte>();
+            while (dr.Read())
+            {
+                ToReturn.Add(dr.GetByte(0));
+            }
+            sqlcon.Close();
+            return ToReturn.ToArray();
+        }
+
         private static Lap ExtractLapFromSqlDataReader(SqlDataReader dr)
         {
             Lap ToReturn = new Lap();
