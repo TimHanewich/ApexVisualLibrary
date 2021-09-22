@@ -930,7 +930,7 @@ namespace ApexVisual.Cloud.Storage
             await ExecuteNonQueryAsync(avm, ih.ToString());
         }
 
-        public static async Task<Lap[]> GetLapsFromSessionAsync(this ApexVisualManager avm, ulong session_id)
+        public static async Task<Lap[]> DownloadLapsFromSessionAsync(this ApexVisualManager avm, ulong session_id)
         {
             string cmd = "select Id, FromSession, LapNumber, Sector1Time, Sector2Time, Sector3Time, EndingFuel, PercentOnThrottle, PercentOnBrake, PercentCoasting, PercentOnMaxThrottle, PercentOnMaxBrake, EndingErs, GearChanges, EquippedTyreCompound, EndingTyreWear from Lap where FromSession = " + ApexVisualToolkit.ULongToLong(session_id).ToString();
             SqlConnection sqlcon = GetSqlConnection(avm);
