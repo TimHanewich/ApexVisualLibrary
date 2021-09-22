@@ -942,33 +942,53 @@ namespace ApexVisual.Cloud.Storage
             ApexVisual.SessionDocumentation.WheelDataArray ToReturn = new SessionDocumentation.WheelDataArray();
 
             //Id
-            if (dr.GetOrdinal("Id") > -1)
+            try
             {
                 ToReturn.Id = dr.GetGuid(dr.GetOrdinal("Id"));
             }
+            catch
+            {
+
+            }
 
             //Rear left
-            if (dr.GetOrdinal("RearLeft") > -1)
+            try
             {
                 ToReturn.RearLeft = dr.GetByte(dr.GetOrdinal("RearLeft"));
             }
+            catch
+            {
+
+            }
 
             //Rear right
-            if (dr.GetOrdinal("RearRight") > -1)
+            try
             {
                 ToReturn.RearRight = dr.GetByte(dr.GetOrdinal("RearRight"));
             }
+            catch
+            {
+
+            }
 
             //Front left
-            if (dr.GetOrdinal("FrontLeft") > -1)
+            try
             {
                 ToReturn.FrontLeft = dr.GetByte(dr.GetOrdinal("FrontLeft"));
             }
+            catch
+            {
+
+            }
 
             //Front right
-            if (dr.GetOrdinal("FrontRight") > -1)
+            try
             {
                 ToReturn.FrontRight = dr.GetByte(dr.GetOrdinal("FrontRight"));
+            }
+            catch
+            {
+
             }
 
             return ToReturn;
