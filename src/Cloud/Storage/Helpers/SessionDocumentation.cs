@@ -131,6 +131,48 @@ namespace ApexVisual.Cloud.Storage.Helpers
 
         #endregion
 
+        #region "Comprehensive"
+
+        public async Task ComprehensiveRetrievalAsync()
+        {
+            ThrowExceptionIfAvmNotProvided();
+
+            //Get original capture
+            _OriginalCapture = await avm.DownloadOriginalCaptureAsync(Session.SessionId);
+
+            //Get laps
+            Lap[] ls = await avm.DownloadLapsFromSessionAsync(Session.SessionId);
+            _Laps.Clear();
+            _Laps.AddRange(ls);
+
+            //Telemetry Snapshots
+            TelemetrySnapshot[] snapshots = await avm.DownloadTelemetrySnapshotsAsync(Session.SessionId);
+            _TelemetrySnapshots.Clear();
+            _TelemetrySnapshots.AddRange(snapshots);
+
+            //Now assemble all of the wheel data arrays
+            List<Guid> ToDownloadWheelDataArrays = new List<Guid>();
+            foreach (Lap l in _Laps)
+            {
+                ToDownloadWheelDataArrays.Add(l.EndingTyreWear);
+            }
+            foreach (TelemetrySnapshot ts in _TelemetrySnapshots)
+            {
+                ToDownloadWheelDataArrays.Add(ts.TyreWearPercent);
+                ToDownloadWheelDataArrays.Add(ts.TyreDamagePercent);
+            }
+            _WheelDataArray.Clear();
+            foreach (Guid g in ToDownloadWheelDataArrays)
+            {
+                WheelDataArray wda = await avm.DownloadWheelDataArrayAsync(g);
+                _WheelDataArray.Add(wda);
+            }
+
+        }
+
+        #endregion
+
+
         #region  "UTILITY"
 
         private void ThrowExceptionIfAvmNotProvided()

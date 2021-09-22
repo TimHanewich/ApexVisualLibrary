@@ -1174,7 +1174,7 @@ namespace ApexVisual.Cloud.Storage
             await ExecuteNonQueryAsync(avm, ih.ToString());
         }
 
-        public static async Task<TelemetrySnapshot[]> GetTelemetrySnapshotsFromLapAsync(this ApexVisualManager avm, Guid lap_id)
+        public static async Task<TelemetrySnapshot[]> DownloadTelemetrySnapshotsAsync(this ApexVisualManager avm, Guid lap_id)
         {
             string cmd = "select Id, FromLap, SessionTime, LocationType, LocationNumber, PositionX, PositionY, PositionZ, CurrentLapTime, CarPosition, LapInvalid, SpeedKph, Throttle, Steer, Brake, Gear, DrsActive, TyreWearPercent, TyreDamagePercent, StoredErs from TelemetrySnapshot where FromLap = '" + lap_id.ToString() + "'";
             SqlConnection sqlcon = GetSqlConnection(avm);
@@ -1190,6 +1190,22 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn.ToArray();
         }
         
+        public static async Task<TelemetrySnapshot[]> DownloadTelemetrySnapshotsAsync(this ApexVisualManager avm, ulong session_id)
+        {
+            string cmd = "select Id, FromLap, SessionTime, LocationType, LocationNumber, PositionX, PositionY, PositionZ, CurrentLapTime, CarPosition, LapInvalid, SpeedKph, Throttle, Steer, Brake, Gear, DrsActive, TyreWearPercent, TyreDamagePercent, StoredErs from TelemetrySnapshot inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(session_id).ToString();
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            List<TelemetrySnapshot> ToReturn = new List<TelemetrySnapshot>();
+            while (dr.Read())
+            {
+                ToReturn.Add(ExtractTelemetrySnapshotFromSqlDataReader(dr));
+            }
+            sqlcon.Close();
+            return ToReturn.ToArray();
+        }
+
         private static TelemetrySnapshot ExtractTelemetrySnapshotFromSqlDataReader(SqlDataReader dr)
         {
             TelemetrySnapshot ToReturn = new TelemetrySnapshot();
