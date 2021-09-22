@@ -935,6 +935,215 @@ namespace ApexVisual.Cloud.Storage
             await ExecuteNonQueryAsync(avm, ih.ToString());
         }
 
+        private static TelemetrySnapshot ExtractTelemetrySnapshotFromSqlDataReader(SqlDataReader dr)
+        {
+            TelemetrySnapshot ToReturn = new TelemetrySnapshot();
+
+            //Id
+            try
+            {
+                ToReturn.Id = dr.GetGuid(dr.GetOrdinal("Id"));
+            }
+            catch
+            {
+                
+            }
+
+            //From Lap
+            try
+            {
+                ToReturn.FromLap = dr.GetGuid(dr.GetOrdinal("FromLap"));
+            }
+            catch
+            {
+
+            }
+
+            //Session time
+            try
+            {
+                ToReturn.SessionTime = dr.GetFloat(dr.GetOrdinal("SessionTime"));
+            }
+            catch
+            {
+
+            }
+
+            //LocationType
+            try
+            {
+                ToReturn.LocationType = (TrackLocationType)dr.GetByte(dr.GetOrdinal("LocationType"));
+            }
+            catch
+            {
+
+            }
+
+            //Location number
+            try
+            {
+                ToReturn.LocationNumber = dr.GetByte(dr.GetOrdinal("LocationNumber"));
+            }
+            catch
+            {
+
+            }
+            
+            //PositionX
+            try
+            {
+                ToReturn.PositionX = dr.GetFloat(dr.GetOrdinal("PositionX"));
+            }
+            catch
+            {
+
+            }
+
+            //PositionY
+            try
+            {
+                ToReturn.PositionY = dr.GetFloat(dr.GetOrdinal("PositionY"));
+            }
+            catch
+            {
+
+            }
+
+            //PositionZ
+            try
+            {
+                ToReturn.PositionZ = dr.GetFloat(dr.GetOrdinal("PositionZ"));
+            }
+            catch
+            {
+
+            }
+
+            //CurrentLapTime
+            try
+            {
+                ToReturn.CurrentLapTime = dr.GetFloat(dr.GetOrdinal("CurrentLapTime"));
+            }
+            catch
+            {
+
+            }
+
+            //CarPosition
+            try
+            {
+                ToReturn.CarPosition = dr.GetByte(dr.GetOrdinal("CarPosition"));
+            }
+            catch
+            {
+
+            }
+
+            //Lap Invalid
+            try
+            {
+                ToReturn.LapInvalid = dr.GetBoolean(dr.GetOrdinal("LapInvalid"));
+            }
+            catch
+            {
+
+            }
+            
+            //SpeedKph
+            try
+            {
+                ToReturn.SpeedKph = dr.GetInt16(dr.GetOrdinal("SpeedKph"));
+            }
+            catch
+            {
+
+            }
+
+            //Throttle
+            try
+            {
+                ToReturn.Throttle = dr.GetByte(dr.GetOrdinal("Throttle"));
+            }
+            catch
+            {
+
+            }
+
+            //Steer
+            try
+            {
+                ToReturn.Steer = dr.GetInt16(dr.GetOrdinal("Steer"));
+            }
+            catch
+            {
+
+            }
+
+            //Brake
+            try
+            {
+                ToReturn.Brake = dr.GetByte(dr.GetOrdinal("Brake"));
+            }
+            catch
+            {
+
+            }
+
+            //Gear
+            try
+            {
+                ToReturn.Gear = (Gear)dr.GetByte(dr.GetOrdinal("Gear"));
+            }
+            catch
+            {
+
+            }
+
+            //DrsActive
+            try
+            {
+                ToReturn.DrsActive = dr.GetBoolean(dr.GetOrdinal("DrsActive"));
+            }
+            catch
+            {
+
+            }
+
+            //TyreWearPercent
+            try
+            {
+                ToReturn.TyreWearPercent = dr.GetGuid(dr.GetOrdinal("TyreWearPercent"));
+            }
+            catch
+            {
+
+            }
+
+            //Tyre damage percent
+            try
+            {
+                ToReturn.TyreDamagePercent = dr.GetGuid(dr.GetOrdinal("TyreDamagePercent"));
+            }
+            catch
+            {
+
+            }
+
+            //StoredErs
+            try
+            {
+                ToReturn.StoredErs = dr.GetFloat(dr.GetOrdinal("StoredErs"));
+            }
+            catch
+            {
+                
+            }
+
+            return ToReturn;
+        }
+
+
+
 
         public static async Task UploadWheelDataArrayAsync(this ApexVisualManager avm, ApexVisual.SessionDocumentation.WheelDataArray wda)
         {
