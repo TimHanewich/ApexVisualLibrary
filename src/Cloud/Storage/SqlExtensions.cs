@@ -915,6 +915,65 @@ namespace ApexVisual.Cloud.Storage
             await ExecuteNonQueryAsync(avm, ih.ToString());
         }
 
+        public static async Task<ApexVisual.SessionDocumentation.WheelDataArray> DownloadWheelDataArrayAsync(this ApexVisualManager avm, Guid id)
+        {
+            string cmd = "select RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray where Id = '" + id.ToString() + "'";
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            if (dr.HasRows)
+            {
+                await dr.ReadAsync();
+                ApexVisual.SessionDocumentation.WheelDataArray ToReturn = ExtractWheelDataArrayFromSqlDataReader(dr);
+                ToReturn.Id = id;
+                sqlcon.Close();
+                return ToReturn;
+            }
+            else
+            {
+                sqlcon.Close();
+                throw new Exception("Unable to find WheelDataArray with Id '" + id.ToString() + "'");
+            }
+        }
+
+        private static ApexVisual.SessionDocumentation.WheelDataArray ExtractWheelDataArrayFromSqlDataReader(SqlDataReader dr)
+        {
+            ApexVisual.SessionDocumentation.WheelDataArray ToReturn = new SessionDocumentation.WheelDataArray();
+
+            //Id
+            if (dr.GetOrdinal("Id") > -1)
+            {
+                ToReturn.Id = dr.GetGuid(dr.GetOrdinal("Id"));
+            }
+
+            //Rear left
+            if (dr.GetOrdinal("RearLeft") > -1)
+            {
+                ToReturn.RearLeft = dr.GetByte(dr.GetOrdinal("RearLeft"));
+            }
+
+            //Rear right
+            if (dr.GetOrdinal("RearRight") > -1)
+            {
+                ToReturn.RearRight = dr.GetByte(dr.GetOrdinal("RearRight"));
+            }
+
+            //Front left
+            if (dr.GetOrdinal("FrontLeft") > -1)
+            {
+                ToReturn.FrontLeft = dr.GetByte(dr.GetOrdinal("FrontLeft"));
+            }
+
+            //Front right
+            if (dr.GetOrdinal("FrontRight") > -1)
+            {
+                ToReturn.FrontRight = dr.GetByte(dr.GetOrdinal("FrontRight"));
+            }
+
+            return ToReturn;
+        }
+
 
         #endregion
 
