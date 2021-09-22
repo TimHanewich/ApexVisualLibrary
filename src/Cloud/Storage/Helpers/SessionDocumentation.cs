@@ -13,7 +13,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
 
         #region "Comprehensive"
 
-        public async Task ComprehensiveUploadAsync(ApexVisualManager avm, SessionDocumentationEngine sde)
+        public async Task ComprehensiveUploadAsync(ApexVisualManager avm, SessionDocumentationEngine sde, bool update_percent = true)
         {   
         
             //Get the total # of resources to upload.
@@ -21,7 +21,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
             int Uploaded = 0;
 
             //Attempt the delete
-            await ComprehensiveDeleteAsync(avm, sde.Session.SessionId);
+            await ComprehensiveDeleteAsync(avm, sde.Session.SessionId, false);
 
             //Upload the original capture if needed
             bool OriginalCaptureAlreadyExists = await avm.OriginalCaptureExistsAsync(sde.Session.SessionId);
@@ -33,14 +33,14 @@ namespace ApexVisual.Cloud.Storage.Helpers
             //Upload session
             await avm.UploadSessionAsync(sde.Session);
             Uploaded = Uploaded + 1;
-            UpdatePercentComplete(Uploaded, TotalCountToUpload);
+            UpdatePercentComplete(Uploaded, TotalCountToUpload, update_percent);
 
             //Upload laps
             foreach (Lap l in sde.Laps)
             {
                 await avm.UploadLapAsync(l);
                 Uploaded = Uploaded + 1;
-                UpdatePercentComplete(Uploaded, TotalCountToUpload);
+                UpdatePercentComplete(Uploaded, TotalCountToUpload, update_percent);
             }
 
             //upload telemetry snapshots
@@ -48,7 +48,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
             {
                 await avm.UploadTelemetrySnapshotAsync(ts);
                 Uploaded = Uploaded + 1;
-                UpdatePercentComplete(Uploaded, TotalCountToUpload);
+                UpdatePercentComplete(Uploaded, TotalCountToUpload, update_percent);
             }
 
             //upload wheel data arrays
@@ -56,25 +56,31 @@ namespace ApexVisual.Cloud.Storage.Helpers
             {
                 await avm.UploadWheelDataArrayAsync(wda);
                 Uploaded = Uploaded + 1;
-                UpdatePercentComplete(Uploaded, TotalCountToUpload);
+                UpdatePercentComplete(Uploaded, TotalCountToUpload, update_percent);
             }
         }
 
-        public async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id)
+        public async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id, bool update_percent = false)
         {
             //Intentionally do NOT delete the OriginalCapture. This is meant to be permanent.
 
+            UpdatePercentComplete(0f);
+
             //Delte the wheel data arrays first
             await avm.DeleteWheelDataArraysAsync(session_id);
+            UpdatePercentComplete(0.25f, update_percent);
             
             //Now delete the telemetry snapshots
             await avm.DeleteTelemetrySnapshotsAsync(session_id);
+            UpdatePercentComplete(0.50f, update_percent);
 
             //Now delete  the laps
             await avm.DeleteLapsAsync(session_id);
+            UpdatePercentComplete(0.75f, update_percent);
 
             //Now delete the session itself
             await avm.DeleteSessionAsync(session_id);
+            UpdatePercentComplete(1f, update_percent);
         }
 
         #endregion
@@ -95,10 +101,26 @@ namespace ApexVisual.Cloud.Storage.Helpers
             }
         }
 
+        private void UpdatePercentComplete(float percent, bool ActuallyDoIt)
+        {
+            if (ActuallyDoIt)
+            {
+                UpdatePercentComplete(percent);
+            }
+        }
+
         private void UpdatePercentComplete(int complete, int out_of)
         {
             float percent = Convert.ToSingle(complete) / Convert.ToSingle(out_of);
             UpdatePercentComplete(percent);
+        }
+
+        private void UpdatePercentComplete(int complete, int out_of, bool ActuallyDoIt)
+        {
+            if (ActuallyDoIt)
+            {
+                UpdatePercentComplete(complete, out_of);
+            }
         }
 
         #endregion
