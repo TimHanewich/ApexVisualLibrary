@@ -1455,6 +1455,18 @@ namespace ApexVisual.Cloud.Storage
             }
         }
 
+        public static async Task DeleteWheelDataArraysAsync(this ApexVisualManager avm, ulong from_session_id)
+        {
+            //Delete where TelemetrySnapshots reference it via TyreWearPercent
+            await ExecuteNonQueryAsync(avm, "delete wda from WheelDataArray as wda inner join TelemetrySnapshot on wda.Id = TelemetrySnapshot.TyreWearPercent inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session_id).ToString());
+            
+            //Delete where a TelemetrySnapshots references it via TyreDamagePercent
+            await ExecuteNonQueryAsync(avm, "delete wda from WheelDataArray as wda inner join TelemetrySnapshot on wda.Id = TelemetrySnapshot.TyreDamagePercent inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session_id).ToString());
+        
+            //Delete where a Lap references it 
+            await ExecuteNonQueryAsync(avm, "delete wda from WheelDataArray as wda inner join Lap on wda.Id = Lap.EndingTyreWear where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session_id).ToString());
+        }
+
         private static ApexVisual.SessionDocumentation.WheelDataArray ExtractWheelDataArrayFromSqlDataReader(SqlDataReader dr)
         {
             ApexVisual.SessionDocumentation.WheelDataArray ToReturn = new SessionDocumentation.WheelDataArray();
