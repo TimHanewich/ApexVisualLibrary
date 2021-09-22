@@ -882,6 +882,29 @@ namespace ApexVisual.Cloud.Storage
             }
         }
 
+        public static async Task<OriginalCapture> DownloadOriginalCaptureAsync(this ApexVisualManager avm, ulong session_id)
+        {
+            string cmd = "select CapturedAtUtc from OriginalCapture where SessionId = " + ApexVisualToolkit.ULongToLong(session_id);
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            if (dr.HasRows)
+            {
+                await dr.ReadAsync();
+                DateTime val = dr.GetDateTime(0);
+                sqlcon.Close();
+                OriginalCapture ToReturn = new OriginalCapture();
+                ToReturn.SessionId = session_id;
+                ToReturn.CapturedAtUtc = val;
+                return ToReturn;
+            }
+            else
+            {
+                sqlcon.Close();
+                throw new Exception("Unable to find OriginalCapture record with SessionId '" + session_id.ToString() + "'");
+            }
+        }
 
 
 
