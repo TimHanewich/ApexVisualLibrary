@@ -821,6 +821,35 @@ namespace ApexVisual.Cloud.Storage
 
 
 
+        public static async Task UploadOriginalCaptureAsync(this ApexVisualManager avm, OriginalCapture oc)
+        {
+            InsertHelper ih = new InsertHelper("OriginalCapture");
+            ih.Add("SessionId", ApexVisualToolkit.ULongToLong(oc.SessionId).ToString());
+            ih.Add("CapturedAtUtc", oc.CapturedAtUtc.ToString(), true);
+            string cmd = ih.ToString();
+            await ExecuteNonQueryAsync(avm, cmd);
+        }
+
+        public static async Task<bool> OriginalCaptureExistsAsync(this ApexVisualManager avm, ulong session_id)
+        {
+            string cmd = "select count(SessionId) from OriginalCapture where SessionId = " + ApexVisualToolkit.ULongToLong(session_id).ToString();
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            await dr.ReadAsync();
+            int val = dr.GetInt32(0);
+            sqlcon.Close();
+            if (val > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         #endregion
 
         #region "Helper functions"
