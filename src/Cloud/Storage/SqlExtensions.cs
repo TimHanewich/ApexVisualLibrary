@@ -904,6 +904,18 @@ namespace ApexVisual.Cloud.Storage
         }
 
 
+        public static async Task UploadWheelDataArrayAsync(this ApexVisualManager avm, ApexVisual.SessionDocumentation.WheelDataArray wda)
+        {
+            InsertHelper ih = new InsertHelper("WheelDataArray");
+            ih.Add("Id", wda.Id.ToString(), true);
+            ih.Add("RearLeft", wda.RearLeft.ToString());
+            ih.Add("RearRight", wda.RearRight.ToString());
+            ih.Add("FrontLeft", wda.FrontLeft.ToString());
+            ih.Add("FrontRight", wda.FrontRight.ToString());
+            await ExecuteNonQueryAsync(avm, ih.ToString());
+        }
+
+
         #endregion
 
         #region "Helper functions"
