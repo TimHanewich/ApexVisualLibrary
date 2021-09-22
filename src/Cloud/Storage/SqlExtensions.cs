@@ -850,6 +850,34 @@ namespace ApexVisual.Cloud.Storage
             }
         }
 
+
+
+
+        public static async Task UploadLapAsync(this ApexVisualManager avm, Lap l)
+        {
+            InsertHelper ih = new InsertHelper("Lap");
+            ih.Add("Id", l.Id.ToString(), true);
+            ih.Add("FromSession", l.FromSession.ToString(), true);
+            ih.Add("LapNumber", l.LapNumber.ToString());
+            ih.Add("Sector1Time", l.Sector1Time.ToString());
+            ih.Add("Sector2Time", l.Sector2Time.ToString());
+            ih.Add("Sector3Time", l.Sector3Time.ToString());
+            ih.Add("EndingFuel", l.EndingFuel.ToString());
+            ih.Add("PercentOnThrottle", l.PercentOnThrottle.ToString());
+            ih.Add("PercentOnBrake", l.PercentOnBrake.ToString());
+            ih.Add("PercentCoasting", l.PercentCoasting.ToString());
+            ih.Add("PercentOnMaxThrottle", l.PercentOnMaxThrottle.ToString());
+            ih.Add("PercentOnMaxBrake", l.PercentOnMaxBrake.ToString());
+            ih.Add("EndingErs", l.EndingErs.ToString());
+            ih.Add("GearChanges", l.GearChanges.ToString());
+            ih.Add("EquippedTyreCompound", Convert.ToInt32(l.EquippedTyreCompound).ToString());
+            ih.Add("EndingTyreWear", l.EndingTyreWear.ToString(), true);
+            await ExecuteNonQueryAsync(avm, ih.ToString());
+        }
+
+
+
+
         #endregion
 
         #region "Helper functions"
