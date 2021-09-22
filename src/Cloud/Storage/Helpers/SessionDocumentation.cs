@@ -60,7 +60,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
             }
         }
 
-        public async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id, bool update_percent = false)
+        public async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id, bool update_percent = true)
         {
             //Intentionally do NOT delete the OriginalCapture. This is meant to be permanent.
 
