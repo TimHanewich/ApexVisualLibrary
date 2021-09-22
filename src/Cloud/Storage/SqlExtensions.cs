@@ -1206,6 +1206,12 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn.ToArray();
         }
 
+        public static async Task DeleteTelemetrySnapshotsAsync(this ApexVisualManager avm, ulong from_session_id)
+        {
+            string cmd = "delete ts from TelemetrySnapshot as ts inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session_id).ToString();
+            await ExecuteNonQueryAsync(avm, cmd);
+        }
+
         private static TelemetrySnapshot ExtractTelemetrySnapshotFromSqlDataReader(SqlDataReader dr)
         {
             TelemetrySnapshot ToReturn = new TelemetrySnapshot();
