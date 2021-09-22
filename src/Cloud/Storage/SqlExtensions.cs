@@ -793,6 +793,34 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn;
         }
 
+        public static async Task<bool> SessionExistsAsync(this ApexVisualManager avm, ulong session_id)
+        {
+            string cmd = "select count(SessionId) from Session where SessionId = " + ApexVisualToolkit.ULongToLong(session_id).ToString();
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            await dr.ReadAsync();
+            int val = dr.GetInt32(0);
+            sqlcon.Close();
+            if (val > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static async Task DeleteSessionAsync(this ApexVisualManager avm, ulong session_id)
+        {
+            string cmd = "delete from Session where SessionId = " + ApexVisualToolkit.ULongToLong(session_id);
+            await ExecuteNonQueryAsync(avm, cmd);
+        }
+
+
+
         #endregion
 
         #region "Helper functions"
@@ -809,6 +837,15 @@ namespace ApexVisual.Cloud.Storage
             string date_END = (date.AddDays(1)).Year.ToString("0000") + "-" + (date.AddDays(1)).Month.ToString("00") + "-" + (date.AddDays(1)).Day.ToString("00");
             string ToReturn = column_name + " >= '" + date_START + "' and " + column_name + " < '" + date_END + "'";
             return ToReturn;
+        }
+
+        private static async Task ExecuteNonQueryAsync(this ApexVisualManager avm, string cmd)
+        {
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            await sqlcmd.ExecuteNonQueryAsync();
+            sqlcon.Close();
         }
 
         #endregion
