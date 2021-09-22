@@ -174,7 +174,20 @@ namespace ApexVisual.Cloud.Storage.Helpers
             
         // }
 
-        
+        public static async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id)
+        {
+            //Delte the wheel data arrays first
+            await avm.DeleteWheelDataArraysAsync(session_id);
+            
+            //Now delete the telemetry snapshots
+            await avm.DeleteTelemetrySnapshotsAsync(session_id);
+
+            //Now delete  the laps
+            await avm.DeleteLapsAsync(session_id);
+
+            //Now delete the session itself
+            await avm.DeleteSessionAsync(session_id);
+        }
 
         #endregion
 
