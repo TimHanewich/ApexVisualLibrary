@@ -176,6 +176,8 @@ namespace ApexVisual.Cloud.Storage.Helpers
 
         public static async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id)
         {
+            //Intentionally do NOT delete the OriginalCapture. This is meant to be permanent.
+
             //Delte the wheel data arrays first
             await avm.DeleteWheelDataArraysAsync(session_id);
             
