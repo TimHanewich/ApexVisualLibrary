@@ -169,10 +169,39 @@ namespace ApexVisual.Cloud.Storage.Helpers
 
         }
 
-        // public async Task ComprehensiveUploadAsync(SessionDocumentationEngine sde)
-        // {
-            
-        // }
+        public static async Task ComprehensiveUploadAsync(ApexVisualManager avm, SessionDocumentationEngine sde)
+        {
+            //Attempt the delete
+            await ComprehensiveDeleteAsync(avm, sde.Session.SessionId);
+
+            //Upload the original capture if needed
+            bool OriginalCaptureAlreadyExists = await avm.OriginalCaptureExistsAsync(sde.Session.SessionId);
+            if (OriginalCaptureAlreadyExists == false)
+            {
+                await avm.UploadOriginalCaptureAsync(sde.OriginalCapture);
+            }
+
+            //Upload session
+            await avm.UploadSessionAsync(sde.Session);
+
+            //Upload laps
+            foreach (Lap l in sde.Laps)
+            {
+                await avm.UploadLapAsync(l);
+            }
+
+            //upload telemetry snapshots
+            foreach (TelemetrySnapshot ts in sde.TelemetrySnapshots)
+            {
+                await avm.UploadTelemetrySnapshotAsync(ts);
+            }
+
+            //upload wheel data arrays
+            foreach (WheelDataArray wda in sde.WheelDataArrays)
+            {
+                await avm.UploadWheelDataArrayAsync(wda);
+            }
+        }
 
         public static async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id)
         {
