@@ -2,175 +2,24 @@ using System;
 using ApexVisual.SessionDocumentation;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using ApexVisual.LiveCoaching;
 
 namespace ApexVisual.Cloud.Storage.Helpers
 {
     public class SessionDocumentationHelper
     {
-        //For cloud retrieval (if needed)
-        private ApexVisualManager avm;
-
-        //Private vars
-        private ulong SessionId;
-        private OriginalCapture _OriginalCapture;
-        private Session _Session;
-        private List<Lap> _Laps;
-        private List<TelemetrySnapshot> _TelemetrySnapshots;
-        private List<WheelDataArray> _WheelDataArray;
-
-        //Public vars
-        public OriginalCapture OriginalCapture
-        {
-            get
-            {
-                return _OriginalCapture;
-            }
-        }
-        public Session Session
-        {
-            get
-            {
-                return _Session;
-            }
-        }
-        public Lap[] Laps
-        {
-            get
-            {
-                return _Laps.ToArray();
-            }
-        }
-        public TelemetrySnapshot[] TelemetrySnapshots
-        {
-            get
-            {
-                return _TelemetrySnapshots.ToArray();
-            }
-        }
-        public WheelDataArray[] WheelDataArrays
-        {
-            get
-            {
-                return _WheelDataArray.ToArray();
-            }
-        }
-    
-        #region "Construction"
-
-        private void Initialize()
-        {
-            _Laps = new List<Lap>();
-            _TelemetrySnapshots = new List<TelemetrySnapshot>();
-            _WheelDataArray = new List<WheelDataArray>();
-        }
-
-        public SessionDocumentationHelper(ulong for_session_id)
-        {
-            Initialize();
-            SessionId = for_session_id;
-        }
-
-        #endregion
-    
-        public void SetAuthenticatedApexVisualManager(ApexVisualManager apex_viusal_manager)
-        {
-            avm = apex_viusal_manager;
-        }
-
-        #region "Retrieval"
-
-        public async Task<OriginalCapture> OriginalCaptureAsync()
-        {
-            if (_OriginalCapture == null)
-            {
-                ThrowExceptionIfAvmNotProvided();
-                _OriginalCapture = await avm.DownloadOriginalCaptureAsync(SessionId);
-            }
-            return _OriginalCapture;
-        }
-
-        public async Task<Lap> LapAsync(byte lap_number)
-        {
-            foreach (Lap l in _Laps)
-            {
-                if (l.LapNumber == lap_number)
-                {
-                    return l;
-                }
-            }
-            Lap lll = await avm.DownloadLapAsync(SessionId, lap_number);
-            _Laps.Add(lll);
-            return lll;
-        }
-
-        public async Task<Lap[]> AllLapsAsync()
-        {
-            Lap[] laps = await avm.DownloadLapsFromSessionAsync(SessionId);
-            _Laps.Clear();
-            _Laps.AddRange(laps);
-            return laps;
-        }
-
-        public async Task<byte[]> AvailableLapsAsync()
-        {
-            ThrowExceptionIfAvmNotProvided();
-            byte[] ToReturn = await avm.AvailableLapsAsync(SessionId);
-            return ToReturn;
-        }
-
-        #endregion
+        
+        public PercentUpdate ProcessingPercentCompleteUpdate;
 
         #region "Comprehensive"
 
-        public async Task ComprehensiveRetrievalAsync()
-        {
-            ThrowExceptionIfAvmNotProvided();
+        public async Task ComprehensiveUploadAsync(ApexVisualManager avm, SessionDocumentationEngine sde)
+        {   
+        
+            //Get the total # of resources to upload.
+            int TotalCountToUpload = 1 + sde.Laps.Length + sde.TelemetrySnapshots.Length + sde.WheelDataArrays.Length; //The # to upload. Add 1 for the session (1 session)
+            int Uploaded = 0;
 
-            //Get original capture
-            _OriginalCapture = await avm.DownloadOriginalCaptureAsync(SessionId);
-
-            //Get the session
-            _Session = await avm.DownloadSessionAsync(SessionId);
-
-            //Get laps
-            Lap[] ls = await avm.DownloadLapsFromSessionAsync(SessionId);
-            _Laps.Clear();
-            _Laps.AddRange(ls);
-
-            //Telemetry Snapshots
-            TelemetrySnapshot[] snapshots = await avm.DownloadTelemetrySnapshotsAsync(SessionId);
-            _TelemetrySnapshots.Clear();
-            _TelemetrySnapshots.AddRange(snapshots);
-
-            //Now assemble all of the wheel data arrays
-            List<Guid> ToDownloadWheelDataArrays = new List<Guid>();
-            foreach (Lap l in _Laps)
-            {
-                ToDownloadWheelDataArrays.Add(l.EndingTyreWear);
-            }
-            foreach (TelemetrySnapshot ts in _TelemetrySnapshots)
-            {
-                ToDownloadWheelDataArrays.Add(ts.TyreWearPercent);
-                ToDownloadWheelDataArrays.Add(ts.TyreDamagePercent);
-            }
-            _WheelDataArray.Clear();
-            foreach (Guid g in ToDownloadWheelDataArrays)
-            {
-                try
-                {
-                    WheelDataArray wda = await avm.DownloadWheelDataArrayAsync(g);
-                    _WheelDataArray.Add(wda);
-                }
-                catch
-                {
-
-                }
-            }
-
-        }
-
-        public static async Task ComprehensiveUploadAsync(ApexVisualManager avm, SessionDocumentationEngine sde)
-        {
             //Attempt the delete
             await ComprehensiveDeleteAsync(avm, sde.Session.SessionId);
 
@@ -183,27 +32,35 @@ namespace ApexVisual.Cloud.Storage.Helpers
 
             //Upload session
             await avm.UploadSessionAsync(sde.Session);
+            Uploaded = Uploaded + 1;
+            UpdatePercentComplete(Uploaded, TotalCountToUpload);
 
             //Upload laps
             foreach (Lap l in sde.Laps)
             {
                 await avm.UploadLapAsync(l);
+                Uploaded = Uploaded + 1;
+                UpdatePercentComplete(Uploaded, TotalCountToUpload);
             }
 
             //upload telemetry snapshots
             foreach (TelemetrySnapshot ts in sde.TelemetrySnapshots)
             {
                 await avm.UploadTelemetrySnapshotAsync(ts);
+                Uploaded = Uploaded + 1;
+                UpdatePercentComplete(Uploaded, TotalCountToUpload);
             }
 
             //upload wheel data arrays
             foreach (WheelDataArray wda in sde.WheelDataArrays)
             {
                 await avm.UploadWheelDataArrayAsync(wda);
+                Uploaded = Uploaded + 1;
+                UpdatePercentComplete(Uploaded, TotalCountToUpload);
             }
         }
 
-        public static async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id)
+        public async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id)
         {
             //Intentionally do NOT delete the OriginalCapture. This is meant to be permanent.
 
@@ -225,12 +82,23 @@ namespace ApexVisual.Cloud.Storage.Helpers
 
         #region  "UTILITY"
 
-        private void ThrowExceptionIfAvmNotProvided()
+        //between 0 and 1
+        private void UpdatePercentComplete(float percent)
         {
-            if (avm == null)
+            try
             {
-                throw new Exception("The resource that was requested requires an authenticated instance of ApexVisualManager. One was not provided. Please use the 'SetAuthenticatedApexVisualManager' method.");
+                ProcessingPercentCompleteUpdate.Invoke(percent);
             }
+            catch
+            {
+
+            }
+        }
+
+        private void UpdatePercentComplete(int complete, int out_of)
+        {
+            float percent = Convert.ToSingle(complete) / Convert.ToSingle(out_of);
+            UpdatePercentComplete(percent);
         }
 
         #endregion
