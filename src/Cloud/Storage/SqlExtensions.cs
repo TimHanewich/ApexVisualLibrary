@@ -907,6 +907,173 @@ namespace ApexVisual.Cloud.Storage
             await ExecuteNonQueryAsync(avm, ih.ToString());
         }
 
+        private static Lap ExtractLapFromSqlDataReader(SqlDataReader dr)
+        {
+            Lap ToReturn = new Lap();
+
+            //Id
+            try
+            {
+                ToReturn.Id = dr.GetGuid(dr.GetOrdinal("Id"));
+            }
+            catch
+            {
+                
+            }
+
+            //FromSession
+            try
+            {
+                ToReturn.FromSession = ApexVisualToolkit.LongToUlong(dr.GetInt64(dr.GetOrdinal("FromSession")));
+            }
+            catch
+            {
+
+            }
+
+            //LapNumber
+            try
+            {
+                ToReturn.LapNumber = dr.GetByte(dr.GetOrdinal("LapNumber"));
+            }
+            catch
+            {
+
+            }
+
+            //Sector1Time
+            try
+            {
+                ToReturn.Sector1Time = dr.GetFloat(dr.GetOrdinal("Sector1Time"));
+            }
+            catch
+            {
+
+            }
+
+            //Sector2Time
+            try
+            {
+                ToReturn.Sector2Time = dr.GetFloat(dr.GetOrdinal("Sector2Time"));
+            }
+            catch
+            {
+
+            }
+
+            //Sector3Time
+            try
+            {
+                ToReturn.Sector3Time = dr.GetFloat(dr.GetOrdinal("Sector3Time"));
+            }
+            catch
+            {
+
+            }
+
+            //Ending Fuel
+            try
+            {
+                ToReturn.EndingFuel = dr.GetFloat(dr.GetOrdinal("EndingFuel"));
+            }
+            catch
+            {
+
+            }
+
+            //PercentOnThrottle
+            try
+            {
+                ToReturn.PercentOnThrottle = dr.GetByte(dr.GetOrdinal("PercentOnThrottle"));
+            }
+            catch
+            {
+
+            }
+
+            //PercentOnBrake
+            try
+            {
+                ToReturn.PercentOnBrake = dr.GetByte(dr.GetOrdinal("PercentOnBrake"));
+            }
+            catch
+            {
+
+            }
+
+            //PercentCoasting
+            try
+            {
+                ToReturn.PercentCoasting = dr.GetByte(dr.GetOrdinal("PercentCoasting"));
+            }
+            catch
+            {
+
+            }
+
+            //Percent on max throttle
+            try
+            {
+                ToReturn.PercentOnMaxThrottle = dr.GetByte(dr.GetOrdinal("PercentOnMaxThrottle"));
+            }
+            catch
+            {
+
+            }
+
+            //Percent on max brake
+            try
+            {
+                ToReturn.PercentOnMaxBrake = dr.GetByte(dr.GetOrdinal("PercentOnMaxBrake"));
+            }
+            catch
+            {
+
+            }
+
+            //Ending Ers
+            try
+            {
+                ToReturn.EndingErs = dr.GetFloat(dr.GetOrdinal("EndingErs"));
+            }
+            catch
+            {
+
+            }
+
+            //GearChanges
+            try
+            {
+                ToReturn.GearChanges = dr.GetInt16(dr.GetOrdinal("GearChanges"));
+            }
+            catch
+            {
+
+            }
+
+            //Equipped tyre compound
+            try
+            {
+                ToReturn.EquippedTyreCompound = (ApexVisual.SessionManagement.TyreCompound)dr.GetByte(dr.GetOrdinal("EquippedTyreCompound"));
+            }
+            catch
+            {
+
+            }
+
+            //Ending tyre wear
+            try
+            {
+                ToReturn.EndingTyreWear = dr.GetGuid(dr.GetOrdinal("EndingTyreWear"));
+            }
+            catch
+            {
+
+            }
+
+            return ToReturn;
+        }
+
 
 
         public static async Task UploadTelemetrySnapshotAsync(this ApexVisualManager avm, TelemetrySnapshot ts)
