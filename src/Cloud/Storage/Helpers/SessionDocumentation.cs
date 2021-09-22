@@ -74,6 +74,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
         public static async Task<SessionDocumentationHelper> LoadSessionAsync(ApexVisualManager avm, ulong session_id)
         {
             SessionDocumentationHelper ToReturn = new SessionDocumentationHelper();
+            ToReturn.SetAuthenticatedApexVisualManager(avm);
             Session s = await avm.DownloadSessionAsync(session_id);
             ToReturn._Session = s;
             return ToReturn;
