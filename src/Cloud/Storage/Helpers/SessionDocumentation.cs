@@ -7,6 +7,9 @@ namespace ApexVisual.Cloud.Storage.Helpers
 {
     public class SessionDocumentationHelper
     {
+        //For cloud retrieval (if needed)
+        private ApexVisualManager avm;
+
         //Private vars
         private OriginalCapture _OriginalCapture;
         private Session _Session;
@@ -15,13 +18,6 @@ namespace ApexVisual.Cloud.Storage.Helpers
         private List<WheelDataArray> _WheelDataArray;
 
         //Public vars
-        public OriginalCapture OriginalCapture
-        {
-            get
-            {
-                return _OriginalCapture;
-            }
-        }
         public Session Session
         {
             get
@@ -51,6 +47,8 @@ namespace ApexVisual.Cloud.Storage.Helpers
             }
         }
     
+        #region "Construction"
+
         private void Initialize()
         {
             _Laps = new List<Lap>();
@@ -80,5 +78,35 @@ namespace ApexVisual.Cloud.Storage.Helpers
             ToReturn._Session = s;
             return ToReturn;
         }
+    
+        #endregion
+    
+        public void SetAuthenticatedApexVisualManager(ApexVisualManager apex_viusal_manager)
+        {
+            avm = apex_viusal_manager;
+        }
+
+        public async Task<OriginalCapture> OriginalCaptureAsync()
+        {
+            if (_OriginalCapture == null)
+            {
+                ThrowExceptionIfAvmNotProvided();
+                _OriginalCapture = await avm.DownloadOriginalCaptureAsync(Session.SessionId);
+            }
+            return _OriginalCapture;
+        }
+
+        #region  "UTILITY"
+
+        private void ThrowExceptionIfAvmNotProvided()
+        {
+            if (avm == null)
+            {
+                throw new Exception("The resource that was requested requires an authenticated instance of ApexVisualManager. One was not provided. Please use the 'SetAuthenticatedApexVisualManager' method.");
+            }
+        }
+
+        #endregion
+    
     }
 }
