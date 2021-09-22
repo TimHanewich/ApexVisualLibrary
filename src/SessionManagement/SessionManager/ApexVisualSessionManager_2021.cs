@@ -193,7 +193,7 @@ namespace ApexVisual.SessionManagement
                         OngoingCanvas.SessionTrack = Track.Austria;
                         break;
                     case Codemasters.F1_2021.Track.Sochi:
-                        OngoingCanvas.SessionTrack = Track.Mexico;
+                        OngoingCanvas.SessionTrack = Track.Sochi;
                         break;
                     case Codemasters.F1_2021.Track.Mexico:
                         OngoingCanvas.SessionTrack = Track.Mexico;
