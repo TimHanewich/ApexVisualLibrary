@@ -11,6 +11,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
         private ApexVisualManager avm;
 
         //Private vars
+        private ulong SessionId;
         private OriginalCapture _OriginalCapture;
         private Session _Session;
         private List<Lap> _Laps;
@@ -56,37 +57,18 @@ namespace ApexVisual.Cloud.Storage.Helpers
             _WheelDataArray = new List<WheelDataArray>();
         }
 
-        public SessionDocumentationHelper()
+        public SessionDocumentationHelper(ulong for_session_id)
         {
             Initialize();
+            SessionId = for_session_id;
         }
 
-        public SessionDocumentationHelper(SessionDocumentationEngine sde)
-        {
-            Initialize();
-            _OriginalCapture = sde.OriginalCapture;
-            _Session = sde.Session;
-            _Laps.AddRange(sde.Laps);
-            _TelemetrySnapshots.AddRange(sde.TelemetrySnapshots);
-            _WheelDataArray.AddRange(sde.WheelDataArrays);
-        }
-    
-        public static async Task<SessionDocumentationHelper> LoadSessionAsync(ApexVisualManager avm, ulong session_id)
-        {
-            SessionDocumentationHelper ToReturn = new SessionDocumentationHelper();
-            ToReturn.SetAuthenticatedApexVisualManager(avm);
-            Session s = await avm.DownloadSessionAsync(session_id);
-            ToReturn._Session = s;
-            return ToReturn;
-        }
-    
         #endregion
     
         public void SetAuthenticatedApexVisualManager(ApexVisualManager apex_viusal_manager)
         {
             avm = apex_viusal_manager;
         }
-
 
         #region "Retrieval"
 
@@ -95,7 +77,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
             if (_OriginalCapture == null)
             {
                 ThrowExceptionIfAvmNotProvided();
-                _OriginalCapture = await avm.DownloadOriginalCaptureAsync(Session.SessionId);
+                _OriginalCapture = await avm.DownloadOriginalCaptureAsync(SessionId);
             }
             return _OriginalCapture;
         }
@@ -109,14 +91,14 @@ namespace ApexVisual.Cloud.Storage.Helpers
                     return l;
                 }
             }
-            Lap lll = await avm.DownloadLapAsync(_Session.SessionId, lap_number);
+            Lap lll = await avm.DownloadLapAsync(SessionId, lap_number);
             _Laps.Add(lll);
             return lll;
         }
 
         public async Task<Lap[]> AllLapsAsync()
         {
-            Lap[] laps = await avm.DownloadLapsFromSessionAsync(Session.SessionId);
+            Lap[] laps = await avm.DownloadLapsFromSessionAsync(SessionId);
             _Laps.Clear();
             _Laps.AddRange(laps);
             return laps;
@@ -125,7 +107,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
         public async Task<byte[]> AvailableLapsAsync()
         {
             ThrowExceptionIfAvmNotProvided();
-            byte[] ToReturn = await avm.AvailableLapsAsync(Session.SessionId);
+            byte[] ToReturn = await avm.AvailableLapsAsync(SessionId);
             return ToReturn;
         }
 
@@ -138,15 +120,18 @@ namespace ApexVisual.Cloud.Storage.Helpers
             ThrowExceptionIfAvmNotProvided();
 
             //Get original capture
-            _OriginalCapture = await avm.DownloadOriginalCaptureAsync(Session.SessionId);
+            _OriginalCapture = await avm.DownloadOriginalCaptureAsync(SessionId);
+
+            //Get the session
+            _Session = await avm.DownloadSessionAsync(SessionId);
 
             //Get laps
-            Lap[] ls = await avm.DownloadLapsFromSessionAsync(Session.SessionId);
+            Lap[] ls = await avm.DownloadLapsFromSessionAsync(SessionId);
             _Laps.Clear();
             _Laps.AddRange(ls);
 
             //Telemetry Snapshots
-            TelemetrySnapshot[] snapshots = await avm.DownloadTelemetrySnapshotsAsync(Session.SessionId);
+            TelemetrySnapshot[] snapshots = await avm.DownloadTelemetrySnapshotsAsync(SessionId);
             _TelemetrySnapshots.Clear();
             _TelemetrySnapshots.AddRange(snapshots);
 
