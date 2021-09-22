@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 using System.Collections.Generic;
-using Codemasters.F1_2020;
+using ApexVisual.SessionManagement;
 
 namespace ApexVisual.Cloud.Storage
 {
@@ -26,21 +26,29 @@ namespace ApexVisual.Cloud.Storage
         #endregion
 
         #region "Basic session data uploading/downloading"
+        
 
         public static async Task UploadSessionDataAsync(this ApexVisualManager avm, List<byte[]> session_data)
-        {
-            //Get unique session
-            string file_name = "";
-            try
+        {      
+            FoundSessionId = null;
+            ApexVisualSessionManager sm = new ApexVisualSessionManager();
+            sm.DataUpdateAvailable += SetIdOnUpdate;
+            foreach (byte[] b in session_data)
             {
-                Packet p = new Packet();
-                p.LoadBytes(session_data[0]);
-                file_name = p.UniqueSessionId.ToString();
+                if (FoundSessionId.HasValue == false)
+                {
+                    sm.IngestBytes(b);
+                }
+                else
+                {
+                    break;
+                }
             }
-            catch
+            if (FoundSessionId.HasValue == false)
             {
-                throw new Exception("Fatal error while getting unique session ID.");
+                throw new Exception("Unable to find Session ID from byte arrays");
             }
+            string file_name = FoundSessionId.Value.ToString();
             
             CloudBlobClient cbc = GetCloudBlobClient(avm.AzureStorageConnectionString);
             CloudBlobContainer cont = cbc.GetContainerReference("sessions");
@@ -96,6 +104,15 @@ namespace ApexVisual.Cloud.Storage
             return data_to_return;
         }
 
+
+        private static ulong? FoundSessionId;
+        private static void SetIdOnUpdate(CommonSessionData csd)
+        {
+            if (csd.SessionId != 0)
+            {
+                FoundSessionId = csd.SessionId;
+            }
+        }
 
         #endregion
 
