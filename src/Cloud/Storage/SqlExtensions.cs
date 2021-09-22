@@ -979,6 +979,11 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn.ToArray();
         }
 
+        public static async Task DeleteLapsAsync(this ApexVisualManager avm, ulong from_session_id)
+        {
+            await ExecuteNonQueryAsync(avm, "delete from Lap where FromSession = " + ApexVisualToolkit.ULongToLong(from_session_id).ToString());
+        }
+
         private static Lap ExtractLapFromSqlDataReader(SqlDataReader dr)
         {
             Lap ToReturn = new Lap();
