@@ -912,7 +912,7 @@ namespace ApexVisual.Cloud.Storage
         {
             InsertHelper ih = new InsertHelper("Lap");
             ih.Add("Id", l.Id.ToString(), true);
-            ih.Add("FromSession", l.FromSession.ToString(), true);
+            ih.Add("FromSession", ApexVisualToolkit.ULongToLong(l.FromSession).ToString(), true);
             ih.Add("LapNumber", l.LapNumber.ToString());
             ih.Add("Sector1Time", l.Sector1Time.ToString());
             ih.Add("Sector2Time", l.Sector2Time.ToString());
