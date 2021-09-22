@@ -742,52 +742,84 @@ namespace ApexVisual.Cloud.Storage
             Session ToReturn = new Session();
 
             //SessionId
-            if (dr.GetOrdinal("SessionId") > -1)
+            try
             {
                 long SID = dr.GetInt64(dr.GetOrdinal("SessionId"));
                 ToReturn.SessionId = ApexVisualToolkit.LongToUlong(SID);
             }
+            catch
+            {
+
+            }
 
             //Owner
-            if (dr.GetOrdinal("Owner") > -1)
+            try
             {
                 ToReturn.Owner = dr.GetGuid(dr.GetOrdinal("Owner"));
             }
+            catch
+            {
+
+            }
 
             //Game
-            if (dr.GetOrdinal("Game") > -1)
+            try
             {
                 ToReturn.Game = (CodemastersF1Game)dr.GetByte(dr.GetOrdinal("Game"));
             }
+            catch
+            {
+
+            }
 
             //Track
-            if (dr.GetOrdinal("Track") > -1)
+            try
             {
                 ToReturn.Track = (ApexVisual.SessionManagement.Track)dr.GetByte(dr.GetOrdinal("Track"));
             }
+            catch
+            {
+
+            }
 
             //Mode
-            if (dr.GetOrdinal("Mode") > -1)
+            try
             {
                 ToReturn.Mode = (SessionType)dr.GetByte(dr.GetOrdinal("Mode"));
             }
+            catch
+            {
+
+            }
 
             //Team
-            if (dr.GetOrdinal("Team") > -1)
+            try
             {
                 ToReturn.Team = (ApexVisual.SessionManagement.Team)dr.GetByte(dr.GetOrdinal("Team"));
             }
+            catch
+            {
+
+            }
 
             //Driver
-            if (dr.GetOrdinal("Driver") > -1)
+            try
             {
                 ToReturn.Driver = (ApexVisual.SessionManagement.Driver)dr.GetByte(dr.GetOrdinal("Driver"));
             }
+            catch
+            {
+
+            }
 
             //CreatedAtUtc
-            if (dr.GetOrdinal("CreatedAtUtc") > -1)
+            try
             {
                 ToReturn.CreatedAtUtc = dr.GetDateTime(dr.GetOrdinal("CreatedAtUtc"));
+            }
+            catch
+            {
+
             }
 
             return ToReturn;
