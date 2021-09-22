@@ -877,6 +877,32 @@ namespace ApexVisual.Cloud.Storage
 
 
 
+        public static async Task UploadTelemetrySnapshotAsync(this ApexVisualManager avm, TelemetrySnapshot ts)
+        {
+            InsertHelper ih = new InsertHelper("TelemetrySnapshot");
+            ih.Add("Id", ts.Id.ToString(), true);
+            ih.Add("FromLap", ts.FromLap.ToString(), true);
+            ih.Add("SessionTime", ts.SessionTime.ToString());
+            ih.Add("LocationType", Convert.ToInt32(ts.LocationType).ToString());
+            ih.Add("LocationNumber", ts.LocationNumber.ToString());
+            ih.Add("PositionX", ts.PositionX.ToString());
+            ih.Add("PositionY", ts.PositionY.ToString());
+            ih.Add("PositionZ", ts.PositionZ.ToString());
+            ih.Add("CurrentLapTime", ts.CurrentLapTime.ToString());
+            ih.Add("CarPosition", ts.CarPosition.ToString());
+            ih.Add("LapInvalid", Convert.ToInt32(ts.LapInvalid).ToString());
+            ih.Add("SpeedKph", ts.SpeedKph.ToString());
+            ih.Add("Throttle", ts.Throttle.ToString());
+            ih.Add("Steer", ts.Steer.ToString());
+            ih.Add("Brake", ts.Brake.ToString());
+            ih.Add("Gear", Convert.ToInt32(ts.Gear).ToString());
+            ih.Add("DrsActive", Convert.ToInt32(ts.DrsActive).ToString());
+            ih.Add("TyreWearPercent", ts.TyreWearPercent.ToString(), true);
+            ih.Add("TyreDamagePercent", ts.TyreDamagePercent.ToString(), true);
+            ih.Add("StoredErs", ts.StoredErs.ToString());
+            await ExecuteNonQueryAsync(avm, ih.ToString());
+        }
+
 
         #endregion
 
