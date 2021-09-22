@@ -9,7 +9,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
     public class SessionDocumentationHelper
     {
         
-        public PercentUpdate ProcessingPercentCompleteUpdate;
+        public event PercentUpdate ProcessingPercentCompleteUpdate;
 
         #region "Comprehensive"
 
