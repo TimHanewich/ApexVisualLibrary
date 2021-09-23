@@ -725,57 +725,146 @@ namespace ApexVisual
                 }
             }
 
-         public static string GetTeamFriendlyName(Team t)
-            {
-                string ToReturn = t.ToString();
+        public static string GetTeamFriendlyName(Team t)
+        {
+            string ToReturn = t.ToString();
 
+            if (t == Team.Mercedes)
+            {
+                ToReturn = "Mercedes";
+            }
+            else if (t == Team.Ferrari)
+            {
+                ToReturn = "Ferrari";
+            }
+            else if (t == Team.RedBullRacing)
+            {
+                ToReturn = "Red Bull";
+            }
+            else if (t == Team.McLaren)
+            {
+                ToReturn = "McLaren";
+            }
+            else if (t == Team.Alpine)
+            {
+                ToReturn = "Alpine";
+            }
+            else if (t == Team.AlphaTauri)
+            {
+                ToReturn = "Alpha Tauri";
+            }
+            else if (t == Team.AstonMartin)
+            {
+                ToReturn = "Aston Martin";
+            }
+            else if (t == Team.AlfaRomeo)
+            {
+                ToReturn = "Alfa Romeo";
+            }
+            else if (t == Team.Haas)
+            {
+                ToReturn = "Haas";
+            }
+            else if (t == Team.Williams)
+            {
+                ToReturn = "Williams";
+            }
+            else
+            {
+                ToReturn = t.ToString();
+            }
+
+            return ToReturn;
+        }
+
+        public static string CarNameFromTeam(ushort year, Team t)
+        {
+            string ToReturn = "Challenger";
+
+            if (year == 2021)
+            {
                 if (t == Team.Mercedes)
                 {
-                    ToReturn = "Mercedes";
-                }
-                else if (t == Team.Ferrari)
-                {
-                    ToReturn = "Ferrari";
+                    ToReturn = "W12";
                 }
                 else if (t == Team.RedBullRacing)
                 {
-                    ToReturn = "Red Bull";
+                    ToReturn = "RB16B";
                 }
                 else if (t == Team.McLaren)
                 {
-                    ToReturn = "McLaren";
+                    ToReturn = "MCL35M";
                 }
-                else if (t == Team.Alpine)
+                else if (t == Team.Ferrari)
                 {
-                    ToReturn = "Alpine";
-                }
-                else if (t == Team.AlphaTauri)
-                {
-                    ToReturn = "Alpha Tauri";
+                    ToReturn = "SF21";
                 }
                 else if (t == Team.AstonMartin)
                 {
-                    ToReturn = "Aston Martin";
+                    ToReturn = "AMR21";
+                }
+                else if (t == Team.Alpine)
+                {
+                    ToReturn = "A521";
+                }
+                else if (t == Team.AlphaTauri)
+                {
+                    ToReturn = "AT02";
                 }
                 else if (t == Team.AlfaRomeo)
                 {
-                    ToReturn = "Alfa Romeo";
+                    ToReturn = "C41";
                 }
                 else if (t == Team.Haas)
                 {
-                    ToReturn = "Haas";
+                    ToReturn = "VF-21";
                 }
                 else if (t == Team.Williams)
                 {
-                    ToReturn = "Williams";
+                    ToReturn = "FW43B";
                 }
-                else
-                {
-                    ToReturn = t.ToString();
-                }
-
-                return ToReturn;
             }
+            else if (year == 2020)
+            {
+                switch (t)
+                {
+                    case Team.Mercedes:
+                        ToReturn = "W11";
+                        break;
+                    case Team.RedBullRacing:
+                        ToReturn = "RB16";
+                        break;
+                    case Team.AlfaRomeo:
+                        ToReturn = "C39";
+                        break;
+                    case Team.AlphaTauri:
+                        ToReturn = "AT01";
+                        break;
+                    case Team.Ferrari:
+                        ToReturn = "SF1000";
+                        break;
+                    case Team.Haas:
+                        ToReturn = "VF-20";
+                        break;
+                    case Team.McLaren:
+                        ToReturn = "MCL35";
+                        break;
+                    case Team.RacingPoint:
+                        ToReturn = "RP20";
+                        break;
+                    case Team.Renault:
+                        ToReturn = "R.S.20";
+                        break;
+                    case Team.Williams:
+                        ToReturn = "FW43";
+                        break;
+                }
+            }
+
+            
+
+            return ToReturn;
+        }
 
         #region "Soft, Medium, Hard tyre compounds for each track"
 
