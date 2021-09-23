@@ -725,6 +725,58 @@ namespace ApexVisual
                 }
             }
 
+         public static string GetTeamFriendlyName(Team t)
+            {
+                string ToReturn = t.ToString();
+
+                if (t == Team.Mercedes)
+                {
+                    ToReturn = "Mercedes";
+                }
+                else if (t == Team.Ferrari)
+                {
+                    ToReturn = "Ferrari";
+                }
+                else if (t == Team.RedBullRacing)
+                {
+                    ToReturn = "Red Bull";
+                }
+                else if (t == Team.McLaren)
+                {
+                    ToReturn = "McLaren";
+                }
+                else if (t == Team.Alpine)
+                {
+                    ToReturn = "Alpine";
+                }
+                else if (t == Team.AlphaTauri)
+                {
+                    ToReturn = "Alpha Tauri";
+                }
+                else if (t == Team.AstonMartin)
+                {
+                    ToReturn = "Aston Martin";
+                }
+                else if (t == Team.AlfaRomeo)
+                {
+                    ToReturn = "Alfa Romeo";
+                }
+                else if (t == Team.Haas)
+                {
+                    ToReturn = "Haas";
+                }
+                else if (t == Team.Williams)
+                {
+                    ToReturn = "Williams";
+                }
+                else
+                {
+                    ToReturn = t.ToString();
+                }
+
+                return ToReturn;
+            }
+
         #region "Soft, Medium, Hard tyre compounds for each track"
 
         public static TyreCompound MediumTyreCompoundAtTrack(Track t)
