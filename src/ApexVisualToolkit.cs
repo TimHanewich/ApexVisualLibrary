@@ -690,6 +690,41 @@ namespace ApexVisual
             return ToReturn;
         }
 
+        public static string GetSessionTypeFriendlyName(SessionType session_type)
+            {
+                switch (session_type)
+                {
+                    case SessionType.Unknown:
+                        return "Unknown";
+                    case SessionType.Practice1:
+                        return "Practice 1";
+                    case SessionType.Practice2:
+                        return "Practice 2";
+                    case SessionType.Practice3:
+                        return "Practice 3";
+                    case SessionType.ShortPractice:
+                        return "Short Practice";
+                    case SessionType.Qualifying1:
+                        return "Qualifying 1";
+                    case SessionType.Qualifying2:
+                        return "Qualifying 2";
+                    case SessionType.Qualifying3:
+                        return "Qualifying 3";
+                    case SessionType.ShortQualifying:
+                        return "Short Qualifying";
+                    case SessionType.OneShotQualifying:
+                        return "One Shot Qualifying";
+                    case SessionType.Race:
+                        return "Race";
+                    case SessionType.Race2:
+                        return "Race 2";
+                    case SessionType.TimeTrial:
+                        return "Time Trial";
+                    default:
+                        return "Unknown Session (" + session_type.ToString() + ")";
+                }
+            }
+
         #region "Soft, Medium, Hard tyre compounds for each track"
 
         public static TyreCompound MediumTyreCompoundAtTrack(Track t)
