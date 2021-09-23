@@ -88,24 +88,30 @@ namespace ApexVisual.LiveCoaching
                         Calibrating = false; //We are no longer calibrating
 
                         //Invoke the events
-                        try
+                        if (CornerChanged != null)
                         {
-                            CornerChanged.Invoke(nearest_corner);
-                        }
-                        catch
-                        {
+                            try
+                            {
+                                CornerChanged.Invoke(nearest_corner);
+                            }
+                            catch
+                            {
 
+                            }
                         }
-                        try
+                        if (CornerStageChanged != null)
                         {
-                            CornerStageChanged.Invoke(CornerStage.Apex);
-                        }
-                        catch
-                        {
+                            try
+                            {
+                                CornerStageChanged.Invoke(CornerStage.Apex);
+                            }
+                            catch
+                            {
 
-                        }   
+                            }
+                        }
+                         
                     }
-
                 }
                 else //We are no longer calibrating
                 {
