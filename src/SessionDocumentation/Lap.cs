@@ -8,9 +8,9 @@ namespace ApexVisual.SessionDocumentation
         public Guid Id {get; set;}
         public UInt64 FromSession {get; set;}
         public byte LapNumber {get; set;}
-        public float Sector1Time {get; set;}
-        public float Sector2Time {get; set;}
-        public float Sector3Time {get; set;}
+        public float? Sector1Time {get; set;}
+        public float? Sector2Time {get; set;}
+        public float? Sector3Time {get; set;}
         public float EndingFuel {get; set;}
         public byte PercentOnThrottle {get; set;}
         public byte PercentOnBrake {get; set;}
@@ -24,7 +24,20 @@ namespace ApexVisual.SessionDocumentation
 
         public float LapTime()
         {
-            return Sector1Time + Sector2Time + Sector3Time;
+            float ToReturn = 0;
+            if (Sector1Time.HasValue)
+            {
+                ToReturn = ToReturn + Sector1Time.Value;
+            }
+            if (Sector2Time.HasValue)
+            {
+                ToReturn = ToReturn + Sector2Time.Value;
+            }
+            if (Sector3Time.HasValue)
+            {
+                ToReturn = ToReturn + Sector3Time.Value;
+            }
+            return ToReturn;
         }
     }
 }
