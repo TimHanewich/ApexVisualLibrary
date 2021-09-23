@@ -860,6 +860,42 @@ namespace ApexVisual
                         break;
                 }
             }
+            else if (year == 2019)
+            {
+                switch (t)
+                {
+                    case Team.Mercedes:
+                        ToReturn = "W10";
+                        break;
+                    case Team.RedBullRacing:
+                        ToReturn = "RB15";
+                        break;
+                    case Team.AlfaRomeo:
+                        ToReturn = "C38";
+                        break;
+                    case Team.ToroRosso:
+                        ToReturn = "STR14";
+                        break;
+                    case Team.Ferrari:
+                        ToReturn = "SF90";
+                        break;
+                    case Team.Haas:
+                        ToReturn = "VF-19";
+                        break;
+                    case Team.McLaren:
+                        ToReturn = "MCL34";
+                        break;
+                    case Team.RacingPoint:
+                        ToReturn = "RP19";
+                        break;
+                    case Team.Renault:
+                        ToReturn = "R.S.19";
+                        break;
+                    case Team.Williams:
+                        ToReturn = "FW42";
+                        break;
+                }
+            }
 
             
 
