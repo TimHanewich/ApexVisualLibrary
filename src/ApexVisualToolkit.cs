@@ -570,6 +570,126 @@ namespace ApexVisual
             return ToReturn;
         }
 
+        public static string GetTrackFriendlyName(Track t)
+        {
+            string ToReturn = t.ToString();
+
+            if (t == Track.Melbourne)
+            {
+                ToReturn = "Melbourne";
+            }
+            else if (t == Track.PaulRicard)
+            {
+                ToReturn = "Paul Ricard";
+            }
+            else if (t == Track.Shanghai)
+            {
+                ToReturn = "China";
+            }
+            else if (t == Track.Sakhir)
+            {
+                ToReturn = "Bahrain";
+            }
+            else if (t == Track.Catalunya)
+            {
+                ToReturn = "Spain";
+            }
+            else if (t == Track.Monaco)
+            {
+                ToReturn = "Monaco";
+            }
+            else if (t == Track.Montreal)
+            {
+                ToReturn = "Canada";
+            }
+            else if (t == Track.Silverstone)
+            {
+                ToReturn = "Silverstone";
+            }
+            else if (t == Track.Hockenheim)
+            {
+                ToReturn = "Hockenheim";
+            }
+            else if (t == Track.Hungaroring)
+            {
+                ToReturn = "Hungaroring";
+            }
+            else if (t == Track.Spa)
+            {
+                ToReturn = "Spa (Belgium)";
+            }
+            else if (t == Track.Monza)
+            {
+                ToReturn = "Italy";
+            }
+            else if (t == Track.Singapore)
+            {
+                ToReturn = "Singapore";
+            }
+            else if (t == Track.Suzuka)
+            {
+                ToReturn = "Japan";
+            }
+            else if (t == Track.AbuDhabi)
+            {
+                ToReturn = "Abu Dhabi";
+            }
+            else if (t == Track.Texas)
+            {
+                ToReturn = "United States";
+            }
+            else if (t == Track.Brazil)
+            {
+                ToReturn = "Brazil";
+            }
+            else if (t == Track.Austria)
+            {
+                ToReturn = "Austria";
+            }
+            else if (t == Track.Sochi)
+            {
+                ToReturn = "Russia";
+            }
+            else if (t == Track.Mexico)
+            {
+                ToReturn = "Mexico";
+            }
+            else if (t == Track.Baku)
+            {
+                ToReturn = "Azerbaijan";
+            }
+            else if (t == Track.SakhirShort)
+            {
+                ToReturn = "Bahrain (Short)";
+            }
+            else if (t == Track.SilverstoneShort)
+            {
+                ToReturn = "Silverstone (Short)";
+            }
+            else if (t == Track.TexasShort)
+            {
+                ToReturn = "US (Short)";
+            }
+            else if (t == Track.SuzukaShort)
+            {
+                ToReturn = "Japan (Short)";
+            }
+            else if (t == Track.Hanoi)
+            {
+                ToReturn = "Vietnam";
+            }
+            else if (t == Track.Zandvoort)
+            {
+                ToReturn = "Netherlands";
+            }
+            else
+            {
+                ToReturn = t.ToString();
+            }
+
+            return ToReturn;
+        }
+
         #region "Soft, Medium, Hard tyre compounds for each track"
 
         public static TyreCompound MediumTyreCompoundAtTrack(Track t)
