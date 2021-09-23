@@ -914,9 +914,18 @@ namespace ApexVisual.Cloud.Storage
             ih.Add("Id", l.Id.ToString(), true);
             ih.Add("FromSession", ApexVisualToolkit.ULongToLong(l.FromSession).ToString(), true);
             ih.Add("LapNumber", l.LapNumber.ToString());
-            ih.Add("Sector1Time", l.Sector1Time.ToString());
-            ih.Add("Sector2Time", l.Sector2Time.ToString());
-            ih.Add("Sector3Time", l.Sector3Time.ToString());
+            if (l.Sector1Time.HasValue)
+            {
+                ih.Add("Sector1Time", l.Sector1Time.ToString());
+            }
+            if (l.Sector2Time.HasValue)
+            {
+                ih.Add("Sector2Time", l.Sector2Time.ToString());
+            }
+            if (l.Sector3Time.HasValue)
+            {
+                ih.Add("Sector3Time", l.Sector3Time.ToString());
+            }
             ih.Add("EndingFuel", l.EndingFuel.ToString());
             ih.Add("PercentOnThrottle", l.PercentOnThrottle.ToString());
             ih.Add("PercentOnBrake", l.PercentOnBrake.ToString());
