@@ -66,6 +66,7 @@ namespace ApexVisual.SessionDocumentation
         private uint OnMaxBrake;
         private uint GearChanges;
         private sbyte LastGearSeen;
+        private Sector LastSectorSeen;
 
         //In construction (working on)
         private Lap ConstructingLap;
@@ -227,6 +228,20 @@ namespace ApexVisual.SessionDocumentation
                     }
                     else //Document the mid-lap statistics. For example, percent on throttle.
                     {
+                        //Did the sector change? If it did, save the sector times
+                        if (csd.FieldData[driver_index].CurrentSector != LastSectorSeen)
+                        {
+                            if (csd.FieldData[driver_index].CurrentSector == Sector.Sector2)
+                            {
+                                ConstructingLap.Sector1Time = csd.FieldData[driver_index].Sector1TimeSeconds;
+                            }
+                            else if (csd.FieldData[driver_index].CurrentSector == Sector.Sector3)
+                            {
+                                ConstructingLap.Sector2Time = csd.FieldData[driver_index].Sector2TimeSeconds;
+                            }
+                        }
+                        LastSectorSeen = csd.FieldData[driver_index].CurrentSector;
+
                         //On Throttle?
                         if (csd.FieldData[driver_index].Throttle > 0)
                         {
@@ -372,8 +387,8 @@ namespace ApexVisual.SessionDocumentation
             {
                 ConstructingLap.Sector3Time = last_lap_time - LastSeen.FieldData[driver_index].Sector1TimeSeconds - LastSeen.FieldData[driver_index].Sector2TimeSeconds;
                 ConstructingLap.EndingFuel = LastSeen.FieldData[driver_index].FuelInTank;
-                ConstructingLap.Sector1Time = LastSeen.FieldData[driver_index].Sector1TimeSeconds;
-                ConstructingLap.Sector2Time = LastSeen.FieldData[driver_index].Sector2TimeSeconds;
+                ConstructingLap.Sector1Time = LastSeen.FieldData[driver_index].Sector1TimeSeconds; //This is done previosuly, but do it here gain for good measure.
+                ConstructingLap.Sector2Time = LastSeen.FieldData[driver_index].Sector2TimeSeconds; //This is done previosuly, but do it here gain for good measure.
                 ConstructingLap.EndingErs = LastSeen.FieldData[driver_index].StoredErsEnergy;
                 
                 //Ending tyre wear
