@@ -223,6 +223,9 @@ namespace ApexVisual.SessionDocumentation
                         ConstructingLap.FromSession = csd.SessionId;
                         ConstructingLap.LapNumber = csd.FieldData[driver_index].CurrentLapNumber;
                         ConstructingLap.EquippedTyreCompound = csd.FieldData[driver_index].EquippedTyreCompound;
+
+                        //Add the lap to the list
+                        _Laps.Add(ConstructingLap);
                     }
                     else //Document the mid-lap statistics. For example, percent on throttle.
                     {
@@ -398,7 +401,6 @@ namespace ApexVisual.SessionDocumentation
                 #endregion
                 
                 //Add all of the data
-                _Laps.Add(ConstructingLap); //Add the lap
                 _WheelDataArrays.Add(EndingTyreWear); //Add the wheel data arrays that tie directly to the lap
                 _TelemetrySnapshots.AddRange(HoldingTelemetrySnapshotsForThisLap); //Add the telemetry snapshots for this lap
                 _WheelDataArrays.AddRange(HoldingWheelDataArraysForThisLap); //Add the wheel data arrays for the lap
