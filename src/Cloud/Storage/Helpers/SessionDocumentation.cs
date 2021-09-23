@@ -91,13 +91,16 @@ namespace ApexVisual.Cloud.Storage.Helpers
         //between 0 and 1
         private void UpdatePercentComplete(float percent)
         {
-            try
+            if (ProcessingPercentCompleteUpdate != null)
             {
-                ProcessingPercentCompleteUpdate.Invoke(percent);
-            }
-            catch
-            {
+                try
+                {
+                    ProcessingPercentCompleteUpdate.Invoke(percent);
+                }
+                catch
+                {
 
+                }
             }
         }
 

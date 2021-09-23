@@ -76,13 +76,16 @@ namespace ApexVisual.SessionManagement
 
         private void TryRaiseDataUpdate(CommonSessionData fccd)
         {
-            try
+            if (DataUpdateAvailable != null)
             {
-                DataUpdateAvailable.Invoke(fccd.Copy());
-            }
-            catch
-            {
+                try
+                {
+                    DataUpdateAvailable.Invoke(fccd.Copy());
+                }
+                catch
+                {
 
+                }
             }
         }
 
