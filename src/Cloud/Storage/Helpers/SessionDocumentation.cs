@@ -60,6 +60,45 @@ namespace ApexVisual.Cloud.Storage.Helpers
             }
         }
 
+        public async Task<SessionDocumentation.SessionDocumentation> ComprehensiveDownloadAsync(ApexVisualManager avm, ulong session_id, bool update_percent = true)
+        {
+            SessionDocumentation.SessionDocumentation ToReturn = new SessionDocumentation.SessionDocumentation();
+
+            //Get the original capture
+            bool OC_Exists = await avm.OriginalCaptureExistsAsync(session_id);
+            if (OC_Exists)
+            {
+                ToReturn.OriginalCapture = await avm.DownloadOriginalCaptureAsync(session_id);
+            }
+
+            //Get the session
+            ToReturn.Session = await avm.DownloadSessionAsync(session_id);
+
+            //Get the laps
+            ToReturn.Laps = await avm.DownloadLapsFromSessionAsync(session_id);
+
+            //Get the telemetry snapshots
+            ToReturn.TelemetrySnapshots = await avm.DownloadTelemetrySnapshotsAsync(session_id);
+
+            //Get the Wheel data arrays
+            List<WheelDataArray> RetrievedWheelDataArrays = new List<WheelDataArray>();
+            foreach (Lap l in ToReturn.Laps)
+            {
+                WheelDataArray ThisWda = await avm.DownloadWheelDataArrayAsync(l.EndingTyreWear);
+                RetrievedWheelDataArrays.Add(ThisWda);
+            }
+            foreach (TelemetrySnapshot ts in ToReturn.TelemetrySnapshots)
+            {
+                WheelDataArray Wda1 = await avm.DownloadWheelDataArrayAsync(ts.TyreWearPercent);
+                WheelDataArray Wda2 = await avm.DownloadWheelDataArrayAsync(ts.TyreDamagePercent);
+                RetrievedWheelDataArrays.Add(Wda1);
+                RetrievedWheelDataArrays.Add(Wda2);
+            }
+            ToReturn.WheelDataArrays = RetrievedWheelDataArrays.ToArray();
+
+            return ToReturn;
+        }
+
         public async Task ComprehensiveDeleteAsync(ApexVisualManager avm, ulong session_id, bool update_percent = true)
         {
             //Intentionally do NOT delete the OriginalCapture. This is meant to be permanent.
