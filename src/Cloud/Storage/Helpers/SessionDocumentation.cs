@@ -10,6 +10,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
     {
         
         public event PercentUpdate ProcessingPercentCompleteUpdate;
+        public event IntHandler ResourcesDownloadedUpdate;
 
         #region "Comprehensive"
 
@@ -60,25 +61,35 @@ namespace ApexVisual.Cloud.Storage.Helpers
             }
         }
 
-        public async Task<SessionDocumentation.SessionDocumentation> ComprehensiveDownloadAsync(ApexVisualManager avm, ulong session_id, bool update_percent = true)
+        public async Task<SessionDocumentation.SessionDocumentation> ComprehensiveDownloadAsync(ApexVisualManager avm, ulong session_id, bool update_resources_downloaded = true)
         {
             SessionDocumentation.SessionDocumentation ToReturn = new SessionDocumentation.SessionDocumentation();
+
+            int ResourcesDownloaded = 0;
 
             //Get the original capture
             bool OC_Exists = await avm.OriginalCaptureExistsAsync(session_id);
             if (OC_Exists)
             {
                 ToReturn.OriginalCapture = await avm.DownloadOriginalCaptureAsync(session_id);
+                ResourcesDownloaded = ResourcesDownloaded + 1;
+                UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
             }
 
             //Get the session
             ToReturn.Session = await avm.DownloadSessionAsync(session_id);
+            ResourcesDownloaded = ResourcesDownloaded + 1;
+            UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
 
             //Get the laps
             ToReturn.Laps = await avm.DownloadLapsFromSessionAsync(session_id);
+            ResourcesDownloaded = ResourcesDownloaded + ToReturn.Laps.Length;
+            UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
 
             //Get the telemetry snapshots
             ToReturn.TelemetrySnapshots = await avm.DownloadTelemetrySnapshotsAsync(session_id);
+            ResourcesDownloaded = ResourcesDownloaded + ToReturn.TelemetrySnapshots.Length;
+            UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
 
             //Get the Wheel data arrays
             List<WheelDataArray> RetrievedWheelDataArrays = new List<WheelDataArray>();
@@ -86,11 +97,17 @@ namespace ApexVisual.Cloud.Storage.Helpers
             {
                 WheelDataArray ThisWda = await avm.DownloadWheelDataArrayAsync(l.EndingTyreWear);
                 RetrievedWheelDataArrays.Add(ThisWda);
+                ResourcesDownloaded = ResourcesDownloaded + 1;
+                UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
             }
             foreach (TelemetrySnapshot ts in ToReturn.TelemetrySnapshots)
             {
                 WheelDataArray Wda1 = await avm.DownloadWheelDataArrayAsync(ts.TyreWearPercent);
+                ResourcesDownloaded = ResourcesDownloaded + 1;
+                UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
                 WheelDataArray Wda2 = await avm.DownloadWheelDataArrayAsync(ts.TyreDamagePercent);
+                ResourcesDownloaded = ResourcesDownloaded + 1;
+                UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
                 RetrievedWheelDataArrays.Add(Wda1);
                 RetrievedWheelDataArrays.Add(Wda2);
             }
@@ -162,6 +179,17 @@ namespace ApexVisual.Cloud.Storage.Helpers
             if (ActuallyDoIt)
             {
                 UpdatePercentComplete(complete, out_of);
+            }
+        }
+
+        private void UpdateResourcesDownloaded(int value, bool ActuallyDoIt)
+        {
+            if (ActuallyDoIt)
+            {
+                if (ResourcesDownloadedUpdate != null)
+                {
+                    ResourcesDownloadedUpdate.Invoke(value);
+                }
             }
         }
 
