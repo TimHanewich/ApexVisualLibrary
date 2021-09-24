@@ -8,7 +8,8 @@ namespace ApexVisual.SessionManagement
     public partial class ApexVisualSessionManager
     {
 
-        private void Load2021Bytes(byte[] bytes)
+        //The bool returned is true if a change was made, false if it was not made.
+        private bool Load2021Bytes(byte[] bytes)
         {
             PacketType pt = CodemastersToolkit.GetPacketType(bytes);
 
@@ -673,6 +674,12 @@ namespace ApexVisual.SessionManagement
 
 
             }
+            else
+            {
+                return false;
+            }
+            
+            return true;
         }
 
     }

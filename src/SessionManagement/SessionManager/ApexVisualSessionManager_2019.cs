@@ -8,7 +8,7 @@ namespace ApexVisual.SessionManagement
     public partial class ApexVisualSessionManager
     {
  
-        private void Load2019Bytes(byte[] bytes)
+        private bool Load2019Bytes(byte[] bytes)
         {
             PacketType pt = CodemastersToolkit.GetPacketType(bytes);
 
@@ -655,6 +655,12 @@ namespace ApexVisual.SessionManagement
                 }
 
             }
+            else
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

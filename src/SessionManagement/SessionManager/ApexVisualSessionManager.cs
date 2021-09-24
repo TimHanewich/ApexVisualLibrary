@@ -27,17 +27,18 @@ namespace ApexVisual.SessionManagement
             }
             
             //Route it based on the game
+            bool UpdateApplied = true; //Default to assume is yes, changes were made.
             if (pformat == 2021)
             {
-                Load2021Bytes(bytes);
+                UpdateApplied = Load2021Bytes(bytes);
             }
             else if (pformat == 2020)
             {
-                Load2020Bytes(bytes);
+                UpdateApplied = Load2020Bytes(bytes);
             }
             else if (pformat == 2019)
             {
-                Load2019Bytes(bytes);
+                UpdateApplied = Load2019Bytes(bytes);
             }
             else
             {
@@ -45,7 +46,10 @@ namespace ApexVisual.SessionManagement
             }
 
             //Alert of the newly available data
-            TryRaiseDataUpdate(OngoingCanvas);
+            if (UpdateApplied)
+            {
+                TryRaiseDataUpdate(OngoingCanvas);
+            }
         }
 
         #region "All in one bulk convert"
