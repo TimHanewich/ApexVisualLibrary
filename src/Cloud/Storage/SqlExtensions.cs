@@ -1473,13 +1473,13 @@ namespace ApexVisual.Cloud.Storage
         {
             //Going to have to get it in two commands
 
-            string cmd1 = "select Id, RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray inner join Lap on WheelDataArray.Id = Lap.EndingTyreWear where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session).ToString();
+            string cmd1 = "select WheelDataArray.Id as Id, RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray inner join Lap on WheelDataArray.Id = Lap.EndingTyreWear where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session).ToString();
             ApexVisual.SessionDocumentation.WheelDataArray[] batch1 = await DownloadWheelDataArraysFromCommandAsync(avm, cmd1);
 
-            string cmd2 = "select Id, RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray inner join TelemetrySnapshot on WheelDataArray.Id = TelemetrySnapshot.TyreWearPercent inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session).ToString();
+            string cmd2 = "select WheelDataArray.Id as Id, RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray inner join TelemetrySnapshot on WheelDataArray.Id = TelemetrySnapshot.TyreWearPercent inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session).ToString();
             ApexVisual.SessionDocumentation.WheelDataArray[] batch2 = await DownloadWheelDataArraysFromCommandAsync(avm, cmd2);
 
-            string cmd3 = "select Id, RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray inner join TelemetrySnapshot on WheelDataArray.Id = TelemetrySnapshot.TyreDamagePercent inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session).ToString();
+            string cmd3 = "select WheelDataArray.Id as Id, RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray inner join TelemetrySnapshot on WheelDataArray.Id = TelemetrySnapshot.TyreDamagePercent inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session).ToString();
             ApexVisual.SessionDocumentation.WheelDataArray[] batch3 = await DownloadWheelDataArraysFromCommandAsync(avm, cmd3);
 
             //Assemble and return
