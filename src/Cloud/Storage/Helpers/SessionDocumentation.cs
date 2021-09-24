@@ -13,7 +13,7 @@ namespace ApexVisual.Cloud.Storage.Helpers
 
         #region "Comprehensive"
 
-        public async Task ComprehensiveUploadAsync(ApexVisualManager avm, SessionDocumentationEngine sde, bool update_percent = true)
+        public async Task ComprehensiveUploadAsync(ApexVisualManager avm, ApexVisual.SessionDocumentation.SessionDocumentation sde, bool update_percent = true)
         {   
         
             //Get the total # of resources to upload.
