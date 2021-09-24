@@ -8,7 +8,7 @@ namespace ApexVisual.Cloud.ActivityLogging
         Launch = 0, //The game/website (application) being launched
         Other = 1,
 
-        #region "Apex Visual 2020 (Windows 10 app) activities"
+        #region "Apex Visual (Windows 10 app) activities"
 
         //Login-related
         LoginClickedOnHomePage = 8,
@@ -56,6 +56,12 @@ namespace ApexVisual.Cloud.ActivityLogging
         //Demo videos on home page
         LiveDisplayDemoVideoClickedOnHomePage = 27, //The user clicked on the live display demo video on the home page
         RaceDirectorDemoVideoClickedOnHomePage = 28, //The user clicked on the race director demo video on the home page
+
+        //Engineer mode
+        EngineerModeClicked = 29,
+        EngineerModeOverLocalNetworkClicked = 30,
+        EngineerModeOverLocalNetworkStartListeningClicked = 31
+
 
         #endregion
 
