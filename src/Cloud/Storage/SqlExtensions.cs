@@ -1469,6 +1469,27 @@ namespace ApexVisual.Cloud.Storage
             }
         }
 
+        public static async Task<ApexVisual.SessionDocumentation.WheelDataArray[]> DownloadWheelDataArraysAsync(this ApexVisualManager avm, ulong from_session)
+        {
+            //Going to have to get it in two commands
+
+            string cmd1 = "select Id, RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray inner join Lap on WheelDataArray.Id = Lap.EndingTyreWear where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session).ToString();
+            ApexVisual.SessionDocumentation.WheelDataArray[] batch1 = await DownloadWheelDataArraysFromCommandAsync(avm, cmd1);
+
+            string cmd2 = "select Id, RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray inner join TelemetrySnapshot on WheelDataArray.Id = TelemetrySnapshot.TyreWearPercent inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session).ToString();
+            ApexVisual.SessionDocumentation.WheelDataArray[] batch2 = await DownloadWheelDataArraysFromCommandAsync(avm, cmd2);
+
+            string cmd3 = "select Id, RearLeft, RearRight, FrontLeft, FrontRight from WheelDataArray inner join TelemetrySnapshot on WheelDataArray.Id = TelemetrySnapshot.TyreDamagePercent inner join Lap on TelemetrySnapshot.FromLap = Lap.Id where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session).ToString();
+            ApexVisual.SessionDocumentation.WheelDataArray[] batch3 = await DownloadWheelDataArraysFromCommandAsync(avm, cmd3);
+
+            //Assemble and return
+            List<ApexVisual.SessionDocumentation.WheelDataArray> ToReturn = new List<SessionDocumentation.WheelDataArray>();
+            ToReturn.AddRange(batch1);
+            ToReturn.AddRange(batch2);
+            ToReturn.AddRange(batch3);
+            return ToReturn.ToArray();
+        }
+
         public static async Task DeleteWheelDataArraysAsync(this ApexVisualManager avm, ulong from_session_id)
         {
             //Delete where TelemetrySnapshots reference it via TyreWearPercent
@@ -1479,6 +1500,21 @@ namespace ApexVisual.Cloud.Storage
         
             //Delete where a Lap references it 
             await ExecuteNonQueryAsync(avm, "delete wda from WheelDataArray as wda inner join Lap on wda.Id = Lap.EndingTyreWear where Lap.FromSession = " + ApexVisualToolkit.ULongToLong(from_session_id).ToString());
+        }
+
+        private static async Task<ApexVisual.SessionDocumentation.WheelDataArray[]> DownloadWheelDataArraysFromCommandAsync(ApexVisualManager avm, string cmd)
+        {
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            List<ApexVisual.SessionDocumentation.WheelDataArray> ToReturn = new List<SessionDocumentation.WheelDataArray>();
+            while (dr.Read())
+            {
+                ToReturn.Add(ExtractWheelDataArrayFromSqlDataReader(dr));
+            }
+            sqlcon.Close();
+            return ToReturn.ToArray();
         }
 
         private static ApexVisual.SessionDocumentation.WheelDataArray ExtractWheelDataArrayFromSqlDataReader(SqlDataReader dr)
