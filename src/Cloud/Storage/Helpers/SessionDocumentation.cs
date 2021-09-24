@@ -92,26 +92,6 @@ namespace ApexVisual.Cloud.Storage.Helpers
             UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
 
             //Get the Wheel data arrays
-            // List<WheelDataArray> RetrievedWheelDataArrays = new List<WheelDataArray>();
-            // foreach (Lap l in ToReturn.Laps)
-            // {
-            //     WheelDataArray ThisWda = await avm.DownloadWheelDataArrayAsync(l.EndingTyreWear);
-            //     RetrievedWheelDataArrays.Add(ThisWda);
-            //     ResourcesDownloaded = ResourcesDownloaded + 1;
-            //     UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
-            // }
-            // foreach (TelemetrySnapshot ts in ToReturn.TelemetrySnapshots)
-            // {
-            //     WheelDataArray Wda1 = await avm.DownloadWheelDataArrayAsync(ts.TyreWearPercent);
-            //     ResourcesDownloaded = ResourcesDownloaded + 1;
-            //     UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
-            //     WheelDataArray Wda2 = await avm.DownloadWheelDataArrayAsync(ts.TyreDamagePercent);
-            //     ResourcesDownloaded = ResourcesDownloaded + 1;
-            //     UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
-            //     RetrievedWheelDataArrays.Add(Wda1);
-            //     RetrievedWheelDataArrays.Add(Wda2);
-            // }
-            // ToReturn.WheelDataArrays = RetrievedWheelDataArrays.ToArray();
             ToReturn.WheelDataArrays = await avm.DownloadWheelDataArraysAsync(session_id);
             ResourcesDownloaded = ResourcesDownloaded + ToReturn.WheelDataArrays.Length;
             UpdateResourcesDownloaded(ResourcesDownloaded, update_resources_downloaded);
