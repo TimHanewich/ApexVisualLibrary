@@ -425,5 +425,16 @@ namespace ApexVisual.SessionDocumentation
             OnMaxBrake = 0;
             GearChanges = 0;
         }
+    
+        public SessionDocumentation ToDocumentation()
+        {
+            SessionDocumentation ToReturn = new SessionDocumentation();
+            ToReturn.OriginalCapture = OriginalCapture;
+            ToReturn.Session = Session;
+            ToReturn.Laps = Laps;
+            ToReturn.TelemetrySnapshots = TelemetrySnapshots;
+            ToReturn.WheelDataArrays = WheelDataArrays;
+            return ToReturn;
+        }
     }
 }
