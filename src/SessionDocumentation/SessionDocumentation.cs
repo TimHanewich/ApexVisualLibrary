@@ -110,6 +110,30 @@ namespace ApexVisual.SessionDocumentation
     
         #region "Performance Rating"
 
+        public float ConsistencyRating(byte corner_number)
+        {
+            //Weightings
+            //Must all add up to 1!!
+            float Weight_Speed = 0.5f;
+            float Weight_Gear = 0.3f;
+            float Weight_Steer = 0.2f;
+
+            //Get the speed inconsistency rating
+            float InconsistencyRating_Speed = SpeedInconsistencyRating(corner_number);
+            float InconsistencyRating_Gear = GearInconsistencyRating(corner_number);
+            float InconsistencyRating_Steer = SteerInconsistencyRating(corner_number);
+
+            //Get a weighted inconsistency rating
+            float WeightedInconsistencyRating = 0;
+            WeightedInconsistencyRating = WeightedInconsistencyRating + (Weight_Speed * InconsistencyRating_Speed);
+            WeightedInconsistencyRating = WeightedInconsistencyRating + (Weight_Gear * InconsistencyRating_Gear);
+            WeightedInconsistencyRating = WeightedInconsistencyRating + (Weight_Steer * InconsistencyRating_Steer);
+
+            //Reverse it to make it a CONSISTENCY rating. i.e. 100% means perfectly consistent.
+            float ToReturn = 1 - WeightedInconsistencyRating;
+            return ToReturn;
+        }
+
         public float SpeedInconsistencyRating(byte corner_number)
         {
             TelemetrySnapshot[] CornerSnapshots = GetTelemetrySnapshotsFromCorner(corner_number);
