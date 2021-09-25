@@ -123,6 +123,7 @@ namespace ApexVisual.SessionDocumentation
             float stdev = MathToolkit.StandardDeviation(Speeds.ToArray());
             float mean = Speeds.ToArray().Average();
             float AsPercent = stdev / mean;
+            AsPercent = Math.Abs(AsPercent);
 
             return AsPercent;
         }
@@ -173,6 +174,7 @@ namespace ApexVisual.SessionDocumentation
             float stdev = MathToolkit.StandardDeviation(Gears.ToArray());
             float mean = Gears.ToArray().Average();
             float AsPercent = stdev / mean;
+            AsPercent = Math.Abs(AsPercent);
 
             return AsPercent;
         }
@@ -190,6 +192,7 @@ namespace ApexVisual.SessionDocumentation
             float stdev = MathToolkit.StandardDeviation(Steers.ToArray());
             float mean = Steers.ToArray().Average();
             float AsPercent = stdev / mean;
+            AsPercent = Math.Abs(AsPercent);
 
             return AsPercent;
         }
