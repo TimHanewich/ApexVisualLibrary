@@ -311,8 +311,21 @@ namespace ApexVisual.SessionDocumentation
                         ts.LapInvalid = LastSeen.FieldData[driver_index].CurrentLapInvalid;
                         ts.SpeedKph = Convert.ToInt16(LastSeen.FieldData[driver_index].SpeedKph);
                         ts.Throttle = Convert.ToByte(Math.Round(LastSeen.FieldData[driver_index].Throttle * 100f, 0));
-                        ts.Steer = Convert.ToInt16(Math.Round(LastSeen.FieldData[driver_index].Steer, 0));
                         ts.Brake = Convert.ToByte(Math.Round(LastSeen.FieldData[driver_index].Brake * 100f, 0));
+
+                        //Steer
+                        //The steer in the CommonCarData packet is provided as a float. -1 is the minimum (meaning full left turn), 1 is the maximum (meaning full right turn)
+                        float SteerVal = LastSeen.FieldData[driver_index].Steer * 100f;
+                        if (SteerVal > 100)
+                        {
+                            SteerVal = 100;
+                        }
+                        else if (SteerVal < -100)
+                        {
+                            SteerVal = -100;
+                        }
+                        double SteerRounded = Math.Round(SteerVal, 0);
+                        ts.Steer = Convert.ToInt16(SteerRounded);
                         
                         //Gear
                         switch (LastSeen.FieldData[driver_index].Gear)
