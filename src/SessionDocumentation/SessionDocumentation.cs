@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using TimHanewich.Toolkit;
+using System.Linq;
 
 namespace ApexVisual.SessionDocumentation
 {
@@ -10,6 +12,8 @@ namespace ApexVisual.SessionDocumentation
         public Lap[] Laps {get; set;}
         public TelemetrySnapshot[] TelemetrySnapshots {get; set;}
         public WheelDataArray[] WheelDataArrays {get; set;}
+
+        #region "Manipulation"
 
         public Lap GetLap(byte lap_number)
         {
@@ -83,5 +87,29 @@ namespace ApexVisual.SessionDocumentation
             }
             throw new Exception("Unable to find WheelDataArray with Id '" + id.ToString() + "'");
         }
+    
+        #endregion
+    
+        #region "Performance Rating"
+
+        public float SpeedInconsistencyRating(byte corner_number)
+        {
+            TelemetrySnapshot[] CornerSnapshots = GetTelemetrySnapshotsFromCorner(corner_number);
+
+            List<float> Speeds = new List<float>();
+            foreach (TelemetrySnapshot ts in CornerSnapshots)
+            {
+                Speeds.Add(ts.SpeedKph);
+            }
+
+            float stdev = MathToolkit.StandardDeviation(Speeds.ToArray());
+            float mean = Speeds.ToArray().Average();
+            float AsPercent = stdev / mean;
+
+            return AsPercent;
+        }
+
+        #endregion
+    
     }
 }
