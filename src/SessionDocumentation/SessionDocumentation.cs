@@ -88,6 +88,24 @@ namespace ApexVisual.SessionDocumentation
             throw new Exception("Unable to find WheelDataArray with Id '" + id.ToString() + "'");
         }
     
+        
+
+        public byte NumberOfCorners()
+        {
+            byte MaxCorner = 0;
+            foreach (TelemetrySnapshot ts in TelemetrySnapshots)
+            {
+                if (ts.LocationType == TrackLocationType.Corner)
+                {
+                    if (ts.LocationNumber > MaxCorner)
+                    {
+                        MaxCorner = ts.LocationNumber;
+                    }
+                }
+            }
+            return MaxCorner;
+        }
+
         #endregion
     
         #region "Performance Rating"
