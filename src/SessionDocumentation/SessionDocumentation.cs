@@ -127,6 +127,73 @@ namespace ApexVisual.SessionDocumentation
             return AsPercent;
         }
 
+        public float GearInconsistencyRating(byte corner_number)
+        {
+            TelemetrySnapshot[] CornerSnapshots = GetTelemetrySnapshotsFromCorner(corner_number);
+
+            List<float> Gears = new List<float>();
+            foreach (TelemetrySnapshot ts in CornerSnapshots)
+            {
+                float GearToAdd = 0;
+                if (ts.Gear == Gear.Gear1)
+                {
+                    GearToAdd = 1;
+                }
+                else if (ts.Gear == Gear.Gear2)
+                {
+                    GearToAdd = 2;
+                }
+                else if (ts.Gear == Gear.Gear3)
+                {
+                    GearToAdd = 3;
+                }
+                else if (ts.Gear == Gear.Gear4)
+                {
+                    GearToAdd = 4;
+                }
+                else if (ts.Gear == Gear.Gear5)
+                {
+                    GearToAdd = 5;
+                }
+                else if (ts.Gear == Gear.Gear6)
+                {
+                    GearToAdd = 6;
+                }
+                else if (ts.Gear == Gear.Gear7)
+                {
+                    GearToAdd = 7;
+                }
+                else if (ts.Gear == Gear.Gear8)
+                {
+                    GearToAdd = 8;
+                }
+                Gears.Add(GearToAdd);
+            }
+
+            float stdev = MathToolkit.StandardDeviation(Gears.ToArray());
+            float mean = Gears.ToArray().Average();
+            float AsPercent = stdev / mean;
+
+            return AsPercent;
+        }
+
+        public float SteerInconsistencyRating(byte corner_number)
+        {
+            TelemetrySnapshot[] CornerSnapshots = GetTelemetrySnapshotsFromCorner(corner_number);
+
+            List<float> Steers = new List<float>();
+            foreach (TelemetrySnapshot ts in CornerSnapshots)
+            {
+                Steers.Add(ts.Steer);
+            }
+
+            float stdev = MathToolkit.StandardDeviation(Steers.ToArray());
+            float mean = Steers.ToArray().Average();
+            float AsPercent = stdev / mean;
+
+            return AsPercent;
+        }
+
         #endregion
     
     }
