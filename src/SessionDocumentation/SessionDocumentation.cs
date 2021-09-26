@@ -123,6 +123,12 @@ namespace ApexVisual.SessionDocumentation
             float InconsistencyRating_Gear = GearInconsistencyRating(corner_number);
             float InconsistencyRating_Steer = SteerInconsistencyRating(corner_number);
 
+            //Return NaN if any of the three are NaN
+            if (InconsistencyRating_Speed == float.NaN || InconsistencyRating_Gear == float.NaN || InconsistencyRating_Steer == float.NaN)
+            {
+                return float.NaN;
+            }
+
             //Get a weighted inconsistency rating
             float WeightedInconsistencyRating = 0;
             WeightedInconsistencyRating = WeightedInconsistencyRating + (Weight_Speed * InconsistencyRating_Speed);
@@ -137,6 +143,10 @@ namespace ApexVisual.SessionDocumentation
         public float SpeedInconsistencyRating(byte corner_number)
         {
             TelemetrySnapshot[] CornerSnapshots = GetTelemetrySnapshotsFromCorner(corner_number);
+            if (CornerSnapshots.Length == 0)
+            {
+                return float.NaN;
+            }
 
             List<float> Speeds = new List<float>();
             foreach (TelemetrySnapshot ts in CornerSnapshots)
@@ -155,6 +165,10 @@ namespace ApexVisual.SessionDocumentation
         public float GearInconsistencyRating(byte corner_number)
         {
             TelemetrySnapshot[] CornerSnapshots = GetTelemetrySnapshotsFromCorner(corner_number);
+            if (CornerSnapshots.Length == 0)
+            {
+                return float.NaN;
+            }
 
             List<float> Gears = new List<float>();
             foreach (TelemetrySnapshot ts in CornerSnapshots)
@@ -206,6 +220,10 @@ namespace ApexVisual.SessionDocumentation
         public float SteerInconsistencyRating(byte corner_number)
         {
             TelemetrySnapshot[] CornerSnapshots = GetTelemetrySnapshotsFromCorner(corner_number);
+            if (CornerSnapshots.Length == 0)
+            {
+                return float.NaN;
+            }
 
             List<float> Steers = new List<float>();
             foreach (TelemetrySnapshot ts in CornerSnapshots)
