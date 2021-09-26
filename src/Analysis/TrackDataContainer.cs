@@ -321,7 +321,7 @@ namespace ApexVisual.Analysis
 
                 if (LoadedSuccessfully == false)
                 {
-                    throw new Exception("Unable to find optimal data for track '" + LoadedTrack.ToString() + "' for any default years.");
+                    throw new Exception("Unable to find or load optimal data for track '" + LoadedTrack.ToString() + "' for any default years.");
                 }
             }
         }        
