@@ -42,47 +42,14 @@ namespace ApexVisual.Cloud.Storage
 
             if (dr.HasRows == false)
             {
+                sqlcon.Close();
                 throw new Exception("Unable to find user account record with username '" + username + "'");
             }
 
             await dr.ReadAsync();
 
-            //Prepare the return assets
-            ApexVisualUserAccount ToReturn = new ApexVisualUserAccount();
-
-            //Id
-            if (dr.IsDBNull(0) == false)
-            {
-                ToReturn.Id = dr.GetGuid(0);
-            }
-
-            //Usernmae
+            ApexVisualUserAccount ToReturn = ExtractUserAccountFromSqlDataReader(dr);
             ToReturn.Username = username;
-
-            //Password
-            if (dr.IsDBNull(1) == false)
-            {
-                ToReturn.Password = dr.GetString(1);
-            }
-
-            //Email
-            if (dr.IsDBNull(2) == false)
-            {
-                ToReturn.Email = dr.GetString(2);
-            }
-
-            //AccountCreatedAt
-            if (dr.IsDBNull(3) == false)
-            {
-                ToReturn.AccountCreatedAt = dr.GetDateTime(3);
-            }
-
-            //Photoblobid
-            if (dr.IsDBNull(4) == false)
-            {
-                ToReturn.PhotoBlobId = dr.GetGuid(4);
-            }
-
             return ToReturn;
         }
 
