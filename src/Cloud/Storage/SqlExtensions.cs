@@ -549,6 +549,11 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn.ToArray();
         }
 
+        public static async Task UpdateActivityLogByUserAsync(this ApexVisualManager avm, Guid id, Guid by_user)
+        {
+            string cmd = "update ActivityLog set ByUser = '" + by_user.ToString() + "' where Id = '" + id.ToString() + "'";
+            await avm.ExecuteNonQueryAsync(cmd);
+        }
         
         #endregion
 
