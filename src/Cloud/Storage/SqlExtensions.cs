@@ -202,6 +202,24 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn;
         }
 
+        public static async Task<string> GetUsernameFromUserAccountIdAsync(this ApexVisualManager avm, Guid id)
+        {
+            string cmd = "select Username from UserAccount where Id = '" + id.ToString() + "'";
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            if (dr.HasRows == false)
+            {
+                sqlcon.Close();
+                throw new Exception("Unable to find UserAccount with Id '" + id.ToString() + "'");
+            }
+            await dr.ReadAsync();
+            string ToReturn = dr.GetString(0);
+            sqlcon.Close();
+            return ToReturn;
+        }
+
         private static ApexVisualUserAccount ExtractUserAccountFromSqlDataReader(SqlDataReader dr, string prefix = "")
         {
             ApexVisualUserAccount ToReturn = new ApexVisualUserAccount();
