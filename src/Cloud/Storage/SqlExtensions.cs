@@ -204,6 +204,19 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn.ToArray();
         }
 
+        public static async Task<Guid> GetUserAccountIdFromUsernameAsync(this ApexVisualManager avm, string username)
+        {
+            string cmd = "select Id from UserAccount where Username = '" + username + "'";
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            dr.Read();
+            Guid ToReturn = dr.GetGuid(0);
+            sqlcon.Close();
+            return ToReturn;
+        }
+
         #endregion
 
         #region "Activity log operations"
