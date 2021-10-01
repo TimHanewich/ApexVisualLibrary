@@ -86,6 +86,24 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn;
         }
 
+        public static async Task<ApexVisualUserAccount> DownloadUserAccountAsync(this ApexVisualManager avm, Guid id)
+        {
+            string cmd = "select Id, Username, Password, Email, AccountCreatedAt, PhotoBlobId from UserAccount where Id = '" + id.ToString() + "'";
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            if (dr.HasRows == false)
+            {
+                sqlcon.Close();
+                throw new Exception("Unable to find User Account with Id '" + id.ToString() + "'");
+            }
+            await dr.ReadAsync();
+            ApexVisualUserAccount ToReturn = ExtractUserAccountFromSqlDataReader(dr);
+            sqlcon.Close();
+            return ToReturn;
+        }
+
         public static async Task UploadUserAccountAsync(this ApexVisualManager avm, ApexVisualUserAccount useraccount)
         {
             //Error check
@@ -214,6 +232,73 @@ namespace ApexVisual.Cloud.Storage
             dr.Read();
             Guid ToReturn = dr.GetGuid(0);
             sqlcon.Close();
+            return ToReturn;
+        }
+
+        private static ApexVisualUserAccount ExtractUserAccountFromSqlDataReader(SqlDataReader dr, string prefix = "")
+        {
+            ApexVisualUserAccount ToReturn = new ApexVisualUserAccount();
+
+            //Id
+            try
+            {
+                ToReturn.Id = dr.GetGuid(dr.GetOrdinal(prefix + "Id"));
+            }
+            catch
+            {
+
+            }
+
+            //Username
+            try
+            {
+                ToReturn.Username = dr.GetString(dr.GetOrdinal(prefix + "Username"));
+            }
+            catch
+            {
+
+            }
+
+            //Password
+            try
+            {
+                ToReturn.Password = dr.GetString(dr.GetOrdinal(prefix + "Password"));
+            }
+            catch
+            {
+                
+            }
+
+            //Email
+            try
+            {
+                ToReturn.Email = dr.GetString(dr.GetOrdinal(prefix + "Email"));
+            }
+            catch
+            {
+
+            }
+
+            //Account created at
+            try
+            {
+                ToReturn.AccountCreatedAt = dr.GetDateTime(dr.GetOrdinal(prefix + "AccountCreatedAt"));
+            }
+            catch
+            {
+
+            }
+
+            //PhotoBlobId
+            try
+            {
+                ToReturn.PhotoBlobId = dr.GetGuid(dr.GetOrdinal(prefix + "PhotoBlobId"));
+            }
+            catch
+            {
+
+            }
+
             return ToReturn;
         }
 
