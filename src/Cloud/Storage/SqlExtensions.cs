@@ -202,7 +202,7 @@ namespace ApexVisual.Cloud.Storage
             return ToReturn;
         }
 
-        public static async Task<string> GetUsernameFromUserAccountIdAsync(this ApexVisualManager avm, Guid id)
+        public static async Task<string> DownloadUsernameFromUserAccountIdAsync(this ApexVisualManager avm, Guid id)
         {
             string cmd = "select Username from UserAccount where Id = '" + id.ToString() + "'";
             SqlConnection sqlcon = GetSqlConnection(avm);
