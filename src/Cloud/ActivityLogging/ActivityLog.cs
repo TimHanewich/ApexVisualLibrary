@@ -5,7 +5,6 @@ namespace ApexVisual.Cloud.ActivityLogging
     public class ActivityLog
     {
         public Guid SessionId {get; set;} //A unique identifier for this session. A new one is created when launched and then the remainder follow suit.
-        public string Username {get; set;}
         public Guid ByUser {get; set;}
         public DateTimeOffset TimeStamp {get; set;}
         public ApplicationType ApplicationId {get; set;}

@@ -219,12 +219,6 @@ namespace ApexVisual.Cloud.Storage
 
             //Session id
             ColumnValuePairs.Add(new KeyValuePair<string, string>("SessionId", "'" + log.SessionId.ToString() + "'"));
-            
-            //Username
-            if (log.Username != null & log.Username != "")
-            {
-                ColumnValuePairs.Add(new KeyValuePair<string, string>("Username", "'" + log.Username + "'"));
-            }
 
             //User Id
             ColumnValuePairs.Add(new KeyValuePair<string, string>("ByUser", "'" + log.ByUser.ToString() + "'"));
@@ -289,7 +283,7 @@ namespace ApexVisual.Cloud.Storage
 
         public async static Task<ActivityLog> DownloadActivityLogAsync(this ApexVisualManager avm, Guid id)
         {
-            string cmd = "select SessionId,Username,TimeStamp,ApplicationId,ActivityId,PackageVersionMajor,PackageVersionMinor,PackageVersionBuild,PackageVersionRevision,Note from ActivityLog where Id='" + id.ToString() + "'";
+            string cmd = "select SessionId,ByUser,TimeStamp,ApplicationId,ActivityId,PackageVersionMajor,PackageVersionMinor,PackageVersionBuild,PackageVersionRevision,Note from ActivityLog where Id='" + id.ToString() + "'";
             SqlConnection sqlcon = GetSqlConnection(avm);
             sqlcon.Open();
             SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
@@ -310,10 +304,14 @@ namespace ApexVisual.Cloud.Storage
                 ToReturn.SessionId = dr.GetGuid(0);
             }
 
-            //Username
-            if (dr.IsDBNull(1) == false)
+            //ByUser
+            try
             {
-                ToReturn.Username = dr.GetString(1);
+                ToReturn.ByUser = dr.GetGuid(dr.GetOrdinal("ByUser"));
+            }
+            catch
+            {
+                
             }
 
             //Timestamp
@@ -386,7 +384,7 @@ namespace ApexVisual.Cloud.Storage
 
         public static async Task<ActivityLog[]> DownloadActivityLogsBySessionAsync(this ApexVisualManager avm, Guid session_id)
         {
-            string cmd = "select Username, TimeStamp, ApplicationId, ActivityId, PackageVersionMajor, PackageVersionMinor, PackageVersionBuild, PackageVersionRevision, Note from ActivityLog where SessionId='" + session_id + "' order by TimeStamp asc";
+            string cmd = "select ByUser, TimeStamp, ApplicationId, ActivityId, PackageVersionMajor, PackageVersionMinor, PackageVersionBuild, PackageVersionRevision, Note from ActivityLog where SessionId='" + session_id + "' order by TimeStamp asc";
             SqlConnection sqlcon = GetSqlConnection(avm);
             await sqlcon.OpenAsync();
             SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
@@ -400,7 +398,7 @@ namespace ApexVisual.Cloud.Storage
                 //If there is a username
                 if (dr.IsDBNull(0) == false)
                 {
-                    al.Username = dr.GetString(0);
+                    al.ByUser = dr.GetGuid(0);
                 }
 
                 //if There is a timestamp
