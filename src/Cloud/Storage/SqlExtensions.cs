@@ -558,6 +558,9 @@ namespace ApexVisual.Cloud.Storage
             await avm.ExecuteNonQueryAsync(cmd);
         }
         
+
+        //BELOW METHODS ARE ONLY FOR CONVERTING FROM LEGACY TO NEW
+
         public static async Task<Guid[]> ActivityLogsWithoutByUserWithUsernameAsync(this ApexVisualManager avm, int top = 100)
         {
             string cmd = "select top " + top.ToString() + " Id from ActivityLog where ByUser is null and Username is not null";
@@ -572,6 +575,19 @@ namespace ApexVisual.Cloud.Storage
             }
             sqlcon.Close();
             return ToReturn.ToArray();
+        }
+
+        public static async Task<string> GetUsernameFromActivityLogAsync(this ApexVisualManager avm, Guid activity_log_id)
+        {
+            string cmd = "select Username from ActivityLog where Id = '" + activity_log_id.ToString() + "'";
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            dr.Read();
+            string ToReturn = dr.GetString(0);
+            sqlcon.Close();
+            return ToReturn;
         }
 
         #endregion
