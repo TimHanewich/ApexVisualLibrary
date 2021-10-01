@@ -558,6 +558,22 @@ namespace ApexVisual.Cloud.Storage
             await avm.ExecuteNonQueryAsync(cmd);
         }
         
+        public static async Task<Guid[]> ActivityLogsWithoutByUserWithUsernameAsync(this ApexVisualManager avm, int top = 100)
+        {
+            string cmd = "select top " + top.ToString() + " Id from ActivityLog where ByUser is null and Username is not null";
+            SqlConnection sqlcon = GetSqlConnection(avm);
+            sqlcon.Open();
+            SqlCommand sqlcmd = new SqlCommand(cmd, sqlcon);
+            SqlDataReader dr = await sqlcmd.ExecuteReaderAsync();
+            List<Guid> ToReturn = new List<Guid>();
+            while (dr.Read())
+            {
+                ToReturn.Add(dr.GetGuid(0));
+            }
+            sqlcon.Close();
+            return ToReturn.ToArray();
+        }
+
         #endregion
 
         #region "Message Submission operations"
