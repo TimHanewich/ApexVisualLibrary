@@ -221,7 +221,10 @@ namespace ApexVisual.Cloud.Storage
             ColumnValuePairs.Add(new KeyValuePair<string, string>("SessionId", "'" + log.SessionId.ToString() + "'"));
 
             //User Id
-            ColumnValuePairs.Add(new KeyValuePair<string, string>("ByUser", "'" + log.ByUser.ToString() + "'"));
+            if (log.ByUser != Guid.Empty)
+            {
+                ColumnValuePairs.Add(new KeyValuePair<string, string>("ByUser", "'" + log.ByUser.ToString() + "'"));
+            }
 
             //TimeStamp
             if (log.TimeStamp.Year < 1900)
